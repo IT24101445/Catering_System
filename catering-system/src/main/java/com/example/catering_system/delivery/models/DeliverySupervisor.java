@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(
-        name = "drivers",
+        name = "delivery_supervisors",
         uniqueConstraints = @UniqueConstraint(columnNames = "email")
 )
-public class Driver {
+public class DeliverySupervisor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,21 +17,17 @@ public class Driver {
     @Column(nullable = false, unique = true, length = 320)
     private String email;
 
-    @Column(nullable = false, length = 120)
-    private String name;
+    // Store a hash (e.g., BCrypt), not plain text
+    @Column(name = "password_hash", nullable = false, length = 255)
+    private String passwordHash;
 
-    // Suggested values: "AVAILABLE", "ON_ROUTE", "OFF_DUTY"
-    @Column(nullable = false, length = 40)
-    private String status = "AVAILABLE";
-
-    public Driver() {
+    public DeliverySupervisor() {
     }
 
-    public Driver(Long id, String email, String name, String status) {
+    public DeliverySupervisor(Long id, String email, String passwordHash) {
         this.id = id;
         this.email = email;
-        this.name = name;
-        this.status = status;
+        this.passwordHash = passwordHash;
     }
 
     public Long getId() {
@@ -50,19 +46,11 @@ public class Driver {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }

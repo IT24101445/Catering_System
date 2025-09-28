@@ -4,12 +4,15 @@ package com.example.catering_system.delivery.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "deliveries")
-public class Delivery {
+@Table(name = "orders") // avoid SQL reserved word "ORDER"
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "customer_name", nullable = false, length = 160)
+    private String customerName;
 
     @Column(name = "pickup_address", nullable = false, length = 500)
     private String pickupAddress;
@@ -17,18 +20,14 @@ public class Delivery {
     @Column(name = "dropoff_address", nullable = false, length = 500)
     private String dropoffAddress;
 
-    // Suggested values: "PENDING", "ASSIGNED", "IN_PROGRESS", "COMPLETED", "CANCELLED"
-    @Column(nullable = false, length = 40)
-    private String status = "PENDING";
-
-    public Delivery() {
+    public Order() {
     }
 
-    public Delivery(Long id, String pickupAddress, String dropoffAddress, String status) {
+    public Order(Long id, String customerName, String pickupAddress, String dropoffAddress) {
         this.id = id;
+        this.customerName = customerName;
         this.pickupAddress = pickupAddress;
         this.dropoffAddress = dropoffAddress;
-        this.status = status;
     }
 
     public Long getId() {
@@ -37,6 +36,14 @@ public class Delivery {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public String getPickupAddress() {
@@ -53,13 +60,5 @@ public class Delivery {
 
     public void setDropoffAddress(String dropoffAddress) {
         this.dropoffAddress = dropoffAddress;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }
