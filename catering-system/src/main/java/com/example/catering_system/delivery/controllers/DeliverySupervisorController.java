@@ -70,6 +70,16 @@ public class DeliverySupervisorController {
             return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
         }
     }
+    // LOGIN (expects { "email": "...", "password": "..." } and returns { "id": ..., "email": "..." })
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Create req) {
+        try {
+            DeliverySupervisor s = service.authenticate(req.getEmail(), req.getPassword());
+            return ResponseEntity.ok(toResponse(s));
+        } catch (NoSuchElementException | IllegalArgumentException ex) {
+            return ResponseEntity.status(401).body(ApiError.of("Invalid credentials"));
+        }
+    }
 
     // DELETE
     @DeleteMapping("/{id}")

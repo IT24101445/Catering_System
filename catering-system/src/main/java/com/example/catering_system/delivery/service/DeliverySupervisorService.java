@@ -66,6 +66,17 @@ public class DeliverySupervisorService {
         return repo.save(s);
     }
 
+    public com.example.catering_system.delivery.models.DeliverySupervisor authenticate(String email, String rawPassword) {
+        var supervisor = repo.findByEmail(email)
+                .orElseThrow(() -> new java.util.NoSuchElementException("Supervisor not found"));
+
+        String candidateHash = sha256(rawPassword);
+        if (!candidateHash.equals(supervisor.getPasswordHash())) {
+            throw new IllegalArgumentException("Invalid credentials");
+        }
+        return supervisor;
+    }
+
     // DELETE
     @Transactional
     public void delete(Long id) {
