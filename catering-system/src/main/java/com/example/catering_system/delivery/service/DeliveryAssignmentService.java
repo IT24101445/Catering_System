@@ -83,6 +83,35 @@ public class DeliveryAssignmentService {
         repo.deleteById(id);
     }
 
+    @Transactional
+    public void startRoute(Long assignmentId) {
+        DeliveryAssignment a = get(assignmentId);
+        Driver d = a.getDriver();
+        if (d == null) throw new IllegalStateException("Assignment has no driver");
+        d.setStatus("ON_ROUTE");
+        driverRepo.save(d);
+    }
+
+    // Complete the route: set driver back to AVAILABLE
+    @Transactional
+    public void completeRoute(Long assignmentId) {
+        DeliveryAssignment a = get(assignmentId);
+        Driver d = a.getDriver();
+        if (d == null) throw new IllegalStateException("Assignment has no driver");
+        d.setStatus("AVAILABLE");
+        driverRepo.save(d);
+    }
+
+    // Reassign to another driver
+    @Transactional
+    public DeliveryAssignment reassign(Long assignmentId, Long newDriverId) {
+        DeliveryAssignment a = get(assignmentId);
+        Driver newDriver = driverRepo.findById(newDriverId)
+                .orElseThrow(() -> new NoSuchElementException("New driver not found"));
+        a.setDriver(newDriver);
+        return repo.save(a);
+    }
+
     // Optional filtered reads
     @Transactional(readOnly = true)
     public List<DeliveryAssignment> listByDriver(Long driverId) {
