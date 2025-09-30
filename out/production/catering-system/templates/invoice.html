@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ff9800;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .invoice-details {
+            margin: 40px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .invoice-details p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .invoice-details button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .invoice-details button:hover {
+            background-color: #45a049;
+        }
+        footer {
+            background-color: #f8f8f8;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Invoice Details</h1>
+</header>
+<main>
+    <div class="invoice-details">
+        <p><strong>Invoice ID:</strong> 12345</p>
+        <p><strong>Customer Name:</strong> John Doe</p>
+        <p><strong>Amount:</strong> $500.00</p>
+        <p><strong>Status:</strong> Unpaid</p>
+
+        <button onclick="markAsPaid()">Mark as Paid</button>
+    </div>
+</main>
+<footer>
+    <p>&copy; 2025 Catering System</p>
+</footer>
+
+<script>
+    function markAsPaid() {
+        alert("Invoice marked as paid!");
+        // You can integrate with the backend to update the invoice status
+    }
+</script>
+</body>
+</html>
