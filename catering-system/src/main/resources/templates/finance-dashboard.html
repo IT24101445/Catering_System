@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<!-- Navbar -->
+<nav class="bg-yellow-500 p-4 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+        <span class="text-white text-2xl font-bold uppercase">Finance Dashboard</span>
+    </div>
+    <div>
+        <a href="admin-dashboard.html" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600 transition duration-300">Admin Dashboard</a>
+
+    </div>
+</nav>
+
+<!-- Dashboard Content -->
+<div class="container mx-auto p-6">
+    <!-- Card Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Card 1: Balance Overview -->
+        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
+            <h3 class="text-xl font-semibold text-gray-700">Current Balance</h3>
+            <p class="text-2xl font-bold text-gray-900">$12,500.00</p>
+            <p class="text-sm text-gray-500">As of 10th March, 2025</p>
+        </div>
+
+        <!-- Card 2: Monthly Spending -->
+        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
+            <h3 class="text-xl font-semibold text-gray-700">Monthly Spending</h3>
+            <p class="text-2xl font-bold text-gray-900">$3,250.00</p>
+            <p class="text-sm text-gray-500">Budgeted for March</p>
+        </div>
+
+        <!-- Card 3: Upcoming Payments -->
+        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
+            <h3 class="text-xl font-semibold text-gray-700">Upcoming Payments</h3>
+            <p class="text-2xl font-bold text-gray-900">$850.00</p>
+            <p class="text-sm text-gray-500">Due on 15th March</p>
+        </div>
+
+        <!-- Card 4: Transaction Overview -->
+        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
+            <h3 class="text-xl font-semibold text-gray-700">Recent Transactions</h3>
+            <ul class="text-gray-700">
+                <li class="py-1">Paid Rent: -$1,200.00</li>
+                <li class="py-1">Grocery Shopping: -$450.00</li>
+                <li class="py-1">Utilities: -$200.00</li>
+            </ul>
+        </div>
+
+        <!-- Card 5: Savings -->
+        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
+            <h3 class="text-xl font-semibold text-gray-700">Total Savings</h3>
+            <p class="text-2xl font-bold text-gray-900">$5,750.00</p>
+            <p class="text-sm text-gray-500">Accumulated Savings</p>
+        </div>
+
+        <!-- Card 6: Investments -->
+        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
+            <h3 class="text-xl font-semibold text-gray-700">Investments</h3>
+            <p class="text-2xl font-bold text-gray-900">$8,200.00</p>
+            <p class="text-sm text-gray-500">Investment Portfolio Value</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer Section -->
+<footer class="bg-gray-800 text-white text-center p-4">
+    <p>&copy; 2025 Finance Dashboard. All Rights Reserved.</p>
+</footer>
+
+</body>
+
+</html>

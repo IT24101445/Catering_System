@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ff9800;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .menu-item-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .menu-item {
+            background-color: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 250px;
+            text-align: center;
+        }
+        .menu-item img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .menu-item h3 {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        .menu-item p {
+            font-size: 14px;
+            color: #555;
+        }
+        .menu-item span {
+            display: block;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff5722;
+        }
+        footer {
+            background-color: #f8f8f8;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Menu</h1>
+</header>
+<main>
+    <div class="menu-item-list">
+        <div class="menu-item">
+            <img src="dish-image.jpg" alt="Dish">
+            <h3>Dish Name</h3>
+            <p>Dish description</p>
+            <span>$15.00</span>
+        </div>
+        <!-- Repeat similar blocks for other menu items -->
+    </div>
+</main>
+<footer>
+    <p>&copy; 2025 Catering System</p>
+</footer>
+</body>
+</html>
