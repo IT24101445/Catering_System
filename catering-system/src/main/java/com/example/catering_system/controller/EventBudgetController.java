@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class EventBudgetController {
@@ -18,12 +17,12 @@ public class EventBudgetController {
     @GetMapping("/event-budgets")
     public String viewEventBudgets(Model model) {
         model.addAttribute("eventBudgets", eventBudgetService.getAllEventBudgets());
-        return "event-budget";  // Returns event-budget.html template
+        return "event-budget";  // Ensure event-budget.html is in templates
     }
 
     @PostMapping("/event-budget/add")
     public String addEventBudget(EventBudget eventBudget) {
         eventBudgetService.saveEventBudget(eventBudget);
-        return "redirect:/event-budgets";  // Redirect back to event budget list
+        return "redirect:/event-budgets";  // Redirect back to event-budgets page
     }
 }

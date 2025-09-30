@@ -18,14 +18,14 @@ public class StaffPaymentController {
     @GetMapping
     public String showStaffPayments(Model model) {
         model.addAttribute("staffPayments", staffPaymentService.getAllStaffPayments());
-        return "staff-payments";  // View the staff payment list
+        return "staff-payments";  // Ensure this matches staff-payments.html in templates
     }
 
     // Show the form for adding a new payment
     @GetMapping("/add")
     public String showAddPaymentForm(Model model) {
         model.addAttribute("staffPayment", new StaffPayment());
-        return "add-staff-payment";  // Form for adding payment
+        return "add-staff-payment";  // Ensure this matches add-staff-payment.html in templates
     }
 
     // Handle the form submission for a new staff payment
@@ -39,7 +39,7 @@ public class StaffPaymentController {
     @GetMapping("/edit/{id}")
     public String showEditPaymentForm(@PathVariable Long id, Model model) {
         model.addAttribute("staffPayment", staffPaymentService.getStaffPaymentById(id).orElse(null));
-        return "edit-staff-payment";  // Form for editing payment
+        return "edit-staff-payment";  // Ensure this matches edit-staff-payment.html in templates
     }
 
     // Handle the form submission for updating an existing staff payment

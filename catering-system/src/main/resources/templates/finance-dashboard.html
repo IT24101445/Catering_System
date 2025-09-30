@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -16,66 +16,107 @@
         <span class="text-white text-2xl font-bold uppercase">Finance Dashboard</span>
     </div>
     <div>
-        <a href="admin-dashboard.html" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600 transition duration-300">Admin Dashboard</a>
-
+        <a href="/admin-dashboard" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600 transition duration-300">Admin Dashboard</a>
     </div>
 </nav>
 
 <!-- Dashboard Content -->
 <div class="container mx-auto p-6">
-    <!-- Card Row -->
+
+    <!-- Statistics Overview -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+
+        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-green-500">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase">Total Revenue</h3>
+            <p class="text-3xl font-bold text-gray-900 mt-2" th:text="${totalRevenue != null ? '$' + totalRevenue : '$0.00'}">$0.00</p>
+            <p class="text-sm text-green-600 mt-1" th:text="${revenueChange != null ? revenueChange : ''}"></p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-blue-500">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase">Staff Payments</h3>
+            <p class="text-3xl font-bold text-gray-900 mt-2" th:text="${totalStaffPayments != null ? '$' + totalStaffPayments : '$0.00'}">$0.00</p>
+            <p class="text-sm text-blue-600 mt-1" th:text="${staffPaymentChange != null ? staffPaymentChange : ''}"></p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-orange-500">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase">Pending Invoices</h3>
+            <p class="text-3xl font-bold text-gray-900 mt-2" th:text="${pendingInvoices != null ? pendingInvoices : '0'}">0</p>
+            <p class="text-sm text-orange-600 mt-1" th:text="${invoicesDueThisWeek != null ? invoicesDueThisWeek + ' due this week' : ''}"></p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-purple-500">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase">Net Profit</h3>
+            <p class="text-3xl font-bold text-gray-900 mt-2" th:text="${netProfit != null ? '$' + netProfit : '$0.00'}">$0.00</p>
+            <p class="text-sm text-purple-600 mt-1" th:text="${profitChange != null ? profitChange : ''}"></p>
+        </div>
+
+    </div>
+
+    <!-- Management Cards Section -->
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Staff Payment Management</h2>
+    </div>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        <!-- Card 1: Balance Overview -->
-        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
-            <h3 class="text-xl font-semibold text-gray-700">Current Balance</h3>
-            <p class="text-2xl font-bold text-gray-900">$12,500.00</p>
-            <p class="text-sm text-gray-500">As of 10th March, 2025</p>
+        <!-- Card 1: View Staff Payments -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-blue-500">
+            <div class="text-4xl mb-4">💰</div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">View Staff Payments</h3>
+            <p class="text-gray-600 mb-4">View all staff payment records, salary details, and payment history.</p>
+            <a href="/staff-payments.html" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 font-semibold">
+                View Payments
+            </a>
         </div>
 
-        <!-- Card 2: Monthly Spending -->
-        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
-            <h3 class="text-xl font-semibold text-gray-700">Monthly Spending</h3>
-            <p class="text-2xl font-bold text-gray-900">$3,250.00</p>
-            <p class="text-sm text-gray-500">Budgeted for March</p>
+
+
+        <!-- Card 3: Edit Staff Payment -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-yellow-500">
+            <div class="text-4xl mb-4">✏️</div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Edit Staff Payment</h3>
+            <p class="text-gray-600 mb-4">Update existing payment records, modify salary amounts, and adjust dates.</p>
+            <a href="edit-staff-payment.html" class="inline-block bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition duration-300 font-semibold">
+                Edit Payment
+            </a>
         </div>
 
-        <!-- Card 3: Upcoming Payments -->
-        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
-            <h3 class="text-xl font-semibold text-gray-700">Upcoming Payments</h3>
-            <p class="text-2xl font-bold text-gray-900">$850.00</p>
-            <p class="text-sm text-gray-500">Due on 15th March</p>
+        <!-- Card 4: Delete Staff Payment -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-red-500">
+            <div class="text-4xl mb-4">🗑️</div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Delete Staff Payment</h3>
+            <p class="text-gray-600 mb-4">Remove incorrect or duplicate payment records from the system.</p>
+            <a href="add-staff-payment" class="inline-block bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-semibold">
+
+                Delete Payment
+            </a>
         </div>
 
-        <!-- Card 4: Transaction Overview -->
-        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
-            <h3 class="text-xl font-semibold text-gray-700">Recent Transactions</h3>
-            <ul class="text-gray-700">
-                <li class="py-1">Paid Rent: -$1,200.00</li>
-                <li class="py-1">Grocery Shopping: -$450.00</li>
-                <li class="py-1">Utilities: -$200.00</li>
-            </ul>
+        <!-- Card 5: Payment Reports -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-purple-500">
+            <div class="text-4xl mb-4">📊</div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Payment Reports</h3>
+            <p class="text-gray-600 mb-4">Generate detailed reports on staff payments, expenses, and analytics.</p>
+            <a href="/staff-payments/reports" class="inline-block bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition duration-300 font-semibold">
+                View Reports
+            </a>
         </div>
 
-        <!-- Card 5: Savings -->
-        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
-            <h3 class="text-xl font-semibold text-gray-700">Total Savings</h3>
-            <p class="text-2xl font-bold text-gray-900">$5,750.00</p>
-            <p class="text-sm text-gray-500">Accumulated Savings</p>
-        </div>
-
-        <!-- Card 6: Investments -->
-        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
-            <h3 class="text-xl font-semibold text-gray-700">Investments</h3>
-            <p class="text-2xl font-bold text-gray-900">$8,200.00</p>
-            <p class="text-sm text-gray-500">Investment Portfolio Value</p>
+        <!-- Card 6: Payment History -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-indigo-500">
+            <div class="text-4xl mb-4">📜</div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Payment History</h3>
+            <p class="text-gray-600 mb-4">Access complete payment history with filters and search options.</p>
+            <a href="/staff-payments/history" class="inline-block bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-600 transition duration-300 font-semibold">
+                View History
+            </a>
         </div>
 
     </div>
 </div>
 
 <!-- Footer Section -->
-<footer class="bg-gray-800 text-white text-center p-4">
+<footer class="bg-gray-800 text-white text-center p-4 mt-12">
     <p>&copy; 2025 Finance Dashboard. All Rights Reserved.</p>
 </footer>
 

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class PaymentController {
@@ -15,10 +14,9 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    // Add to PaymentController.java
     @GetMapping("/payments")
     public String showPaymentForm() {
-        return "payment"; // This matches your payment.html
+        return "payment";  // Ensure this matches payment.html template
     }
 
     @PostMapping("/payment/record")
@@ -31,6 +29,6 @@ public class PaymentController {
 
         paymentService.recordPayment(payment);
 
-        return "redirect:/invoices";  // Redirect to invoices page after recording the payment
+        return "redirect:/invoices";  // Redirect to invoices page
     }
 }

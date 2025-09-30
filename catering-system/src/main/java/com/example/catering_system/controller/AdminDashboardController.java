@@ -9,13 +9,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AdminDashboardController {
 
+    private final MenuService menuService;
+
     @Autowired
-    private MenuService menuService;
+    public AdminDashboardController(MenuService menuService) {
+        this.menuService = menuService;
+    }
 
     @GetMapping("/admin-dashboard")
     public String showAdminDashboard(Model model) {
-        // Add the menu items to the model
         model.addAttribute("menuItems", menuService.getAllMenuItems());
-        return "admin-dashboard";  // Update this to the actual template name you have (admin-dashboard.html)
+        return "admin-dashboard";  // Corresponds to admin-dashboard.html in templates folder
     }
 }

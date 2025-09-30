@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    // Redirects to the /menu page
+    // Redirect root ("/") to /home
     @GetMapping("/")
-    public String home() {
-        return "redirect:/menu";  // Redirects to the /menu route
+    public String homeRedirect() {
+        return "home";  // Redirect to /home which is the landing page
     }
 
-    // Optional: /home page that renders the home template
+    // Render the home page
     @GetMapping("/home")
     public String homePage() {
-        return "home";  // Ensure this matches your home.html template name
+        return "home";  // Ensure this matches the name of the home.html template
     }
 }

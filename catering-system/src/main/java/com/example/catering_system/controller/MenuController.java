@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class MenuController {
@@ -16,11 +15,10 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    // Updated showMenu method to fix circular reference error
     @GetMapping("/menu")
     public String showMenu(Model model) {
         model.addAttribute("menuItems", menuService.getAllMenuItems());
-        return "menu";  // Ensure the view template is correctly mapped as "menu.html"
+        return "menu";  // Ensure this is mapped to the menu.html template
     }
 
     @PostMapping("/menu/add")
@@ -35,6 +33,6 @@ public class MenuController {
 
         menuService.addMenuItem(menuItem);
 
-        return "redirect:/menu";  // Ensure it redirects to "/menu" after adding the item
+        return "redirect:/menu";  // Redirect to /menu after adding the item
     }
 }
