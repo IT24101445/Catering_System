@@ -1,17 +1,13 @@
 package com.example.catering_system.delivery.models;
 
-
 import jakarta.persistence.*;
 
 @Entity
-@Table(
-        name = "drivers",
-        uniqueConstraints = @UniqueConstraint(columnNames = "email")
-)
+@Table(name = "drivers", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Driver {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "driver_id")
     private Long id;
 
     @Column(nullable = false, unique = true, length = 320)
@@ -20,7 +16,6 @@ public class Driver {
     @Column(nullable = false, length = 120)
     private String name;
 
-    // Suggested values: "AVAILABLE", "ON_ROUTE", "OFF_DUTY"
     @Column(nullable = false, length = 40)
     private String status = "AVAILABLE";
 
