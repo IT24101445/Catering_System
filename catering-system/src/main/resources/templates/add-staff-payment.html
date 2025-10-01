@@ -1,72 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Staff Payment</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
 <body class="bg-gray-100">
-
-<!-- Navbar Section -->
 <nav class="bg-yellow-500 p-4 flex justify-between items-center">
-    <div class="flex items-center space-x-3">
-        <span class="text-white text-2xl font-bold uppercase">Finance Dashboard</span>
-    </div>
-    <div>
-        <a href="#home" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600 transition duration-300">Home</a>
-        <a href="#staff-payments" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600 transition duration-300">Staff Payments</a>
-    </div>
+    <span class="text-white text-2xl font-bold uppercase">Finance Dashboard</span>
+    <a href="/staff-payments-list" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600">Staff Payments</a>
 </nav>
-
-<!-- Add Staff Payment Form -->
 <div class="container mx-auto p-6">
     <h2 class="text-3xl font-semibold text-gray-700 mb-4">Add New Staff Payment</h2>
-
-    <form action="/staff-payments/add" method="POST">
-        <div class="mb-4">
-            <label for="staffName" class="block text-sm font-medium text-gray-700">Employee Name</label>
-            <input type="text" id="staffName" name="staffName" class="w-full p-3 border border-gray-300 rounded-lg" required>
+    <form action="/staff-payments-list/add" method="POST" th:object="${staffPayment}" class="space-y-4 bg-white p-6 rounded shadow">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Employee</label>
+            <select name="employee.id" id="employeeId" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                <option value="" disabled selected>Select employee</option>
+                <option th:each="emp : ${employees}" th:value="${emp.id}" th:text="${emp.fullName}">Emp</option>
+            </select>
         </div>
-
-        <div class="mb-4">
-            <label for="amountPaid" class="block text-sm font-medium text-gray-700">Amount Paid</label>
-            <input type="number" id="amountPaid" name="amountPaid" class="w-full p-3 border border-gray-300 rounded-lg" required>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Amount Paid</label>
+            <input type="number" step="0.01" name="amountPaid" id="amountPaid" class="w-full p-3 border border-gray-300 rounded-lg" required>
         </div>
-
-        <div class="mb-4">
-            <label for="paymentDate" class="block text-sm font-medium text-gray-700">Payment Date</label>
-            <input type="date" id="paymentDate" name="paymentDate" class="w-full p-3 border border-gray-300 rounded-lg" required>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Payment Date</label>
+            <input type="date" name="paymentDate" class="w-full p-3 border border-gray-300 rounded-lg" required>
         </div>
-
-        <div class="mb-4">
-            <label for="paymentMethod" class="block text-sm font-medium text-gray-700">Payment Method</label>
-            <select id="paymentMethod" name="paymentMethod" class="w-full p-3 border border-gray-300 rounded-lg" required>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Payment Method</label>
+            <select name="paymentMethod" class="w-full p-3 border border-gray-300 rounded-lg" required>
                 <option value="bankTransfer">Bank Transfer</option>
                 <option value="cash">Cash</option>
                 <option value="check">Check</option>
             </select>
         </div>
-
-        <div class="mb-4">
-            <label for="status" class="block text-sm font-medium text-gray-700">Payment Status</label>
-            <select id="status" name="status" class="w-full p-3 border border-gray-300 rounded-lg" required>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Payment Status</label>
+            <select name="status" class="w-full p-3 border border-gray-300 rounded-lg" required>
                 <option value="Pending">Pending</option>
                 <option value="Completed">Completed</option>
             </select>
         </div>
-
-        <div class="mb-4">
-            <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>
-            <textarea id="notes" name="notes" class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Notes</label>
+            <textarea name="notes" class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
         </div>
-
-        <button type="submit" class="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition duration-300">Add Payment</button>
+        <button type="submit" class="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600">Add Payment</button>
+        <a href="/staff-payments-list" class="ml-2 text-gray-700">Cancel</a>
     </form>
+    <script>
+        const employeeSelect = document.getElementById('employeeId');
+        const amountInput = document.getElementById('amountPaid');
+        employeeSelect.addEventListener('change', async () => {
+            const id = employeeSelect.value;
+            if (!id) return;
+            try {
+                const res = await fetch(`/employees-list/base-salary?employeeId=${id}`);
+                const salary = await res.json();
+                if (typeof salary === 'number') {
+                    amountInput.value = salary;
+                }
+            } catch (e) {
+                console.error('Failed to fetch base salary', e);
+            }
+        });
+    </script>
 </div>
-
 </body>
-
 </html>

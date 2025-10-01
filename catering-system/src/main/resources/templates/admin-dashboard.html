@@ -135,14 +135,16 @@
         <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                 <li>
-                    <a th:href="@{/finance-dashboard}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Finance</a>
-
+                    <a href="/finance-dashboard" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Finance</a>
                 </li>
                 <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delivery</a>
+                    <a href="/employees-list" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Employees</a>
                 </li>
                 <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Kitchen</a>
+                    <a href="/delivery-dashboard" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delivery</a>
+                </li>
+                <li>
+                    <a href="/kitchen-dashboard" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Kitchen</a>
                 </li>
 
             </ul>
@@ -161,9 +163,8 @@
 
 <!-- Admin Actions Section -->
 <div class="admin-actions">
-    <a href="#manage-users">Manage Users</a>
-    <a href="#manage-orders">Manage Orders</a>
-    <a href="#manage-menu">Manage Menu</a>
+    <a href="/employees-list">Add New Employee</a>
+
 </div>
 
 

@@ -8,107 +8,145 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100">
+<body class="min-h-screen bg-gradient-to-b from-yellow-50 via-white to-gray-100">
 
 <!-- Navbar -->
-<nav class="bg-yellow-500 p-4 flex justify-between items-center">
-    <div class="flex items-center space-x-3">
-        <span class="text-white text-2xl font-bold uppercase">Finance Dashboard</span>
-    </div>
-    <div>
-        <a href="/admin-dashboard" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600 transition duration-300">Admin Dashboard</a>
+<nav class="sticky top-0 z-10 backdrop-blur bg-yellow-500/90 border-b border-yellow-400/50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-white">💼</div>
+            <span class="text-white text-xl font-bold tracking-wide">Finance Dashboard</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="/admin-dashboard" class="text-white/90 hover:text-white px-3 py-2 rounded-md hover:bg-yellow-600 transition">Admin</a>
+            <a href="/finance/candidates" class="text-white/90 hover:text-white px-3 py-2 rounded-md hover:bg-yellow-600 transition">Candidates</a>
+            <a href="/finance/employees" class="text-white/90 hover:text-white px-3 py-2 rounded-md hover:bg-yellow-600 transition">Employees</a>
+            <a href="/finance/process" class="text-white/90 hover:text-white px-3 py-2 rounded-md hover:bg-yellow-600 transition">Process</a>
+            <a href="/salary-history" class="text-white/90 hover:text-white px-3 py-2 rounded-md hover:bg-yellow-600 transition">History</a>
+        </div>
     </div>
 </nav>
 
 <!-- Dashboard Content -->
-<div class="container mx-auto p-6">
+<div class="max-w-7xl mx-auto p-6">
 
     <!-- Statistics Overview -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
 
-        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-green-500">
-            <h3 class="text-sm font-semibold text-gray-500 uppercase">Total Revenue</h3>
-            <p class="text-3xl font-bold text-gray-900 mt-2" th:text="${totalRevenue != null ? '$' + totalRevenue : '$0.00'}">$0.00</p>
-            <p class="text-sm text-green-600 mt-1" th:text="${revenueChange != null ? revenueChange : ''}"></p>
+        <div class="relative overflow-hidden bg-white p-6 rounded-xl shadow-sm ring-1 ring-gray-100">
+            <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-green-100"></div>
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Employees</p>
+                    <p class="text-3xl font-extrabold text-gray-900 mt-2" th:text="${totalEmployees != null ? totalEmployees : '0'}">0</p>
+                    <p class="text-sm text-green-600 mt-1">In Salary System</p>
+                </div>
+                <div class="text-green-600 text-2xl">👥</div>
+            </div>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-blue-500">
-            <h3 class="text-sm font-semibold text-gray-500 uppercase">Staff Payments</h3>
-            <p class="text-3xl font-bold text-gray-900 mt-2" th:text="${totalStaffPayments != null ? '$' + totalStaffPayments : '$0.00'}">$0.00</p>
-            <p class="text-sm text-blue-600 mt-1" th:text="${staffPaymentChange != null ? staffPaymentChange : ''}"></p>
+        <div class="relative overflow-hidden bg-white p-6 rounded-xl shadow-sm ring-1 ring-gray-100">
+            <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-blue-100"></div>
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Pending Payments</p>
+                    <p class="text-3xl font-extrabold text-gray-900 mt-2" th:text="${pendingPayments != null ? pendingPayments : '0'}">0</p>
+                    <p class="text-sm text-blue-600 mt-1">This Month</p>
+                </div>
+                <div class="text-blue-600 text-2xl">⏳</div>
+            </div>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-orange-500">
-            <h3 class="text-sm font-semibold text-gray-500 uppercase">Pending Invoices</h3>
-            <p class="text-3xl font-bold text-gray-900 mt-2" th:text="${pendingInvoices != null ? pendingInvoices : '0'}">0</p>
-            <p class="text-sm text-orange-600 mt-1" th:text="${invoicesDueThisWeek != null ? invoicesDueThisWeek + ' due this week' : ''}"></p>
+        <div class="relative overflow-hidden bg-white p-6 rounded-xl shadow-sm ring-1 ring-gray-100">
+            <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-orange-100"></div>
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Paid</p>
+                    <p class="text-3xl font-extrabold text-gray-900 mt-2" th:text="${totalPaid != null ? 'Rs ' + totalPaid : 'Rs 0.00'}">Rs 0.00</p>
+                    <p class="text-sm text-orange-600 mt-1">Current Month</p>
+                </div>
+                <div class="text-orange-600 text-2xl">💸</div>
+            </div>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-purple-500">
-            <h3 class="text-sm font-semibold text-gray-500 uppercase">Net Profit</h3>
-            <p class="text-3xl font-bold text-gray-900 mt-2" th:text="${netProfit != null ? '$' + netProfit : '$0.00'}">$0.00</p>
-            <p class="text-sm text-purple-600 mt-1" th:text="${profitChange != null ? profitChange : ''}"></p>
+        <div class="relative overflow-hidden bg-white p-6 rounded-xl shadow-sm ring-1 ring-gray-100">
+            <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-purple-100"></div>
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">New Candidates</p>
+                    <p class="text-3xl font-extrabold text-gray-900 mt-2" th:text="${newCandidates != null ? newCandidates : '0'}">0</p>
+                    <p class="text-sm text-purple-600 mt-1">Awaiting Salary Setup</p>
+                </div>
+                <div class="text-purple-600 text-2xl">🆕</div>
+            </div>
         </div>
 
     </div>
 
     <!-- Management Cards Section -->
     <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Staff Payment Management</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Salary Management</h2>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        <!-- Card 1: View Staff Payments -->
+        <!-- Card 1: Add to Salary System -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-green-500">
+            <div class="text-4xl mb-4">👥</div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Add Candidates</h3>
+            <p class="text-gray-600 mb-4">Add employees who are not in salary system yet and set their initial salary.</p>
+            <a href="/finance/candidates" class="inline-block bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition duration-300 font-semibold">
+                Manage Candidates
+            </a>
+        </div>
+
+        <!-- Card 2: Process Salary -->
         <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-blue-500">
             <div class="text-4xl mb-4">💰</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">View Staff Payments</h3>
-            <p class="text-gray-600 mb-4">View all staff payment records, salary details, and payment history.</p>
-            <a href="/staff-payments.html" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 font-semibold">
-                View Payments
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Process Salary</h3>
+            <p class="text-gray-600 mb-4">Pay salaries for selected employees and months. Track payment status.</p>
+            <a href="/finance/process" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 font-semibold">
+                Process Payment
             </a>
         </div>
 
-
-
-        <!-- Card 3: Edit Staff Payment -->
+        <!-- Card 3: Employee Management -->
         <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-yellow-500">
+            <div class="text-4xl mb-4">📋</div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Employee List</h3>
+            <p class="text-gray-600 mb-4">View all employees in salary system, edit details, and update salaries.</p>
+            <a href="/finance/employees" class="inline-block bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition duration-300 font-semibold">
+                Manage Employees
+            </a>
+        </div>
+
+        <!-- Card 4: Edit Employee Details -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-orange-500">
             <div class="text-4xl mb-4">✏️</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">Edit Staff Payment</h3>
-            <p class="text-gray-600 mb-4">Update existing payment records, modify salary amounts, and adjust dates.</p>
-            <a href="edit-staff-payment.html" class="inline-block bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition duration-300 font-semibold">
-                Edit Payment
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Edit Details</h3>
+            <p class="text-gray-600 mb-4">Update employee registration information and salary details.</p>
+            <a href="/finance/employees" class="inline-block bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition duration-300 font-semibold">
+                Edit Employee
             </a>
         </div>
 
-        <!-- Card 4: Delete Staff Payment -->
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-red-500">
-            <div class="text-4xl mb-4">🗑️</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">Delete Staff Payment</h3>
-            <p class="text-gray-600 mb-4">Remove incorrect or duplicate payment records from the system.</p>
-            <a href="add-staff-payment" class="inline-block bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-semibold">
-
-                Delete Payment
-            </a>
-        </div>
-
-        <!-- Card 5: Payment Reports -->
+        <!-- Card 5: Payment History -->
         <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-purple-500">
             <div class="text-4xl mb-4">📊</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">Payment Reports</h3>
-            <p class="text-gray-600 mb-4">Generate detailed reports on staff payments, expenses, and analytics.</p>
-            <a href="/staff-payments/reports" class="inline-block bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition duration-300 font-semibold">
-                View Reports
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Salary History</h3>
+            <p class="text-gray-600 mb-4">View complete payment history, reports, and monthly analytics.</p>
+            <a href="/salary-history" class="inline-block bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition duration-300 font-semibold">
+                View History
             </a>
         </div>
 
-        <!-- Card 6: Payment History -->
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-indigo-500">
-            <div class="text-4xl mb-4">📜</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">Payment History</h3>
-            <p class="text-gray-600 mb-4">Access complete payment history with filters and search options.</p>
-            <a href="/staff-payments/history" class="inline-block bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-600 transition duration-300 font-semibold">
-                View History
+        <!-- Card 6: Remove Employees -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-red-500">
+            <div class="text-4xl mb-4">🗑️</div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">Remove Employees</h3>
+            <p class="text-gray-600 mb-4">Delete employees from salary system when they leave the company.</p>
+            <a href="/finance/employees" class="inline-block bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-semibold">
+                Manage Staff
             </a>
         </div>
 
@@ -117,7 +155,7 @@
 
 <!-- Footer Section -->
 <footer class="bg-gray-800 text-white text-center p-4 mt-12">
-    <p>&copy; 2025 Finance Dashboard. All Rights Reserved.</p>
+    <p>&copy; 2025 Catering Finance System. All Rights Reserved.</p>
 </footer>
 
 </body>

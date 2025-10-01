@@ -25,7 +25,17 @@ public class RegistrationController {
 
     // Handle registration form submission
     @PostMapping("/register")
-    public String registerUser(@RequestParam String username, @RequestParam String password, @RequestParam String role) {
+    public String registerUser(@RequestParam String username,
+                               @RequestParam String password,
+                               @RequestParam String role,
+                               @RequestParam String fullName,
+                               @RequestParam String email,
+                               @RequestParam(required = false) String phone,
+                               @RequestParam(required = false) String addressLine1,
+                               @RequestParam(required = false) String addressLine2,
+                               @RequestParam(required = false) String city,
+                               @RequestParam(required = false) String state,
+                               @RequestParam(required = false) String postalCode) {
         // Encrypt password
         String encodedPassword = passwordEncoder.encode(password);
 
@@ -34,6 +44,14 @@ public class RegistrationController {
         user.setUsername(username);
         user.setPassword(encodedPassword);
         user.setRole(role); // e.g., "USER" or "ADMIN"
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setAddressLine1(addressLine1);
+        user.setAddressLine2(addressLine2);
+        user.setCity(city);
+        user.setState(state);
+        user.setPostalCode(postalCode);
 
         userService.saveUser(user);  // Save to the database
 

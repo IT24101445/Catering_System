@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Salary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+<div class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-bold">Process Salary</h1>
+    <a href="/finance/dashboard" class="text-blue-600">Back to Dashboard</a>
+</div>
+<form id="bulkForm" action="/finance/process-bulk" method="post" class="bg-white p-4 rounded shadow mb-4">
+    <div class="flex items-center space-x-3">
+        <label class="font-semibold">Month</label>
+        <select name="month" class="border p-2" required>
+            <option th:each="m : ${#numbers.sequence(1,12)}" th:value="${m}" th:text="${m}" th:selected="${m == month}">1</option>
+        </select>
+        <label class="font-semibold">Year</label>
+        <input type="number" name="year" class="border p-2" th:value="${year}" required>
+        <button class="bg-green-600 text-white px-4 py-2 rounded" type="submit">Process Selected</button>
+    </div>
+</form>
+<div class="bg-white rounded shadow overflow-auto">
+    <table class="min-w-full">
+        <thead class="bg-gray-200">
+        <tr>
+            <th class="p-3"><input type="checkbox" id="selectAll"></th>
+            <th class="p-3 text-left">Employee ID</th>
+            <th class="p-3 text-left">Name</th>
+            <th class="p-3 text-left">Position/Dept</th>
+            <th class="p-3 text-left">Monthly Salary</th>
+            <th class="p-3 text-left">Status (This Month)</th>
+            <th class="p-3 text-left">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="e,iter : ${employees}" class="border-t">
+            <td class="p-3"><input type="checkbox" name="employeeIds" form="bulkForm" th:value="${e.id}"></td>
+            <td class="p-3" th:text="${e.employeeCode}">EMP00001</td>
+            <td class="p-3" th:text="${e.fullName}">Name</td>
+            <td class="p-3" th:text="${e.position} + ' / ' + ${e.department}">Chef / Kitchen</td>
+            <td class="p-3" th:text="${e.monthlySalary}">0</td>
+            <td class="p-3">
+                <span th:if="${paidIds.contains(e.id)}" class="text-green-700 font-semibold">Paid</span>
+                <span th:unless="${paidIds.contains(e.id)}" class="text-red-700 font-semibold">Pending</span>
+            </td>
+            <td class="p-3">
+                <form th:action="@{'/finance/process'}" method="post" class="inline">
+                    <input type="hidden" name="employeeId" th:value="${e.id}">
+                    <input type="hidden" name="year" th:value="${year}">
+                    <input type="hidden" name="month" th:value="${month}">
+                    <button class="bg-blue-600 text-white px-3 py-1 rounded" th:disabled="${paidIds.contains(e.id)}">Pay</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    const selectAll = document.getElementById('selectAll');
+    selectAll?.addEventListener('change', () => {
+        document.querySelectorAll('input[name="employeeIds"]').forEach(cb => cb.checked = selectAll.checked);
+    });
+</script>
+</body>
+</html>

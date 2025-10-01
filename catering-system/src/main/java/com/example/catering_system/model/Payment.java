@@ -1,5 +1,6 @@
 package com.example.catering_system.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,10 +12,15 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "payment_id")
     private Long id;
+    @Column(name = "invoice_id")
     private Long invoiceId;
+    @Column(name = "amount")
     private double amount;
+    @Column(name = "payment_date")
     private Date paymentDate;
+    @Column(name = "payment_method")
     private String paymentMethod;
 
     public Long getId() {

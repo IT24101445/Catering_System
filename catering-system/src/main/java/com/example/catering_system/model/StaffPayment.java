@@ -8,13 +8,25 @@ public class StaffPayment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    private String staffName;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+    @Column(name = "amount_paid")
     private double amountPaid;
+    @Column(name = "payment_date")
     private Date paymentDate;
+    @Column(name = "payment_year")
+    private Integer paymentYear;
+    @Column(name = "payment_month")
+    private Integer paymentMonth; // 1-12
+    @Column(name = "payment_method")
     private String paymentMethod;
+    @Column(name = "status")
     private String status;
+    @Column(name = "notes")
     private String notes;
 
     // Getters and setters
@@ -26,12 +38,12 @@ public class StaffPayment {
         this.id = id;
     }
 
-    public String getStaffName() {
-        return staffName;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setStaffName(String staffName) {
-        this.staffName = staffName;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public double getAmountPaid() {
@@ -48,6 +60,22 @@ public class StaffPayment {
 
     public void setPaymentDate(Date paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    public Integer getPaymentYear() {
+        return paymentYear;
+    }
+
+    public void setPaymentYear(Integer paymentYear) {
+        this.paymentYear = paymentYear;
+    }
+
+    public Integer getPaymentMonth() {
+        return paymentMonth;
+    }
+
+    public void setPaymentMonth(Integer paymentMonth) {
+        this.paymentMonth = paymentMonth;
     }
 
     public String getPaymentMethod() {

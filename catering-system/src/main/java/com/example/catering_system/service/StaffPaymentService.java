@@ -34,7 +34,7 @@ public class StaffPaymentService {
         Optional<StaffPayment> existingPayment = staffPaymentRepository.findById(id);
         if (existingPayment.isPresent()) {
             StaffPayment staffPayment = existingPayment.get();
-            staffPayment.setStaffName(staffPaymentDetails.getStaffName());
+            staffPayment.setEmployee(staffPaymentDetails.getEmployee());
             staffPayment.setAmountPaid(staffPaymentDetails.getAmountPaid());
             staffPayment.setPaymentDate(staffPaymentDetails.getPaymentDate());
             staffPayment.setPaymentMethod(staffPaymentDetails.getPaymentMethod());
@@ -48,5 +48,13 @@ public class StaffPaymentService {
     // Delete a staff payment by ID
     public void deleteStaffPayment(Long id) {
         staffPaymentRepository.deleteById(id);
+    }
+
+    public java.util.List<StaffPayment> getPaymentsBetween(java.util.Date start, java.util.Date end) {
+        return staffPaymentRepository.findByPaymentDateBetween(start, end);
+    }
+
+    public java.util.List<StaffPayment> getPaymentsByYearMonth(Integer year, Integer month) {
+        return staffPaymentRepository.findByPaymentYearAndPaymentMonth(year, month);
     }
 }

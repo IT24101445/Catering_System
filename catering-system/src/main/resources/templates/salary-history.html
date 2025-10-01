@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Salary History</h1>
+    <a href="/finance-dashboard" class="text-blue-600">Back to Finance</a>
+</div>
+<form method="get" action="/salary-history" class="flex space-x-2 mb-4">
+    <input type="number" name="year" placeholder="Year" class="border p-2" th:value="${year}">
+    <input type="number" name="month" placeholder="Month (1-12)" class="border p-2" th:value="${month}">
+    <button class="bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
+</form>
+<div class="bg-white p-4 rounded shadow mb-4">
+    <div class="text-lg">Total for <span th:text="${year}"></span>-<span th:text="${month}"></span>: <span class="font-semibold" th:text="${total}">0</span></div>
+</div>
+<table class="min-w-full bg-white rounded shadow">
+    <thead>
+    <tr class="bg-gray-200 text-left">
+        <th class="p-3">Date</th>
+        <th class="p-3">Employee</th>
+        <th class="p-3">Amount</th>
+        <th class="p-3">Method</th>
+        <th class="p-3">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${payments}" class="border-t">
+        <td class="p-3" th:text="${#dates.format(p.paymentDate,'yyyy-MM-dd')}">date</td>
+        <td class="p-3" th:text="${p.employee != null ? p.employee.fullName : '—'}">emp</td>
+        <td class="p-3" th:text="${p.amountPaid}">0</td>
+        <td class="p-3" th:text="${p.paymentMethod}">method</td>
+        <td class="p-3" th:text="${p.status}">status</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
