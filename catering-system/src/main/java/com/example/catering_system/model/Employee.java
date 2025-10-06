@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Employee {
@@ -24,10 +26,13 @@ public class Employee {
     @Column(name = "email")
     private String email;
     @Column(name = "phone")
+    @Pattern(regexp = "\\d{10}", message = "Phone number must be exactly 10 digits")
     private String phone;
     @Column(name = "position")
+    @NotBlank(message = "Position is required")
     private String position;
     @Column(name = "department")
+    @NotBlank(message = "Department name is required")
     private String department;
     @Column(name = "base_salary")
     private Double baseSalary;

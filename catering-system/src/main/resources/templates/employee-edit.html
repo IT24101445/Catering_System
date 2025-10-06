@@ -8,15 +8,57 @@
 </head>
 <body class="bg-gray-100 p-6">
 <h1 class="text-2xl font-bold mb-4">Edit Employee</h1>
-<form th:action="@{'/employees-list/edit/' + ${employee.id}}" method="post" class="bg-white p-6 rounded shadow space-y-4">
-    <input type="text" name="firstName" th:value="${employee.firstName}" placeholder="First Name" class="border p-2 w-full" required>
-    <input type="text" name="lastName" th:value="${employee.lastName}" placeholder="Last Name" class="border p-2 w-full" required>
-    <input type="email" name="email" th:value="${employee.email}" placeholder="Email" class="border p-2 w-full">
-    <input type="text" name="phone" th:value="${employee.phone}" placeholder="Phone" class="border p-2 w-full">
-    <input type="text" name="position" th:value="${employee.position}" placeholder="Position" class="border p-2 w-full">
-    <input type="number" step="0.01" name="baseSalary" th:value="${employee.baseSalary}" placeholder="Base Salary" class="border p-2 w-full">
+<form th:action="@{'/employees-list/edit/' + ${employee.id}}" method="post" class="bg-white p-6 rounded shadow space-y-4" onsubmit="return validateForm()">
+    <div>
+        <input type="text" th:field="*{firstName}" placeholder="First Name" class="border p-2 w-full" required>
+        <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-red-500 text-sm mt-1"></div>
+    </div>
+    <div>
+        <input type="text" th:field="*{lastName}" placeholder="Last Name" class="border p-2 w-full" required>
+        <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-red-500 text-sm mt-1"></div>
+    </div>
+    <div>
+        <input type="email" th:field="*{email}" placeholder="Email" class="border p-2 w-full">
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-red-500 text-sm mt-1"></div>
+    </div>
+    <div>
+        <input type="text" th:field="*{phone}" id="phone" placeholder="Phone (10 digits)" class="border p-2 w-full" pattern="[0-9]{10}" title="Please enter exactly 10 digits" required>
+        <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-red-500 text-sm mt-1"></div>
+    </div>
+    <div>
+        <input type="text" th:field="*{department}" placeholder="Department Name" class="border p-2 w-full" required>
+        <div th:if="${#fields.hasErrors('department')}" th:errors="*{department}" class="text-red-500 text-sm mt-1"></div>
+    </div>
+    <div>
+        <select th:field="*{position}" class="border p-2 w-full" required>
+            <option value="" disabled>Select Position</option>
+            <option value="Kitchen Staff">Kitchen Staff</option>
+            <option value="Delivery Staff">Delivery Staff</option>
+            <option value="Finance Staff">Finance Staff</option>
+            <option value="Action Staff">Action Staff</option>
+        </select>
+        <div th:if="${#fields.hasErrors('position')}" th:errors="*{position}" class="text-red-500 text-sm mt-1"></div>
+    </div>
+    <div>
+        <input type="number" step="0.01" th:field="*{baseSalary}" placeholder="Base Salary" class="border p-2 w-full">
+        <div th:if="${#fields.hasErrors('baseSalary')}" th:errors="*{baseSalary}" class="text-red-500 text-sm mt-1"></div>
+    </div>
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update</button>
     <a href="/employees-list" class="ml-2 text-gray-700">Cancel</a>
 </form>
+
+<script>
+function validateForm() {
+    const phone = document.getElementById('phone').value;
+    
+    // Check if phone number is exactly 10 digits
+    if (!/^\d{10}$/.test(phone)) {
+        alert('Phone number must be exactly 10 digits');
+        return false;
+    }
+    
+    return true;
+}
+</script>
 </body>
 </html>
