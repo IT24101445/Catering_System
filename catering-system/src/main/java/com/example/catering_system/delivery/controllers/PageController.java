@@ -42,4 +42,19 @@ public class PageController {
     public String assignments() {
         return "assignments";
     }
+
+    @GetMapping("/driver/login")
+    public String driverLogin() {
+        return "driver-login";
+    }
+
+    @GetMapping("/driver/dashboard")
+    public String driverDashboard() {
+        return "driver-dashboard";
+    }
+
+    @GetMapping("/driver/signup")
+    public String driverSignup() {
+        return "driver-signup";
+    }
 }

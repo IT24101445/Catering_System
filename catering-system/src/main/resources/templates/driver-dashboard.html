@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard</title>
+    <link rel="icon" href="/images/logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .navbar { background-color: #e4a801; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar a { color: white; text-decoration: none; padding: 10px 20px; font-weight: bold; text-transform: uppercase; }
+        .navbar a:hover { background-color: #d27c00; }
+        .card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .btn { background-color: #e4a801; color: white; border-radius: 8px; padding: 8px 16px; border: none; cursor: pointer; font-weight: 600; }
+        .btn:hover { background-color: #d27c00; }
+        .btn-success { background-color: #10b981; }
+        .btn-success:hover { background-color: #059669; }
+        .btn-danger { background-color: #ef4444; }
+        .btn-danger:hover { background-color: #dc2626; }
+        .assignment-card { border-left: 4px solid #e4a801; }
+        .assignment-card.accepted { border-left-color: #10b981; }
+        .assignment-card.completed { border-left-color: #6b7280; }
+    </style>
+    <script defer src="/js/driver-dashboard.js"></script>
+    <script>window.APP_CONFIG = { apiBase: '/api' };</script>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.tailwindcss.com; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; connect-src 'self'">
+</head>
+<body class="bg-gray-50">
+<div class="navbar">
+    <div class="logo flex items-center gap-2">
+        <img src="/images/logo.png" style="width:40px;height:auto;border-radius:8px;" alt="logo">
+        <span class="text-white font-bold">Golden Dish Catering</span>
+    </div>
+    <div>
+        <span id="driverName" class="text-white font-semibold"></span>
+        <a href="/driver/login" onclick="logout()">Logout</a>
+    </div>
+</div>
+
+<header style="background-image: url('/images/header-image.jpg'); background-size: cover; background-position: center; padding: 60px 0; text-align: center; color: white;">
+    <h1>Driver Dashboard</h1>
+    <p>Manage your delivery assignments</p>
+</header>
+
+<main class="max-w-4xl mx-auto p-4">
+    <div class="card mb-4">
+        <h2 class="text-xl font-bold mb-2">Welcome, <span id="driverWelcomeName"></span>!</h2>
+        <p class="text-gray-600">Manage your delivery assignments below. You can accept pending deliveries and track your progress.</p>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold">Notifications</h2>
+            <div class="flex items-center gap-2">
+                <span id="notificationCount" class="bg-red-500 text-white text-xs rounded-full px-2 py-1 hidden">0</span>
+                <button id="markAllReadBtn" class="btn btn-secondary text-sm">Mark All Read</button>
+            </div>
+        </div>
+        <div id="notificationsList" class="space-y-2 max-h-40 overflow-y-auto">
+            <div class="text-center text-gray-500">Loading notifications...</div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2 class="text-xl font-bold mb-4">Upcoming Deliveries</h2>
+        <div id="assignmentsList" class="space-y-4">
+            <div class="text-center text-gray-500">Loading assignments...</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="text-xl font-bold mb-4">Delivery Status</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center p-4 bg-blue-50 rounded-lg">
+                <div class="text-2xl font-bold text-blue-600" id="pendingCount">0</div>
+                <div class="text-sm text-blue-600">Pending</div>
+            </div>
+            <div class="text-center p-4 bg-green-50 rounded-lg">
+                <div class="text-2xl font-bold text-green-600" id="acceptedCount">0</div>
+                <div class="text-sm text-green-600">Accepted</div>
+            </div>
+            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                <div class="text-2xl font-bold text-gray-600" id="completedCount">0</div>
+                <div class="text-sm text-gray-600">Completed</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+function logout() {
+    sessionStorage.removeItem('driver');
+}
+</script>
+</body>
+</html>

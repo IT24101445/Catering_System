@@ -30,11 +30,18 @@ public class DriverController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Create req) {
         try {
-            Driver d = service.create(req.getEmail(), req.getName(), req.getStatus());
+            System.out.println("Creating driver with data: " + req);
+            Driver d = service.create(req.getEmail(), req.getName(), req.getStatus(), req.getPassword());
             Response body = toResponse(d);
+            System.out.println("Driver created successfully with ID: " + d.getId());
             return ResponseEntity.created(URI.create("/api/drivers/" + d.getId())).body(body);
         } catch (IllegalArgumentException ex) {
+            System.err.println("Driver creation failed: " + ex.getMessage());
             return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
+        } catch (Exception ex) {
+            System.err.println("Unexpected error creating driver: " + ex.getMessage());
+            ex.printStackTrace();
+            return ResponseEntity.status(500).body(ApiError.of("Internal server error: " + ex.getMessage()));
         }
     }
 
@@ -69,6 +76,17 @@ public class DriverController {
             return ResponseEntity.status(404).body(ApiError.of("Driver not found"));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
+        }
+    }
+
+    // LOGIN (expects { "email": "...", "password": "..." } and returns { "id": ..., "email": "...", "name": "..." })
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Create req) {
+        try {
+            Driver d = service.authenticate(req.getEmail(), req.getPassword());
+            return ResponseEntity.ok(toResponse(d));
+        } catch (NoSuchElementException | IllegalArgumentException ex) {
+            return ResponseEntity.status(401).body(ApiError.of("Invalid credentials"));
         }
     }
 

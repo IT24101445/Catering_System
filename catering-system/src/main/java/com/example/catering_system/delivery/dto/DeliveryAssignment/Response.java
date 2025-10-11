@@ -11,6 +11,7 @@ public class Response {
 
     private Long orderId;
     private String orderCustomerName;
+    private String status;
 
     public Long getId() {
         return id;
@@ -66,5 +67,13 @@ public class Response {
 
     public void setOrderCustomerName(String orderCustomerName) {
         this.orderCustomerName = orderCustomerName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

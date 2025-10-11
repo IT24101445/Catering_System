@@ -31,14 +31,18 @@ public class DeliveryAssignment {
             foreignKey = @ForeignKey(name = "fk_assignment_order"))
     private Order order;
 
+    @Column(nullable = false, length = 20)
+    private String status = "PENDING"; // PENDING, ACCEPTED, DECLINED, IN_PROGRESS, COMPLETED
+
     public DeliveryAssignment() {
     }
 
-    public DeliveryAssignment(Long id, String route, Driver driver, Order order) {
+    public DeliveryAssignment(Long id, String route, Driver driver, Order order, String status) {
         this.id = id;
         this.route = route;
         this.driver = driver;
         this.order = order;
+        this.status = status;
     }
 
     public Long getId() {
@@ -71,5 +75,13 @@ public class DeliveryAssignment {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

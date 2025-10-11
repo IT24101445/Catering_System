@@ -15,6 +15,12 @@
         .card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; }
         .table { width: 100%; border-collapse: collapse; }
         .table th, .table td { border-bottom: 1px solid #e5e7eb; padding: 10px; text-align: left; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .status-pending { background-color: #fef3c7; color: #92400e; }
+        .status-accepted { background-color: #d1fae5; color: #065f46; }
+        .status-declined { background-color: #fee2e2; color: #991b1b; }
+        .status-in_progress { background-color: #dbeafe; color: #1e40af; }
+        .status-completed { background-color: #e5e7eb; color: #374151; }
     </style>
     <script defer src="/js/page-drivers.js"></script>
     <script>
@@ -46,11 +52,14 @@
     <div class="grid md:grid-cols-2 gap-4">
         <div class="card">
             <h2 class="text-lg font-semibold mb-2">Add / Update Driver</h2>
-            <div class="grid gap-2">
-                <input id="drv-id" class="input" placeholder="ID (for update)" />
-                <input id="drv-email" class="input" placeholder="Email" />
-                <input id="drv-name" class="input" placeholder="Name" />
-                <input id="drv-status" class="input" placeholder="Status (AVAILABLE/ON_ROUTE)" />
+                <div class="grid gap-2">
+                    <input id="drv-email" class="input" placeholder="Email" />
+                    <input id="drv-name" class="input" placeholder="Name" />
+                    <input id="drv-password" class="input" placeholder="Password" />
+                    <select id="drv-status" class="input">
+                        <option value="AVAILABLE">Available</option>
+                        <option value="ON_ROUTE">On Route</option>
+                    </select>
                 <div class="flex gap-2">
                     <button id="btn-drv-create" class="btn">Add</button>
                     <button id="btn-drv-update" class="btn">Update</button>
@@ -68,6 +77,17 @@
                 <tbody id="drv-tbody"></tbody>
             </table>
         </div>
+    </div>
+    
+    <div class="card mt-4">
+        <div class="flex items-center justify-between mb-2">
+            <h2 class="text-lg font-semibold">Driver Assignments</h2>
+            <button id="btn-assignments-refresh" class="btn">Refresh</button>
+        </div>
+        <table class="table">
+            <thead><tr><th>Assignment ID</th><th>Driver</th><th>Order</th><th>Route</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="assignments-tbody"></tbody>
+        </table>
     </div>
 </main>
 </body>

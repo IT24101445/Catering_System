@@ -19,12 +19,23 @@
 
     // Fetch helpers
     async function http(method, url, body) {
-        const opts = { method, headers: { 'Content-Type': 'application/json' } };
-        if (body) opts.body = JSON.stringify(body);
-        const res = await fetch(url, opts);
-        if (!res.ok) throw new Error(await res.text());
-        const ct = res.headers.get('content-type') || '';
-        return ct.includes('application/json') ? res.json() : null;
+        try {
+            const opts = { method, headers: { 'Content-Type': 'application/json' } };
+            if (body) opts.body = JSON.stringify(body);
+            console.log(`Making ${method} request to ${url}`, body);
+            const res = await fetch(url, opts);
+            console.log(`Response status: ${res.status}`);
+            if (!res.ok) {
+                const errorText = await res.text();
+                console.error(`HTTP Error: ${res.status} - ${errorText}`);
+                throw new Error(`HTTP ${res.status}: ${errorText}`);
+            }
+            const ct = res.headers.get('content-type') || '';
+            return ct.includes('application/json') ? res.json() : null;
+        } catch (error) {
+            console.error(`Request failed: ${error.message}`);
+            throw error;
+        }
     }
 
     // Drivers
@@ -34,7 +45,12 @@
             <td>${d.id}</td>
             <td><input class="input" value="${d.name || ''}" data-field="name" /></td>
             <td><input class="input" value="${d.email || ''}" data-field="email" /></td>
-            <td><input class="input" value="${d.status || ''}" data-field="status" /></td>
+            <td>
+                <select class="input" data-field="status">
+                    <option value="AVAILABLE" ${d.status === 'AVAILABLE' ? 'selected' : ''}>Available</option>
+                    <option value="ON_ROUTE" ${d.status === 'ON_ROUTE' ? 'selected' : ''}>On Route</option>
+                </select>
+            </td>
             <td><button class="btn" data-action="update">Update</button> <button class="btn" data-action="delete">Remove</button></td>
         </tr>`).join('');
         setRows('drv-tbody', rows);
@@ -42,8 +58,25 @@
     function bindDrivers() {
         $('#btn-drv-refresh').addEventListener('click', refreshDrivers);
         $('#btn-drv-create').addEventListener('click', async () => {
-            await http('POST', `${api}/drivers`, { email: val('drv-email'), name: val('drv-name'), status: val('drv-status') || undefined });
-            refreshDrivers();
+            try {
+                console.log('Creating driver with data:', {
+                    email: val('drv-email'),
+                    name: val('drv-name'),
+                    password: 'defaultPassword123',
+                    status: val('drv-status')
+                });
+                await http('POST', `${api}/drivers`, { 
+                    email: val('drv-email'), 
+                    name: val('drv-name'), 
+                    password: 'defaultPassword123',
+                    status: val('drv-status') || undefined 
+                });
+                console.log('Driver created successfully');
+                refreshDrivers();
+            } catch (error) {
+                console.error('Failed to create driver:', error);
+                alert('Failed to create driver: ' + error.message);
+            }
         });
         document.getElementById('drv-tbody').addEventListener('click', async (e) => {
             const btn = e.target.closest('button');
@@ -104,7 +137,13 @@
             <td>${d.id}</td>
             <td><input class="input" value="${d.pickupAddress || ''}" data-field="pickupAddress" /></td>
             <td><input class="input" value="${d.dropoffAddress || ''}" data-field="dropoffAddress" /></td>
-            <td><input class="input" value="${d.status || ''}" data-field="status" /></td>
+            <td>
+                <select class="input" data-field="status">
+                    <option value="PENDING" ${d.status === 'PENDING' ? 'selected' : ''}>Pending</option>
+                    <option value="IN_PROGRESS" ${d.status === 'IN_PROGRESS' ? 'selected' : ''}>In Progress</option>
+                    <option value="COMPLETED" ${d.status === 'COMPLETED' ? 'selected' : ''}>Completed</option>
+                </select>
+            </td>
             <td>${d.directionsUrl ? `<a href="${d.directionsUrl}" target="_blank">Open</a>` : ''}</td>
             <td><button class="btn" data-action="update">Update</button> <button class="btn" data-action="delete">Remove</button></td>
         </tr>`).join('');
@@ -139,6 +178,7 @@
         const rows = list.map(a => `<tr data-id="${a.id}">
             <td>${a.id}</td><td>${a.orderCustomerName || a.orderId || ''}</td><td>${a.driverName || a.driverId || ''}</td>
             <td><input class="input" value="${a.route || ''}" data-field="route" /></td>
+            <td><span class="status-badge status-${a.status?.toLowerCase() || 'pending'}">${a.status || 'PENDING'}</span></td>
             <td>
                 <button class="btn" data-action="update">Update</button>
                 <button class="btn" data-action="delete">Remove</button>
@@ -152,7 +192,11 @@
     function bindAssignments() {
         $('#btn-asg-refresh').addEventListener('click', refreshAssignments);
         $('#btn-asg-create').addEventListener('click', async () => {
-            await http('POST', `${api}/assignments`, { orderId: +val('asg-orderId'), driverId: +val('asg-driverId'), route: val('asg-route') });
+            await http('POST', `${api}/assignments/by-name`, { 
+                customerName: val('asg-customerName'), 
+                driverName: val('asg-driverName'), 
+                route: val('asg-route') 
+            });
             refreshAssignments();
         });
         document.getElementById('asg-tbody').addEventListener('click', async (e) => {

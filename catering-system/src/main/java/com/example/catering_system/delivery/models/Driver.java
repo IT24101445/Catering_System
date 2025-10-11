@@ -19,14 +19,19 @@ public class Driver {
     @Column(nullable = false, length = 40)
     private String status = "AVAILABLE";
 
+    // Store a hash (e.g., SHA256), not plain text
+    @Column(name = "password_hash", nullable = false, length = 255)
+    private String passwordHash;
+
     public Driver() {
     }
 
-    public Driver(Long id, String email, String name, String status) {
+    public Driver(Long id, String email, String name, String status, String passwordHash) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.status = status;
+        this.passwordHash = passwordHash;
     }
 
     public Long getId() {
@@ -59,5 +64,13 @@ public class Driver {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }

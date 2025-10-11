@@ -5,6 +5,7 @@ public class Create {
     private String email;
     private String name;
     private String status; // optional; if null/blank, service will default to "AVAILABLE"
+    private String password;
 
     public String getEmail() {
         return email;
@@ -28,5 +29,13 @@ public class Create {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -2,6 +2,7 @@ package com.example.catering_system.delivery.controllers;
 
 import com.example.catering_system.delivery.dto.DeliverySupervisor.ApiError;
 import com.example.catering_system.delivery.dto.DeliveryAssignment.Create;
+import com.example.catering_system.delivery.dto.DeliveryAssignment.CreateByName;
 import com.example.catering_system.delivery.dto.DeliveryAssignment.Update;
 import com.example.catering_system.delivery.dto.DeliveryAssignment.Response;
 import com.example.catering_system.delivery.models.DeliveryAssignment;
@@ -35,6 +36,32 @@ public class DeliveryAssignmentController {
             return ResponseEntity.created(URI.create("/api/assignments/" + a.getId())).body(body);
         } catch (NoSuchElementException | IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
+        }
+    }
+
+    // CREATE using names
+    @PostMapping("/by-name")
+    public ResponseEntity<?> createByName(@RequestBody CreateByName req) {
+        try {
+            // Add logging for debugging
+            System.out.println("Creating assignment for customer: " + req.getCustomerName() + ", driver: " + req.getDriverName());
+            
+            DeliveryAssignment a = service.createByName(req.getCustomerName(), req.getDriverName(), req.getRoute());
+            Response body = toResponse(a);
+            return ResponseEntity.created(URI.create("/api/assignments/" + a.getId())).body(body);
+        } catch (NoSuchElementException ex) {
+            System.err.println("Assignment creation failed: " + ex.getMessage());
+            return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
+        } catch (IllegalArgumentException ex) {
+            System.err.println("Invalid input: " + ex.getMessage());
+            return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
+        } catch (IllegalStateException ex) {
+            System.err.println("Driver not available: " + ex.getMessage());
+            return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
+        } catch (Exception ex) {
+            System.err.println("Unexpected error: " + ex.getMessage());
+            ex.printStackTrace();
+            return ResponseEntity.status(500).body(ApiError.of("Internal server error: " + ex.getMessage()));
         }
     }
 
@@ -97,12 +124,13 @@ public class DeliveryAssignmentController {
     public ResponseEntity<?> start(@PathVariable("id") Long id,
                                    @RequestBody(required = false) com.example.catering_system.delivery.dto.DeliveryAssignment.Start req) {
         try {
-            service.startRoute(id);
+            var a = service.startRoute(id);
             // You can later use req.getLatitude()/getLongitude() for logging/telemetry
-            var a = service.get(id);
             return ResponseEntity.ok(toResponse(a));
         } catch (NoSuchElementException ex) {
             return ResponseEntity.status(404).body(ApiError.of("Assignment not found"));
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
         }
     }
 
@@ -111,11 +139,12 @@ public class DeliveryAssignmentController {
     public ResponseEntity<?> complete(@PathVariable("id") Long id,
                                       @RequestBody(required = false) com.example.catering_system.delivery.dto.DeliveryAssignment.Complete req) {
         try {
-            service.completeRoute(id);
-            var a = service.get(id);
+            var a = service.completeRoute(id);
             return ResponseEntity.ok(toResponse(a));
         } catch (NoSuchElementException ex) {
             return ResponseEntity.status(404).body(ApiError.of("Assignment not found"));
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
         }
     }
 
@@ -129,6 +158,32 @@ public class DeliveryAssignmentController {
             return ResponseEntity.ok(toResponse(a));
         } catch (NoSuchElementException ex) {
             return ResponseEntity.status(404).body(ApiError.of("Assignment or driver not found"));
+        }
+    }
+
+    // ACTION: accept assignment
+    @PostMapping("/{id}/accept")
+    public ResponseEntity<?> accept(@PathVariable("id") Long id) {
+        try {
+            var a = service.acceptAssignment(id);
+            return ResponseEntity.ok(toResponse(a));
+        } catch (NoSuchElementException ex) {
+            return ResponseEntity.status(404).body(ApiError.of("Assignment not found"));
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
+        }
+    }
+
+    // ACTION: decline assignment
+    @PostMapping("/{id}/decline")
+    public ResponseEntity<?> decline(@PathVariable("id") Long id) {
+        try {
+            var a = service.declineAssignment(id);
+            return ResponseEntity.ok(toResponse(a));
+        } catch (NoSuchElementException ex) {
+            return ResponseEntity.status(404).body(ApiError.of("Assignment not found"));
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.badRequest().body(ApiError.of(ex.getMessage()));
         }
     }
 
@@ -150,6 +205,8 @@ public class DeliveryAssignmentController {
             dto.setOrderId(o.getId());
             dto.setOrderCustomerName(o.getCustomerName());
         }
+
+        dto.setStatus(a.getStatus());
 
         return dto;
     }

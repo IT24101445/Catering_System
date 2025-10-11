@@ -23,6 +23,12 @@
         .input { border: 1px solid #d1d5db; border-radius: 6px; padding: 10px; width: 100%; }
         .table { width: 100%; border-collapse: collapse; }
         .table th, .table td { border-bottom: 1px solid #e5e7eb; padding: 10px; text-align: left; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .status-pending { background-color: #fef3c7; color: #92400e; }
+        .status-accepted { background-color: #d1fae5; color: #065f46; }
+        .status-declined { background-color: #fee2e2; color: #991b1b; }
+        .status-in_progress { background-color: #dbeafe; color: #1e40af; }
+        .status-completed { background-color: #e5e7eb; color: #374151; }
     </style>
     <script defer src="/js/supervisor-dashboard.js"></script>
     <script>
@@ -67,10 +73,12 @@
             <div class="card">
                 <h2 class="text-lg font-semibold mb-2">Add / Update Driver</h2>
                 <div class="grid gap-2">
-                    <input id="drv-id" class="input" placeholder="ID (for update)" />
                     <input id="drv-email" class="input" placeholder="Email" />
                     <input id="drv-name" class="input" placeholder="Name" />
-                    <input id="drv-status" class="input" placeholder="Status (AVAILABLE/ON_ROUTE)" />
+                    <select id="drv-status" class="input">
+                        <option value="AVAILABLE">Available</option>
+                        <option value="ON_ROUTE">On Route</option>
+                    </select>
                     <div class="flex gap-2">
                         <button id="btn-drv-create" class="btn">Add</button>
                         <button id="btn-drv-update" class="btn">Update</button>
@@ -96,7 +104,6 @@
             <div class="card">
                 <h2 class="text-lg font-semibold mb-2">Add / Update Order</h2>
                 <div class="grid gap-2">
-                    <input id="ord-id" class="input" placeholder="ID (for update)" />
                     <input id="ord-customer" class="input" placeholder="Customer Name" />
                     <input id="ord-pickup" class="input" placeholder="Pickup Address" />
                     <input id="ord-dropoff" class="input" placeholder="Dropoff Address" />
@@ -125,10 +132,13 @@
             <div class="card">
                 <h2 class="text-lg font-semibold mb-2">Add / Update Delivery</h2>
                 <div class="grid gap-2">
-                    <input id="del-id" class="input" placeholder="ID (for update)" />
                     <input id="del-pickup" class="input" placeholder="Pickup Address" />
                     <input id="del-dropoff" class="input" placeholder="Dropoff Address" />
-                    <input id="del-status" class="input" placeholder="Status (PENDING/IN_PROGRESS/COMPLETED)" />
+                    <select id="del-status" class="input">
+                        <option value="PENDING">Pending</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="COMPLETED">Completed</option>
+                    </select>
                     <div class="flex gap-2">
                         <button id="btn-del-create" class="btn">Add</button>
                         <button id="btn-del-update" class="btn">Update</button>
@@ -154,9 +164,8 @@
             <div class="card">
                 <h2 class="text-lg font-semibold mb-2">Add / Update Assignment</h2>
                 <div class="grid gap-2">
-                    <input id="asg-id" class="input" placeholder="ID (for update)" />
-                    <input id="asg-orderId" class="input" placeholder="Order ID" />
-                    <input id="asg-driverId" class="input" placeholder="Driver ID" />
+                    <input id="asg-customerName" class="input" placeholder="Customer Name" />
+                    <input id="asg-driverName" class="input" placeholder="Driver Name" />
                     <input id="asg-route" class="input" placeholder="Route notes" />
                     <div class="flex gap-2">
                         <button id="btn-asg-create" class="btn">Add</button>
@@ -176,7 +185,7 @@
                     </div>
                 </div>
                 <table class="table">
-                    <thead><tr><th>ID</th><th>Order</th><th>Driver</th><th>Route</th><th>Actions</th></tr></thead>
+                    <thead><tr><th>ID</th><th>Order</th><th>Driver</th><th>Route</th><th>Status</th><th>Actions</th></tr></thead>
                     <tbody id="asg-tbody"></tbody>
                 </table>
             </div>
