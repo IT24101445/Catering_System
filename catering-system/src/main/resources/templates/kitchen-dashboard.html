@@ -12,8 +12,113 @@
     <a href="/admin-dashboard" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600">Admin Dashboard</a>
     </nav>
     <div class="container mx-auto p-6">
-        <h2 class="text-2xl font-bold mb-4">Kitchen Operations</h2>
-        <p class="text-gray-700">Manage orders, prep status, and dispatch.</p>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-bold">Kitchen Operations</h2>
+            <div class="flex gap-2">
+                <a href="/orders/pending" class="bg-yellow-500 text-white px-3 py-2 rounded">Pending Orders</a>
+                <a href="/orders/history" class="bg-gray-700 text-white px-3 py-2 rounded">History</a>
+            </div>
+        </div>
+        <div class="mb-6">
+            <nav class="flex gap-3">
+                <a class="bg-gray-200 px-3 py-1 rounded" href="#menus">Menus</a>
+                <a class="bg-gray-200 px-3 py-1 rounded" href="#orders">Orders</a>
+            </nav>
+        </div>
+
+        <form method="get" action="/kitchen-dashboard" class="mb-4 flex gap-2">
+            <input class="border rounded px-3 py-2" type="text" name="cuisine" placeholder="Filter by cuisine" />
+            <input class="border rounded px-3 py-2" type="text" name="eventType" placeholder="Filter by event type" />
+            <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Filter</button>
+        </form>
+
+        <form class="mb-6 bg-white p-4 rounded shadow" action="/menu/add" method="post" enctype="multipart/form-data">
+            <h3 class="text-xl font-semibold mb-3">Add Menu</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <input class="border rounded px-3 py-2" type="text" name="name" placeholder="Menu name" required />
+                <input class="border rounded px-3 py-2" type="text" name="category" placeholder="Category" required />
+                <input class="border rounded px-3 py-2" type="number" step="0.01" name="price" placeholder="Per-plate price" required />
+                <input class="border rounded px-3 py-2" type="text" name="cuisine" placeholder="Cuisine (e.g., Indian)" />
+                <input class="border rounded px-3 py-2" type="text" name="eventType" placeholder="Event Type (e.g., Wedding)" />
+                <input class="border rounded px-3 py-2" type="file" name="image" accept="image/*" />
+                <textarea class="md:col-span-3 border rounded px-3 py-2" name="description" placeholder="Description"></textarea>
+                <input class="md:col-span-3 border rounded px-3 py-2" type="text" name="dishesIncluded" placeholder="Dishes included (comma-separated)" />
+            </div>
+            <div class="mt-3">
+                <button class="bg-green-600 text-white px-4 py-2 rounded" type="submit">Create Menu</button>
+            </div>
+        </form>
+
+        <div id="menus" class="bg-white rounded shadow mb-6">
+            <table class="min-w-full text-left">
+                <thead>
+                    <tr class="border-b">
+                        <th class="p-3">Name</th>
+                        <th class="p-3">Category</th>
+                        <th class="p-3">Cuisine</th>
+                        <th class="p-3">Event Type</th>
+                        <th class="p-3">Price</th>
+                        <th class="p-3">Dishes</th>
+                        <th class="p-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${menuItems}" class="border-b">
+                        <td class="p-3" th:text="${item.name}">Item</td>
+                        <td class="p-3" th:text="${item.category}">Category</td>
+                        <td class="p-3" th:text="${item.cuisine}">Cuisine</td>
+                        <td class="p-3" th:text="${item.eventType}">Event</td>
+                        <td class="p-3" th:text="${item.price}">0.00</td>
+                        <td class="p-3" th:text="${item.dishesIncluded}">-</td>
+                        <td class="p-3">
+                            <form th:action="@{'/kitchen/menu/delete/' + ${item.id}}" method="post">
+                                <button class="bg-red-600 text-white px-3 py-1 rounded" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex gap-3">
+            <a href="/orders/pending" class="bg-yellow-500 text-white px-4 py-2 rounded">Pending Orders</a>
+            <a href="/orders/history" class="bg-gray-700 text-white px-4 py-2 rounded">Order History</a>
+        </div>
+
+        <div id="orders" class="mt-8 bg-white rounded shadow">
+            <div class="p-4 border-b font-semibold">Finance Confirmed Pending Orders</div>
+            <table class="min-w-full text-left">
+                <thead>
+                    <tr class="border-b">
+                        <th class="p-3">Customer</th>
+                        <th class="p-3">Event</th>
+                        <th class="p-3">Guests</th>
+                        <th class="p-3">Menu</th>
+                        <th class="p-3">Total</th>
+                        <th class="p-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="o : ${orders}" class="border-b">
+                        <td class="p-3" th:text="${o.customerName}">Name</td>
+                        <td class="p-3" th:text="${#dates.format(o.eventDate, 'yyyy-MM-dd')} + ' - ' + ${o.eventType}">Event</td>
+                        <td class="p-3" th:text="${o.guestCount}">0</td>
+                        <td class="p-3" th:text="${o.selectedMenu}">Menu</td>
+                        <td class="p-3" th:text="${o.totalAmount}">0.00</td>
+                        <td class="p-3">
+                            <form th:action="@{'/orders/' + ${o.id} + '/status'}" method="post" class="inline">
+                                <input type="hidden" name="status" value="In Preparation" />
+                                <button class="bg-yellow-600 text-white px-3 py-1 rounded" type="submit">Start</button>
+                            </form>
+                            <form th:action="@{'/orders/' + ${o.id} + '/status'}" method="post" class="inline ml-2">
+                                <input type="hidden" name="status" value="Ready" />
+                                <button class="bg-blue-600 text-white px-3 py-1 rounded" type="submit">Mark Ready</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>

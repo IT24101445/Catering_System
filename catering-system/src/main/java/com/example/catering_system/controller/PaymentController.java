@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
 
 @Controller
 public class PaymentController {
@@ -21,11 +22,19 @@ public class PaymentController {
 
     @PostMapping("/payment/record")
     public String recordPayment(@RequestParam Long invoiceId, @RequestParam double amount,
-                                @RequestParam String paymentMethod) {
+                                @RequestParam String paymentMethod,
+                                @RequestParam(required = false, name = "gateway") String gateway,
+                                Model model) {
         Payment payment = new Payment();
         payment.setInvoiceId(invoiceId);
         payment.setAmount(amount);
         payment.setPaymentMethod(paymentMethod);
+
+        // Optional gateway processing if provided
+        if (gateway != null && !gateway.isEmpty()) {
+            boolean ok = paymentService.processViaGateway(payment, gateway);
+            model.addAttribute("processed", ok);
+        }
 
         paymentService.recordPayment(payment);
 

@@ -16,6 +16,10 @@ public class MenuItem {
     private double price;
     private String imageUrl;
     private String category;
+    private String cuisine; // e.g., Indian, Italian
+    private String eventType; // e.g., Wedding, Corporate
+    private Boolean archived = false;
+    private String dishesIncluded; // comma-separated dishes
 
     public Long getId() {
         return id;
@@ -63,6 +67,38 @@ public class MenuItem {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getCuisine() {
+        return cuisine;
+    }
+
+    public void setCuisine(String cuisine) {
+        this.cuisine = cuisine;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public Boolean getArchived() {
+        return archived;
+    }
+
+    public void setArchived(Boolean archived) {
+        this.archived = archived;
+    }
+
+    public String getDishesIncluded() {
+        return dishesIncluded;
+    }
+
+    public void setDishesIncluded(String dishesIncluded) {
+        this.dishesIncluded = dishesIncluded;
     }
     // Getters and Setters
 }

@@ -4,10 +4,12 @@ import com.example.catering_system.model.Employee;
 import com.example.catering_system.model.StaffPayment;
 import com.example.catering_system.service.EmployeeService;
 import com.example.catering_system.service.StaffPaymentService;
+import com.example.catering_system.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.example.catering_system.service.InvoiceService;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -24,6 +26,12 @@ public class FinanceController {
 
     @Autowired
     private StaffPaymentService staffPaymentService;
+
+    @Autowired
+    private InvoiceService invoiceService;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
@@ -149,5 +157,13 @@ public class FinanceController {
             }
         }
         return "redirect:/finance/process?year=" + year + "&month=" + month;
+    }
+
+    @PostMapping("/confirm-payment")
+    public String confirmPayment(@RequestParam Long invoiceId) {
+        invoiceService.markPaid(invoiceId);
+        // If an order is linked by invoice id == order id (placeholder), mark payment confirmed
+        try { orderService.confirmPayment(invoiceId); } catch (Exception ignored) {}
+        return "redirect:/finance/dashboard";
     }
 }

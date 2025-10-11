@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">Order History</h1>
+        <a href="/kitchen-dashboard" class="text-blue-600">Back to Kitchen</a>
+    </div>
+    <div class="bg-white rounded shadow">
+        <table class="min-w-full text-left">
+            <thead>
+                <tr class="border-b">
+                    <th class="p-3">Customer</th>
+                    <th class="p-3">Event</th>
+                    <th class="p-3">Guests</th>
+                    <th class="p-3">Menu</th>
+                    <th class="p-3">Total</th>
+                    <th class="p-3">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="o : ${orders}" class="border-b">
+                    <td class="p-3" th:text="${o.customerName}">Name</td>
+                    <td class="p-3" th:text="${#dates.format(o.eventDate, 'yyyy-MM-dd')} + ' - ' + ${o.eventType}">Event</td>
+                    <td class="p-3" th:text="${o.guestCount}">0</td>
+                    <td class="p-3" th:text="${o.selectedMenu}">Menu</td>
+                    <td class="p-3" th:text="${o.totalAmount}">0.00</td>
+                    <td class="p-3" th:text="${o.status}">Completed</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

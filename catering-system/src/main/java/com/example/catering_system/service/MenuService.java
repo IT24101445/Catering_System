@@ -14,10 +14,25 @@ public class MenuService {
     private MenuItemRepository menuItemRepository;
 
     public List<MenuItem> getAllMenuItems() {
-        return menuItemRepository.findAll();
+        return menuItemRepository.findByArchivedFalse();
     }
 
     public MenuItem addMenuItem(MenuItem menuItem) {
         return menuItemRepository.save(menuItem);
+    }
+
+    public List<MenuItem> getByCuisine(String cuisine) {
+        return menuItemRepository.findByCuisineIgnoreCase(cuisine);
+    }
+
+    public List<MenuItem> getByEventType(String eventType) {
+        return menuItemRepository.findByEventTypeIgnoreCase(eventType);
+    }
+
+    public void deleteMenuItem(Long id) {
+        menuItemRepository.findById(id).ifPresent(item -> {
+            item.setArchived(true);
+            menuItemRepository.save(item);
+        });
     }
 }

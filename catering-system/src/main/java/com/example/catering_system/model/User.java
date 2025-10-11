@@ -26,6 +26,11 @@ public class User {
     private String state;
     private String postalCode;
 
+    // Preferences
+    private String eventPreferences; // e.g., wedding, corporate, birthday
+    private String dietaryRestrictions; // e.g., vegan, halal, nut-free
+    private String preferredCuisine; // e.g., Indian, Italian, Chinese
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -121,5 +126,29 @@ public class User {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public String getEventPreferences() {
+        return eventPreferences;
+    }
+
+    public void setEventPreferences(String eventPreferences) {
+        this.eventPreferences = eventPreferences;
+    }
+
+    public String getDietaryRestrictions() {
+        return dietaryRestrictions;
+    }
+
+    public void setDietaryRestrictions(String dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
+    }
+
+    public String getPreferredCuisine() {
+        return preferredCuisine;
+    }
+
+    public void setPreferredCuisine(String preferredCuisine) {
+        this.preferredCuisine = preferredCuisine;
     }
 }

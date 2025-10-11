@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Orders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta http-equiv="refresh" content="15">
+    <style> .badge{padding:2px 8px;border-radius:6px;background:#eee} </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">Pending Orders</h1>
+        <a href="/kitchen-dashboard" class="text-blue-600">Back to Kitchen</a>
+    </div>
+    <div class="bg-white rounded shadow">
+        <table class="min-w-full text-left">
+            <thead>
+                <tr class="border-b">
+                    <th class="p-3">Customer</th>
+                    <th class="p-3">Event</th>
+                    <th class="p-3">Guests</th>
+                    <th class="p-3">Menu</th>
+                    <th class="p-3">Total</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="o : ${orders}" class="border-b">
+                    <td class="p-3" th:text="${o.customerName} + ' (' + ${o.customerPhone} + ')'">Name</td>
+                    <td class="p-3" th:text="${#dates.format(o.eventDate, 'yyyy-MM-dd')} + ' - ' + ${o.eventType}">2025-01-01 - Wedding</td>
+                    <td class="p-3" th:text="${o.guestCount}">0</td>
+                    <td class="p-3" th:text="${o.selectedMenu}">Menu</td>
+                    <td class="p-3" th:text="${o.totalAmount}">0.00</td>
+                    <td class="p-3"><span class="badge" th:text="${o.status}">Pending</span></td>
+                    <td class="p-3">
+                        <form th:action="@{'/orders/' + ${o.id} + '/status'}" method="post" class="inline">
+                            <input type="hidden" name="status" value="In Preparation" />
+                            <button class="bg-yellow-500 text-white px-3 py-1 rounded" type="submit">Start</button>
+                        </form>
+                        <form th:action="@{'/orders/' + ${o.id} + '/status'}" method="post" class="inline ml-2">
+                            <input type="hidden" name="status" value="Completed" />
+                            <button class="bg-green-600 text-white px-3 py-1 rounded" type="submit">Complete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

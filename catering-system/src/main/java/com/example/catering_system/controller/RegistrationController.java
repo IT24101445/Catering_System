@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.example.catering_system.service.SessionManager;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class RegistrationController {
@@ -27,7 +30,6 @@ public class RegistrationController {
     @PostMapping("/register")
     public String registerUser(@RequestParam String username,
                                @RequestParam String password,
-                               @RequestParam String role,
                                @RequestParam String fullName,
                                @RequestParam String email,
                                @RequestParam(required = false) String phone,
@@ -35,7 +37,8 @@ public class RegistrationController {
                                @RequestParam(required = false) String addressLine2,
                                @RequestParam(required = false) String city,
                                @RequestParam(required = false) String state,
-                               @RequestParam(required = false) String postalCode) {
+                               @RequestParam(required = false) String postalCode,
+                               HttpServletResponse response) {
         // Encrypt password
         String encodedPassword = passwordEncoder.encode(password);
 
@@ -43,7 +46,7 @@ public class RegistrationController {
         User user = new User();
         user.setUsername(username);
         user.setPassword(encodedPassword);
-        user.setRole(role); // e.g., "USER" or "ADMIN"
+        user.setRole("USER");
         user.setFullName(fullName);
         user.setEmail(email);
         user.setPhone(phone);
@@ -55,6 +58,13 @@ public class RegistrationController {
 
         userService.saveUser(user);  // Save to the database
 
-        return "redirect:/login";  // Redirect to login page after successful registration
+        // Auto-login by creating a session
+        String sessionId = SessionManager.getInstance().createSession(user);
+        Cookie cookie = new Cookie("SESSION_ID", sessionId);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+
+        return "redirect:/home";  // Go to home after registration
     }
 }

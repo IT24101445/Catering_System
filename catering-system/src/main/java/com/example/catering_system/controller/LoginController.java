@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.example.catering_system.service.SessionManager;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class LoginController {
@@ -25,10 +28,15 @@ public class LoginController {
 
     // Handle login logic
     @PostMapping("/login")
-    public String loginUser(@RequestParam String username, @RequestParam String password) {
+    public String loginUser(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {
         User user = userService.findUserByUsername(username);
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            // Login successful
+            // Login successful: create session and set cookie
+            String sessionId = SessionManager.getInstance().createSession(user);
+            Cookie cookie = new Cookie("SESSION_ID", sessionId);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
             return "redirect:/home"; // Redirect to home page
         }
         // Login failed

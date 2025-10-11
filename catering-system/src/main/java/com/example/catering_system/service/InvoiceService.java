@@ -21,5 +21,10 @@ public class InvoiceService {
         return invoiceRepository.findAll();
     }
 
-    // More methods as needed
+    public void markPaid(Long invoiceId) {
+        invoiceRepository.findById(invoiceId).ifPresent(inv -> {
+            inv.setStatus("Paid");
+            invoiceRepository.save(inv);
+        });
+    }
 }
