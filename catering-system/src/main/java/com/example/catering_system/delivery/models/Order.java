@@ -20,6 +20,24 @@ public class Order {
     @Column(name = "dropoff_address", nullable = false, length = 500)
     private String dropoffAddress;
 
+    @Column(name = "amount", precision = 10, scale = 2)
+    private Double amount;
+
+    @Column(name = "kitchen_status", length = 20)
+    private String kitchenStatus = "PENDING";
+
+    @Column(name = "payment_status", length = 20)
+    private String paymentStatus = "PENDING";
+
+    @Column(name = "payment_method", length = 50)
+    private String paymentMethod;
+
+    @Column(name = "created_at")
+    private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
+
+    @Column(name = "completed_at")
+    private java.time.LocalDateTime completedAt;
+
     public Order() {
     }
 
@@ -60,5 +78,53 @@ public class Order {
 
     public void setDropoffAddress(String dropoffAddress) {
         this.dropoffAddress = dropoffAddress;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public String getKitchenStatus() {
+        return kitchenStatus;
+    }
+
+    public void setKitchenStatus(String kitchenStatus) {
+        this.kitchenStatus = kitchenStatus;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public java.time.LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(java.time.LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public java.time.LocalDateTime getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(java.time.LocalDateTime completedAt) {
+        this.completedAt = completedAt;
     }
 }

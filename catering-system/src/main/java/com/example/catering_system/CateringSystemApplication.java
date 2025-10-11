@@ -19,9 +19,10 @@ public class CateringSystemApplication {
 	CommandLineRunner seedDefaultSupervisor(DeliverySupervisorRepository repo, DeliverySupervisorService service) {
 		return args -> {
 			String defaultEmail = "supervisor@example.com";
+			String defaultName = "Admin Supervisor";
 			String defaultPassword = "supervisor123";
 			if (!repo.existsByEmail(defaultEmail)) {
-				service.create(defaultEmail, defaultPassword);
+				service.create(defaultEmail, defaultName, defaultPassword);
 			}
 		};
 	}

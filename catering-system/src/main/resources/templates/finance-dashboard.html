@@ -1,160 +1,341 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Dashboard</title>
+    <title>Finance Dashboard - Catering System</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
-<body class="min-h-screen bg-gradient-to-b from-yellow-50 via-white to-gray-100">
-
-<!-- Navbar -->
-<nav class="sticky top-0 z-10 backdrop-blur bg-yellow-500/90 border-b border-yellow-400/50">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-white">💼</div>
-            <span class="text-white text-xl font-bold tracking-wide">Finance Dashboard</span>
-        </div>
-        <div class="flex items-center gap-2">
-            <a href="/admin-dashboard" class="text-white/90 hover:text-white px-3 py-2 rounded-md hover:bg-yellow-600 transition">Admin</a>
-
-        </div>
-    </div>
-</nav>
-
-<!-- Dashboard Content -->
-<div class="max-w-7xl mx-auto p-6">
-
-    <!-- Statistics Overview -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-
-        <div class="relative overflow-hidden bg-white p-6 rounded-xl shadow-sm ring-1 ring-gray-100">
-            <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-green-100"></div>
-            <div class="flex items-start justify-between">
-                <div>
-                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Employees</p>
-                    <p class="text-3xl font-extrabold text-gray-900 mt-2" th:text="${totalEmployees != null ? totalEmployees : '0'}">0</p>
-                    <p class="text-sm text-green-600 mt-1">In Salary System</p>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-gray-800">Finance Dashboard</h1>
                 </div>
-                <div class="text-green-600 text-2xl">👥</div>
+                <div class="flex items-center space-x-4">
+                    <a href="/supervisor/dashboard" class="text-gray-600 hover:text-gray-900">Admin Dashboard</a>
+                    <a href="/delivery/dashboard" class="text-gray-600 hover:text-gray-900">Delivery Dashboard</a>
+                    <a href="/kitchen/dashboard" class="text-gray-600 hover:text-gray-900">Kitchen Dashboard</a>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto py-6 px-4">
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-green-100 rounded-lg">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Revenue</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="totalRevenue">$0.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-blue-100 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Orders Today</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="ordersToday">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-yellow-100 rounded-lg">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Pending Payments</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="pendingPayments">$0.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-red-100 rounded-lg">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Profit Margin</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="profitMargin">0%</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="relative overflow-hidden bg-white p-6 rounded-xl shadow-sm ring-1 ring-gray-100">
-            <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-blue-100"></div>
-            <div class="flex items-start justify-between">
-                <div>
-                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Pending Payments</p>
-                    <p class="text-3xl font-extrabold text-gray-900 mt-2" th:text="${pendingPayments != null ? pendingPayments : '0'}">0</p>
-                    <p class="text-sm text-blue-600 mt-1">This Month</p>
-                </div>
-                <div class="text-blue-600 text-2xl">⏳</div>
+        <!-- Charts and Tables -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Revenue Chart -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Revenue Trend (Last 7 Days)</h3>
+                <canvas id="revenueChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- Order Status Chart -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Order Status Distribution</h3>
+                <canvas id="orderStatusChart" width="400" height="200"></canvas>
             </div>
         </div>
 
-        <div class="relative overflow-hidden bg-white p-6 rounded-xl shadow-sm ring-1 ring-gray-100">
-            <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-orange-100"></div>
-            <div class="flex items-start justify-between">
-                <div>
-                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Paid</p>
-                    <p class="text-3xl font-extrabold text-gray-900 mt-2" th:text="${totalPaid != null ? 'Rs ' + totalPaid : 'Rs 0.00'}">Rs 0.00</p>
-                    <p class="text-sm text-orange-600 mt-1">Current Month</p>
+        <!-- Financial Tables -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Recent Orders -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Recent Orders</h3>
                 </div>
-                <div class="text-orange-600 text-2xl">💸</div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentOrdersTable" class="bg-white divide-y divide-gray-200">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Payment Methods</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-600">Cash</span>
+                            <span class="text-sm text-gray-900" id="cashAmount">$0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-600">Credit Card</span>
+                            <span class="text-sm text-gray-900" id="cardAmount">$0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-600">Bank Transfer</span>
+                            <span class="text-sm text-gray-900" id="transferAmount">$0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-600">Digital Wallet</span>
+                            <span class="text-sm text-gray-900" id="walletAmount">$0.00</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="relative overflow-hidden bg-white p-6 rounded-xl shadow-sm ring-1 ring-gray-100">
-            <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-purple-100"></div>
-            <div class="flex items-start justify-between">
-                <div>
-                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">New Candidates</p>
-                    <p class="text-3xl font-extrabold text-gray-900 mt-2" th:text="${newCandidates != null ? newCandidates : '0'}">0</p>
-                    <p class="text-sm text-purple-600 mt-1">Awaiting Salary Setup</p>
+        <!-- Financial Reports -->
+        <div class="mt-8 bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Financial Reports</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button onclick="generateReport('daily')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        Daily Report
+                    </button>
+                    <button onclick="generateReport('weekly')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                        Weekly Report
+                    </button>
+                    <button onclick="generateReport('monthly')" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                        Monthly Report
+                    </button>
                 </div>
-                <div class="text-purple-600 text-2xl">🆕</div>
             </div>
         </div>
+    </main>
 
-    </div>
+    <script>
+        const api = '/api';
+        let revenueChart, orderStatusChart;
 
+        // Utility functions
+        function $(sel) { return document.querySelector(sel); }
+        function val(id) { return document.getElementById(id).value.trim(); }
 
-    <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Salary Management</h2>
-    </div>
+        // HTTP helper
+        async function http(method, url, body) {
+            try {
+                const opts = { method, headers: { 'Content-Type': 'application/json' } };
+                if (body) opts.body = JSON.stringify(body);
+                const res = await fetch(url, opts);
+                if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+                const ct = res.headers.get('content-type') || '';
+                return ct.includes('application/json') ? res.json() : null;
+            } catch (error) {
+                console.error('Request failed:', error);
+                throw error;
+            }
+        }
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        // Load financial data
+        async function loadFinancialData() {
+            try {
+                // Load orders and calculate financial metrics
+                const orders = await http('GET', `${api}/orders`);
+                const assignments = await http('GET', `${api}/assignments`);
+                
+                // Calculate metrics
+                const today = new Date().toISOString().split('T')[0];
+                const todayOrders = orders.filter(o => o.createdAt && o.createdAt.startsWith(today));
+                const totalRevenue = orders.reduce((sum, order) => sum + (order.amount || 0), 0);
+                const pendingPayments = assignments
+                    .filter(a => a.status === 'PENDING' || a.status === 'ACCEPTED')
+                    .reduce((sum, a) => sum + (a.order?.amount || 0), 0);
 
+                // Update summary cards
+                document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+                document.getElementById('ordersToday').textContent = todayOrders.length;
+                document.getElementById('pendingPayments').textContent = `$${pendingPayments.toFixed(2)}`;
+                document.getElementById('profitMargin').textContent = '15%'; // Placeholder
 
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-green-500">
-            <div class="text-4xl mb-4">👥</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">Add Candidates</h3>
-            <p class="text-gray-600 mb-4">Add employees who are not in salary system yet and set their initial salary.</p>
-            <a href="/finance/candidates" class="inline-block bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition duration-300 font-semibold">
-                Manage Candidates
-            </a>
-        </div>
+                // Update recent orders table
+                updateRecentOrdersTable(orders.slice(-5));
 
+                // Update payment methods (placeholder data)
+                updatePaymentMethods();
 
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-blue-500">
-            <div class="text-4xl mb-4">💰</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">Process Salary</h3>
-            <p class="text-gray-600 mb-4">Pay salaries for selected employees and months. Track payment status.</p>
-            <a href="/finance/process" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 font-semibold">
-                Process Payment
-            </a>
-        </div>
+                // Update charts
+                updateCharts(orders, assignments);
 
+            } catch (error) {
+                console.error('Failed to load financial data:', error);
+            }
+        }
 
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-yellow-500">
-            <div class="text-4xl mb-4">📋</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">Employee List</h3>
-            <p class="text-gray-600 mb-4">View all employees in salary system, edit details, and update salaries.</p>
-            <a href="/finance/employees" class="inline-block bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition duration-300 font-semibold">
-                Manage Employees
-            </a>
-        </div>
+        // Update recent orders table
+        function updateRecentOrdersTable(orders) {
+            const tbody = document.getElementById('recentOrdersTable');
+            tbody.innerHTML = orders.map(order => `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.customerName || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$${(order.amount || 0).toFixed(2)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            ${order.status || 'PENDING'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}
+                    </td>
+                </tr>
+            `).join('');
+        }
 
-        <!-- Card 4: Edit Employee Details -->
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-orange-500">
-            <div class="text-4xl mb-4">✏️</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">Edit Details</h3>
-            <p class="text-gray-600 mb-4">Update employee registration information and salary details.</p>
-            <a href="/finance/employees" class="inline-block bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition duration-300 font-semibold">
-                Edit Employee
-            </a>
-        </div>
+        // Update payment methods
+        function updatePaymentMethods() {
+            // Placeholder data - in real app, this would come from database
+            document.getElementById('cashAmount').textContent = '$1,250.00';
+            document.getElementById('cardAmount').textContent = '$3,450.00';
+            document.getElementById('transferAmount').textContent = '$2,100.00';
+            document.getElementById('walletAmount').textContent = '$890.00';
+        }
 
-        <!-- Card 5: Payment History -->
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-purple-500">
-            <div class="text-4xl mb-4">📊</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">Salary History</h3>
-            <p class="text-gray-600 mb-4">View complete payment history, reports, and monthly analytics.</p>
-            <a href="/salary-history" class="inline-block bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition duration-300 font-semibold">
-                View History
-            </a>
-        </div>
+        // Update charts
+        function updateCharts(orders, assignments) {
+            // Revenue chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            if (revenueChart) revenueChart.destroy();
+            
+            revenueChart = new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [1200, 1900, 3000, 5000, 2000, 3000, 4500], // Placeholder data
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
 
+            // Order status chart
+            const statusCtx = document.getElementById('orderStatusChart').getContext('2d');
+            if (orderStatusChart) orderStatusChart.destroy();
+            
+            const statusCounts = {
+                'PENDING': assignments.filter(a => a.status === 'PENDING').length,
+                'ACCEPTED': assignments.filter(a => a.status === 'ACCEPTED').length,
+                'IN_PROGRESS': assignments.filter(a => a.status === 'IN_PROGRESS').length,
+                'COMPLETED': assignments.filter(a => a.status === 'COMPLETED').length
+            };
 
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-red-500">
-            <div class="text-4xl mb-4">🗑️</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">Remove Employees</h3>
-            <p class="text-gray-600 mb-4">Delete employees from salary system when they leave the company.</p>
-            <a href="/finance/employees" class="inline-block bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-semibold">
-                Manage Staff
-            </a>
-        </div>
+            orderStatusChart = new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(statusCounts),
+                    datasets: [{
+                        data: Object.values(statusCounts),
+                        backgroundColor: [
+                            'rgb(239, 68, 68)',
+                            'rgb(59, 130, 246)',
+                            'rgb(245, 158, 11)',
+                            'rgb(34, 197, 94)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        }
 
-    </div>
-</div>
+        // Generate reports
+        function generateReport(type) {
+            alert(`Generating ${type} report...`);
+            // In real app, this would generate and download a PDF/Excel report
+        }
 
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/';
+            }
+        }
 
-<footer class="bg-gray-800 text-white text-center p-4 mt-12">
-    <p>&copy; 2025 Catering Finance System. All Rights Reserved.</p>
-</footer>
-
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFinancialData();
+        });
+    </script>
 </body>
-
 </html>

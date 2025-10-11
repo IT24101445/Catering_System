@@ -3,17 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delivery Dashboard</title>
+    <title>Delivery Dashboard - Catering System</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
-<nav class="bg-yellow-500 p-4 flex justify-between items-center">
-    <span class="text-white text-2xl font-bold uppercase">Delivery Dashboard</span>
-    <a href="/admin-dashboard" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600">Admin Dashboard</a>
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-gray-800">Delivery Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/supervisor/dashboard" class="text-gray-600 hover:text-gray-900">Admin Dashboard</a>
+                    <a href="/finance/dashboard" class="text-gray-600 hover:text-gray-900">Finance Dashboard</a>
+                    <a href="/kitchen/dashboard" class="text-gray-600 hover:text-gray-900">Kitchen Dashboard</a>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</button>
+                </div>
+            </div>
+        </div>
     </nav>
-    <div class="container mx-auto p-6">
-        <h2 class="text-2xl font-bold mb-4">Delivery Operations</h2>
-        <p class="text-gray-700">Track deliveries and assign drivers.</p>
+
+    <main class="max-w-7xl mx-auto py-6 px-4">
+        <!-- Delivery Status Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-red-100 rounded-lg">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Pending Deliveries</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="pendingDeliveries">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-yellow-100 rounded-lg">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">In Transit</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="inTransitDeliveries">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-green-100 rounded-lg">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Completed Today</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="completedToday">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-blue-100 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Distance</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="totalDistance">0 km</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery Management -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Pending Deliveries -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Pending Deliveries</h3>
+                </div>
+                <div class="p-6">
+                    <div id="pendingDeliveriesList" class="space-y-4">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- In Transit Deliveries -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">In Transit Deliveries</h3>
+                </div>
+                <div class="p-6">
+                    <div id="inTransitDeliveriesList" class="space-y-4">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery Routes -->
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Delivery Routes</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-3">Route Optimization</h4>
+                        <button onclick="optimizeRoutes()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            Optimize Routes
+                        </button>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-3">Driver Status</h4>
+                        <div id="driverStatus" class="space-y-2">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery History -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Recent Deliveries</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delivery ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Driver</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="deliveryHistoryTable" class="bg-white divide-y divide-gray-200">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const api = '/api';
+
+        // Utility functions
+        function $(sel) { return document.querySelector(sel); }
+
+        // HTTP helper
+        async function http(method, url, body) {
+            try {
+                const opts = { method, headers: { 'Content-Type': 'application/json' } };
+                if (body) opts.body = JSON.stringify(body);
+                const res = await fetch(url, opts);
+                if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+                const ct = res.headers.get('content-type') || '';
+                return ct.includes('application/json') ? res.json() : null;
+            } catch (error) {
+                console.error('Request failed:', error);
+                throw error;
+            }
+        }
+
+        // Load delivery data
+        async function loadDeliveryData() {
+            try {
+                const assignments = await http('GET', `${api}/assignments`);
+                const drivers = await http('GET', `${api}/drivers`);
+                
+                // Calculate delivery metrics
+                const pendingDeliveries = assignments.filter(a => a.status === 'PENDING' || a.status === 'ACCEPTED');
+                const inTransitDeliveries = assignments.filter(a => a.status === 'IN_PROGRESS');
+                const completedToday = assignments.filter(a => 
+                    a.status === 'COMPLETED' && 
+                    a.completedAt && 
+                    new Date(a.completedAt).toDateString() === new Date().toDateString()
+                );
+
+                // Update status cards
+                document.getElementById('pendingDeliveries').textContent = pendingDeliveries.length;
+                document.getElementById('inTransitDeliveries').textContent = inTransitDeliveries.length;
+                document.getElementById('completedToday').textContent = completedToday.length;
+                document.getElementById('totalDistance').textContent = '45.2 km'; // Placeholder
+
+                // Update delivery lists
+                updateDeliveryList('pendingDeliveriesList', pendingDeliveries, 'PENDING');
+                updateDeliveryList('inTransitDeliveriesList', inTransitDeliveries, 'IN_PROGRESS');
+
+                // Update driver status
+                updateDriverStatus(drivers);
+
+                // Update delivery history
+                updateDeliveryHistory(assignments);
+
+            } catch (error) {
+                console.error('Failed to load delivery data:', error);
+            }
+        }
+
+        // Update delivery list
+        function updateDeliveryList(containerId, deliveries, status) {
+            const container = document.getElementById(containerId);
+            if (deliveries.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center">No deliveries</p>';
+                return;
+            }
+
+            container.innerHTML = deliveries.map(delivery => `
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Delivery #${delivery.id}</h4>
+                            <p class="text-sm text-gray-600">${delivery.order?.customerName || 'N/A'}</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${
+                            status === 'PENDING' ? 'bg-red-100 text-red-800' :
+                            'bg-yellow-100 text-yellow-800'
+                        }">
+                            ${status}
+                        </span>
+                    </div>
+                    <div class="text-sm text-gray-600 mb-3">
+                        <p><strong>Route:</strong> ${delivery.route || 'N/A'}</p>
+                        <p><strong>Driver:</strong> ${delivery.driver?.name || 'Unassigned'}</p>
+                        <p><strong>Pickup:</strong> ${delivery.order?.pickupAddress || 'N/A'}</p>
+                        <p><strong>Dropoff:</strong> ${delivery.order?.dropoffAddress || 'N/A'}</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        ${status === 'PENDING' ? `
+                            <button onclick="startDelivery(${delivery.id})" 
+                                    class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">
+                                Start Delivery
+                            </button>
+                        ` : ''}
+                        ${status === 'IN_PROGRESS' ? `
+                            <button onclick="completeDelivery(${delivery.id})" 
+                                    class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                                Complete Delivery
+                            </button>
+                        ` : ''}
+                        <button onclick="viewRoute(${delivery.id})" 
+                                class="bg-gray-500 text-white px-3 py-1 rounded text-sm hover:bg-gray-600">
+                            View Route
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update driver status
+        function updateDriverStatus(drivers) {
+            const container = document.getElementById('driverStatus');
+            container.innerHTML = drivers.map(driver => `
+                <div class="flex justify-between items-center">
+                    <span class="text-sm">${driver.name}</span>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full ${
+                        driver.status === 'AVAILABLE' ? 'bg-green-100 text-green-800' :
+                        'bg-yellow-100 text-yellow-800'
+                    }">
+                        ${driver.status}
+                    </span>
     </div>
+            `).join('');
+        }
+
+        // Update delivery history
+        function updateDeliveryHistory(assignments) {
+            const tbody = document.getElementById('deliveryHistoryTable');
+            const recentAssignments = assignments.slice(-10); // Last 10 assignments
+            
+            tbody.innerHTML = recentAssignments.map(assignment => `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${assignment.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${assignment.order?.customerName || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${assignment.driver?.name || 'Unassigned'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            assignment.status === 'PENDING' ? 'bg-red-100 text-red-800' :
+                            assignment.status === 'ACCEPTED' ? 'bg-yellow-100 text-yellow-800' :
+                            assignment.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800' :
+                            'bg-green-100 text-green-800'
+                        }">
+                            ${assignment.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${assignment.createdAt ? new Date(assignment.createdAt).toLocaleString() : 'N/A'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="viewDeliveryDetails(${assignment.id})" 
+                                class="text-indigo-600 hover:text-indigo-900">
+                            View Details
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Delivery actions
+        async function startDelivery(assignmentId) {
+            try {
+                await http('POST', `${api}/assignments/${assignmentId}/start`);
+                loadDeliveryData(); // Refresh data
+            } catch (error) {
+                console.error('Failed to start delivery:', error);
+                alert('Failed to start delivery');
+            }
+        }
+
+        async function completeDelivery(assignmentId) {
+            try {
+                await http('POST', `${api}/assignments/${assignmentId}/complete`);
+                loadDeliveryData(); // Refresh data
+            } catch (error) {
+                console.error('Failed to complete delivery:', error);
+                alert('Failed to complete delivery');
+            }
+        }
+
+        function viewRoute(assignmentId) {
+            alert(`Viewing route for delivery ${assignmentId}`);
+            // In real app, this would open a map with the route
+        }
+
+        function viewDeliveryDetails(assignmentId) {
+            alert(`Viewing details for delivery ${assignmentId}`);
+            // In real app, this would open a detailed view
+        }
+
+        function optimizeRoutes() {
+            alert('Optimizing routes...');
+            // In real app, this would optimize delivery routes
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/';
+            }
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDeliveryData();
+            // Refresh data every 30 seconds
+            setInterval(loadDeliveryData, 30000);
+        });
+    </script>
 </body>
 </html>

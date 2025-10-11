@@ -17,6 +17,9 @@ public class DeliverySupervisor {
     @Column(nullable = false, unique = true, length = 320)
     private String email;
 
+    @Column(nullable = false, length = 120)
+    private String name;
+
     // Store a hash (e.g., BCrypt), not plain text
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
@@ -24,9 +27,10 @@ public class DeliverySupervisor {
     public DeliverySupervisor() {
     }
 
-    public DeliverySupervisor(Long id, String email, String passwordHash) {
+    public DeliverySupervisor(Long id, String email, String name, String passwordHash) {
         this.id = id;
         this.email = email;
+        this.name = name;
         this.passwordHash = passwordHash;
     }
 
@@ -44,6 +48,14 @@ public class DeliverySupervisor {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPasswordHash() {

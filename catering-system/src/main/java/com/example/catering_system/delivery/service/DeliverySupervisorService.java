@@ -24,12 +24,13 @@ public class DeliverySupervisorService {
 
     // CREATE
     @Transactional
-    public DeliverySupervisor create(String email, String rawPassword) {
+    public DeliverySupervisor create(String email, String name, String rawPassword) {
         repo.findByEmail(email).ifPresent(s -> {
             throw new IllegalArgumentException("Email already in use: " + email);
         });
         DeliverySupervisor s = new DeliverySupervisor();
         s.setEmail(email);
+        s.setName(name);
         s.setPasswordHash(sha256(rawPassword));
         return repo.save(s);
     }

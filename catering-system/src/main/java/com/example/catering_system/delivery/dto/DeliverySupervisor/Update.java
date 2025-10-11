@@ -1,9 +1,8 @@
 package com.example.catering_system.delivery.dto.DeliverySupervisor;
 
-
 public class Update {
-    private String email;     // optional
-    private String password;  // optional (new password)
+    private String email;   // optional
+    private String password; // optional
 
     public String getEmail() {
         return email;

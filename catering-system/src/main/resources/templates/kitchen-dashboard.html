@@ -3,122 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitchen Dashboard</title>
+    <title>Kitchen Dashboard - Catering System</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
-<nav class="bg-yellow-500 p-4 flex justify-between items-center">
-    <span class="text-white text-2xl font-bold uppercase">Kitchen Dashboard</span>
-    <a href="/admin-dashboard" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600">Admin Dashboard</a>
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-gray-800">Kitchen Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/supervisor/dashboard" class="text-gray-600 hover:text-gray-900">Admin Dashboard</a>
+                    <a href="/delivery/dashboard" class="text-gray-600 hover:text-gray-900">Delivery Dashboard</a>
+                    <a href="/finance/dashboard" class="text-gray-600 hover:text-gray-900">Finance Dashboard</a>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</button>
+                </div>
+            </div>
+        </div>
     </nav>
-    <div class="container mx-auto p-6">
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-2xl font-bold">Kitchen Operations</h2>
-            <div class="flex gap-2">
-                <a href="/orders/pending" class="bg-yellow-500 text-white px-3 py-2 rounded">Pending Orders</a>
-                <a href="/orders/history" class="bg-gray-700 text-white px-3 py-2 rounded">History</a>
+
+    <main class="max-w-7xl mx-auto py-6 px-4">
+        <!-- Kitchen Status Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-red-100 rounded-lg">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Pending Orders</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="pendingOrders">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-yellow-100 rounded-lg">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">In Progress</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="inProgressOrders">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-green-100 rounded-lg">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Ready for Delivery</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="readyOrders">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-2 bg-blue-100 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Completed Today</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="completedToday">0</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="mb-6">
-            <nav class="flex gap-3">
-                <a class="bg-gray-200 px-3 py-1 rounded" href="#menus">Menus</a>
-                <a class="bg-gray-200 px-3 py-1 rounded" href="#orders">Orders</a>
-            </nav>
-        </div>
 
-        <form method="get" action="/kitchen-dashboard" class="mb-4 flex gap-2">
-            <input class="border rounded px-3 py-2" type="text" name="cuisine" placeholder="Filter by cuisine" />
-            <input class="border rounded px-3 py-2" type="text" name="eventType" placeholder="Filter by event type" />
-            <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Filter</button>
-        </form>
-
-        <form class="mb-6 bg-white p-4 rounded shadow" action="/menu/add" method="post" enctype="multipart/form-data">
-            <h3 class="text-xl font-semibold mb-3">Add Menu</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <input class="border rounded px-3 py-2" type="text" name="name" placeholder="Menu name" required />
-                <input class="border rounded px-3 py-2" type="text" name="category" placeholder="Category" required />
-                <input class="border rounded px-3 py-2" type="number" step="0.01" name="price" placeholder="Per-plate price" required />
-                <input class="border rounded px-3 py-2" type="text" name="cuisine" placeholder="Cuisine (e.g., Indian)" />
-                <input class="border rounded px-3 py-2" type="text" name="eventType" placeholder="Event Type (e.g., Wedding)" />
-                <input class="border rounded px-3 py-2" type="file" name="image" accept="image/*" />
-                <textarea class="md:col-span-3 border rounded px-3 py-2" name="description" placeholder="Description"></textarea>
-                <input class="md:col-span-3 border rounded px-3 py-2" type="text" name="dishesIncluded" placeholder="Dishes included (comma-separated)" />
+        <!-- Kitchen Orders Management -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Pending Orders -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Pending Orders</h3>
+                </div>
+                <div class="p-6">
+                    <div id="pendingOrdersList" class="space-y-4">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
             </div>
-            <div class="mt-3">
-                <button class="bg-green-600 text-white px-4 py-2 rounded" type="submit">Create Menu</button>
+
+            <!-- In Progress Orders -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">In Progress Orders</h3>
+                </div>
+                <div class="p-6">
+                    <div id="inProgressOrdersList" class="space-y-4">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
             </div>
-        </form>
-
-        <div id="menus" class="bg-white rounded shadow mb-6">
-            <table class="min-w-full text-left">
-                <thead>
-                    <tr class="border-b">
-                        <th class="p-3">Name</th>
-                        <th class="p-3">Category</th>
-                        <th class="p-3">Cuisine</th>
-                        <th class="p-3">Event Type</th>
-                        <th class="p-3">Price</th>
-                        <th class="p-3">Dishes</th>
-                        <th class="p-3">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="item : ${menuItems}" class="border-b">
-                        <td class="p-3" th:text="${item.name}">Item</td>
-                        <td class="p-3" th:text="${item.category}">Category</td>
-                        <td class="p-3" th:text="${item.cuisine}">Cuisine</td>
-                        <td class="p-3" th:text="${item.eventType}">Event</td>
-                        <td class="p-3" th:text="${item.price}">0.00</td>
-                        <td class="p-3" th:text="${item.dishesIncluded}">-</td>
-                        <td class="p-3">
-                            <form th:action="@{'/kitchen/menu/delete/' + ${item.id}}" method="post">
-                                <button class="bg-red-600 text-white px-3 py-1 rounded" type="submit">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
-        <div class="flex gap-3">
-            <a href="/orders/pending" class="bg-yellow-500 text-white px-4 py-2 rounded">Pending Orders</a>
-            <a href="/orders/history" class="bg-gray-700 text-white px-4 py-2 rounded">Order History</a>
+        <!-- Ready for Delivery -->
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Ready for Delivery</h3>
+            </div>
+            <div class="p-6">
+                <div id="readyOrdersList" class="space-y-4">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
         </div>
 
-        <div id="orders" class="mt-8 bg-white rounded shadow">
-            <div class="p-4 border-b font-semibold">Finance Confirmed Pending Orders</div>
-            <table class="min-w-full text-left">
-                <thead>
-                    <tr class="border-b">
-                        <th class="p-3">Customer</th>
-                        <th class="p-3">Event</th>
-                        <th class="p-3">Guests</th>
-                        <th class="p-3">Menu</th>
-                        <th class="p-3">Total</th>
-                        <th class="p-3">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="o : ${orders}" class="border-b">
-                        <td class="p-3" th:text="${o.customerName}">Name</td>
-                        <td class="p-3" th:text="${#dates.format(o.eventDate, 'yyyy-MM-dd')} + ' - ' + ${o.eventType}">Event</td>
-                        <td class="p-3" th:text="${o.guestCount}">0</td>
-                        <td class="p-3" th:text="${o.selectedMenu}">Menu</td>
-                        <td class="p-3" th:text="${o.totalAmount}">0.00</td>
-                        <td class="p-3">
-                            <form th:action="@{'/orders/' + ${o.id} + '/status'}" method="post" class="inline">
-                                <input type="hidden" name="status" value="In Preparation" />
-                                <button class="bg-yellow-600 text-white px-3 py-1 rounded" type="submit">Start</button>
-                            </form>
-                            <form th:action="@{'/orders/' + ${o.id} + '/status'}" method="post" class="inline ml-2">
-                                <input type="hidden" name="status" value="Ready" />
-                                <button class="bg-blue-600 text-white px-3 py-1 rounded" type="submit">Mark Ready</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Kitchen Inventory -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Kitchen Inventory</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-red-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-red-800 mb-2">Low Stock Items</h4>
+                        <div id="lowStockItems" class="space-y-2">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800 mb-2">Medium Stock Items</h4>
+                        <div id="mediumStockItems" class="space-y-2">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-800 mb-2">Good Stock Items</h4>
+                        <div id="goodStockItems" class="space-y-2">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <script>
+        const api = '/api';
+
+        // Utility functions
+        function $(sel) { return document.querySelector(sel); }
+
+        // HTTP helper
+        async function http(method, url, body) {
+            try {
+                const opts = { method, headers: { 'Content-Type': 'application/json' } };
+                if (body) opts.body = JSON.stringify(body);
+                const res = await fetch(url, opts);
+                if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+                const ct = res.headers.get('content-type') || '';
+                return ct.includes('application/json') ? res.json() : null;
+            } catch (error) {
+                console.error('Request failed:', error);
+                throw error;
+            }
+        }
+
+        // Load kitchen data
+        async function loadKitchenData() {
+            try {
+                const orders = await http('GET', `${api}/orders`);
+                const assignments = await http('GET', `${api}/assignments`);
+                
+                // Calculate kitchen metrics
+                const pendingOrders = orders.filter(o => !o.kitchenStatus || o.kitchenStatus === 'PENDING');
+                const inProgressOrders = orders.filter(o => o.kitchenStatus === 'IN_PROGRESS');
+                const readyOrders = orders.filter(o => o.kitchenStatus === 'READY');
+                const completedToday = orders.filter(o => 
+                    o.kitchenStatus === 'COMPLETED' && 
+                    o.completedAt && 
+                    new Date(o.completedAt).toDateString() === new Date().toDateString()
+                );
+
+                // Update status cards
+                document.getElementById('pendingOrders').textContent = pendingOrders.length;
+                document.getElementById('inProgressOrders').textContent = inProgressOrders.length;
+                document.getElementById('readyOrders').textContent = readyOrders.length;
+                document.getElementById('completedToday').textContent = completedToday.length;
+
+                // Update order lists
+                updateOrderList('pendingOrdersList', pendingOrders, 'PENDING');
+                updateOrderList('inProgressOrdersList', inProgressOrders, 'IN_PROGRESS');
+                updateOrderList('readyOrdersList', readyOrders, 'READY');
+
+                // Update inventory
+                updateInventory();
+
+            } catch (error) {
+                console.error('Failed to load kitchen data:', error);
+            }
+        }
+
+        // Update order list
+        function updateOrderList(containerId, orders, status) {
+            const container = document.getElementById(containerId);
+            if (orders.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center">No orders</p>';
+                return;
+            }
+
+            container.innerHTML = orders.map(order => `
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Order #${order.id}</h4>
+                            <p class="text-sm text-gray-600">${order.customerName || 'N/A'}</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${
+                            status === 'PENDING' ? 'bg-red-100 text-red-800' :
+                            status === 'IN_PROGRESS' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-green-100 text-green-800'
+                        }">
+                            ${status}
+                        </span>
+                    </div>
+                    <div class="text-sm text-gray-600 mb-3">
+                        <p><strong>Pickup:</strong> ${order.pickupAddress || 'N/A'}</p>
+                        <p><strong>Dropoff:</strong> ${order.dropoffAddress || 'N/A'}</p>
+                        <p><strong>Order Time:</strong> ${order.createdAt ? new Date(order.createdAt).toLocaleString() : 'N/A'}</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        ${status === 'PENDING' ? `
+                            <button onclick="updateOrderStatus(${order.id}, 'IN_PROGRESS')" 
+                                    class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">
+                                Start Cooking
+                            </button>
+                        ` : ''}
+                        ${status === 'IN_PROGRESS' ? `
+                            <button onclick="updateOrderStatus(${order.id}, 'READY')" 
+                                    class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">
+                                Mark Ready
+                            </button>
+                        ` : ''}
+                        ${status === 'READY' ? `
+                            <button onclick="updateOrderStatus(${order.id}, 'COMPLETED')" 
+                                    class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                                Mark Completed
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update order status
+        async function updateOrderStatus(orderId, newStatus) {
+            try {
+                await http('PUT', `${api}/orders/${orderId}/kitchen-status`, { status: newStatus });
+                loadKitchenData(); // Refresh data
+            } catch (error) {
+                console.error('Failed to update order status:', error);
+                alert('Failed to update order status');
+            }
+        }
+
+        // Update inventory (placeholder data)
+        function updateInventory() {
+            const lowStockItems = [
+                { name: 'Chicken Breast', stock: 5, unit: 'kg' },
+                { name: 'Rice', stock: 2, unit: 'kg' },
+                { name: 'Tomatoes', stock: 3, unit: 'kg' }
+            ];
+
+            const mediumStockItems = [
+                { name: 'Onions', stock: 15, unit: 'kg' },
+                { name: 'Potatoes', stock: 20, unit: 'kg' },
+                { name: 'Garlic', stock: 8, unit: 'kg' }
+            ];
+
+            const goodStockItems = [
+                { name: 'Salt', stock: 50, unit: 'kg' },
+                { name: 'Pepper', stock: 30, unit: 'kg' },
+                { name: 'Oil', stock: 25, unit: 'L' }
+            ];
+
+            document.getElementById('lowStockItems').innerHTML = lowStockItems.map(item => 
+                `<div class="text-sm">${item.name}: ${item.stock} ${item.unit}</div>`
+            ).join('');
+
+            document.getElementById('mediumStockItems').innerHTML = mediumStockItems.map(item => 
+                `<div class="text-sm">${item.name}: ${item.stock} ${item.unit}</div>`
+            ).join('');
+
+            document.getElementById('goodStockItems').innerHTML = goodStockItems.map(item => 
+                `<div class="text-sm">${item.name}: ${item.stock} ${item.unit}</div>`
+            ).join('');
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/';
+            }
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadKitchenData();
+            // Refresh data every 30 seconds
+            setInterval(loadKitchenData, 30000);
+        });
+    </script>
 </body>
 </html>

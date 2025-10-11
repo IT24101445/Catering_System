@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class DeliverySupervisorController {
 
     private final DeliverySupervisorService service;
-
     public DeliverySupervisorController(DeliverySupervisorService service) {
         this.service = service;
     }
@@ -29,7 +28,7 @@ public class DeliverySupervisorController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Create req) {
         try {
-            DeliverySupervisor s = service.create(req.getEmail(), req.getPassword());
+            DeliverySupervisor s = service.create(req.getEmail(), req.getName(), req.getPassword());
             Response body = toResponse(s);
             return ResponseEntity.created(URI.create("/api/supervisors/" + s.getId())).body(body);
         } catch (IllegalArgumentException ex) {
@@ -96,6 +95,7 @@ public class DeliverySupervisorController {
         Response dto = new Response();
         dto.setId(s.getId());
         dto.setEmail(s.getEmail());
+        dto.setName(s.getName());
         return dto;
     }
 }

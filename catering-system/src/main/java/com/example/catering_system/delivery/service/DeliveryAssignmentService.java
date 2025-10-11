@@ -164,6 +164,7 @@ public class DeliveryAssignmentService {
         if (d == null) throw new IllegalStateException("Assignment has no driver");
         d.setStatus("AVAILABLE");
         a.setStatus("COMPLETED");
+        a.setCompletedAt(java.time.LocalDateTime.now());
         driverRepo.save(d);
         return repo.save(a);
     }

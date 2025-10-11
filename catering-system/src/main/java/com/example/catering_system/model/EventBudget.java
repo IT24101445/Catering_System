@@ -19,5 +19,44 @@ public class EventBudget {
     private double amountSpent;
 
     // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public double getBudgetAmount() {
+        return budgetAmount;
+    }
+
+    public void setBudgetAmount(double budgetAmount) {
+        this.budgetAmount = budgetAmount;
+    }
+
+    public Date getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(Date eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    public double getAmountSpent() {
+        return amountSpent;
+    }
+
+    public void setAmountSpent(double amountSpent) {
+        this.amountSpent = amountSpent;
+    }
 }
 

@@ -3,6 +3,7 @@ package com.example.catering_system.delivery.dto.DeliverySupervisor;
 
 public class Create {
     private String email;
+    private String name;
     private String password;
 
     public String getEmail() {
@@ -11,6 +12,14 @@ public class Create {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {

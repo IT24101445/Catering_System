@@ -88,7 +88,12 @@
                 refreshDrivers();
             } else if (btn.dataset.action === 'update') {
                 const data = {};
-                tr.querySelectorAll('input[data-field]').forEach(inp => { const v = inp.value.trim(); if (v) data[inp.dataset.field] = v; });
+                // Handle both input and select elements
+                tr.querySelectorAll('input[data-field], select[data-field]').forEach(elem => { 
+                    const v = elem.value.trim(); 
+                    if (v) data[elem.dataset.field] = v; 
+                });
+                console.log('Updating driver with data:', data);
                 await http('PUT', `${api}/drivers/${id}`, data);
                 refreshDrivers();
             }

@@ -34,6 +34,12 @@ public class DeliveryAssignment {
     @Column(nullable = false, length = 20)
     private String status = "PENDING"; // PENDING, ACCEPTED, DECLINED, IN_PROGRESS, COMPLETED
 
+    @Column(name = "created_at")
+    private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
+
+    @Column(name = "completed_at")
+    private java.time.LocalDateTime completedAt;
+
     public DeliveryAssignment() {
     }
 
@@ -83,5 +89,21 @@ public class DeliveryAssignment {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public java.time.LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(java.time.LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public java.time.LocalDateTime getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(java.time.LocalDateTime completedAt) {
+        this.completedAt = completedAt;
     }
 }

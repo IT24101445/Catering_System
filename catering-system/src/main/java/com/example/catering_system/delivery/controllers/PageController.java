@@ -57,4 +57,9 @@ public class PageController {
     public String driverSignup() {
         return "driver-signup";
     }
+
+    @GetMapping("/test")
+    public String systemTest() {
+        return "system-test";
+    }
 }

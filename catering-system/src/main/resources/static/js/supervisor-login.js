@@ -8,7 +8,7 @@
     if (!form) return;
 
     async function login(email, password) {
-        const res = await fetch(`${window.APP_CONFIG?.apiBase || ''}/supervisors/login`, {
+        const res = await fetch(`${window.APP_CONFIG?.apiBase || ''}/supervisor/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
