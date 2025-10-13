@@ -36,6 +36,13 @@ public class MenuItem {
     @Column(name = "dishes_included")
     private String dishesIncluded; // comma-separated dishes
 
+    // Inventory tracking
+    @Column(name = "stock_level")
+    private Integer stockLevel;
+
+    @Column(name = "available")
+    private Boolean available = true;
+
     public Long getId() {
         return id;
     }
@@ -115,5 +122,11 @@ public class MenuItem {
     public void setDishesIncluded(String dishesIncluded) {
         this.dishesIncluded = dishesIncluded;
     }
+    
+    public Integer getStockLevel() { return stockLevel; }
+    public void setStockLevel(Integer stockLevel) { this.stockLevel = stockLevel; }
+
+    public Boolean getAvailable() { return available; }
+    public void setAvailable(Boolean available) { this.available = available; }
     // Getters and Setters
 }

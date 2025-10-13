@@ -21,6 +21,10 @@ public class Delivery {
     @Column(nullable = false, length = 40)
     private String status = "PENDING";
 
+    // Proof of delivery (simple reference/path or signature blob key)
+    @Column(name = "pod_signature_ref")
+    private String proofOfDeliverySignatureRef;
+
     public Delivery() {
     }
 
@@ -61,5 +65,13 @@ public class Delivery {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getProofOfDeliverySignatureRef() {
+        return proofOfDeliverySignatureRef;
+    }
+
+    public void setProofOfDeliverySignatureRef(String proofOfDeliverySignatureRef) {
+        this.proofOfDeliverySignatureRef = proofOfDeliverySignatureRef;
     }
 }

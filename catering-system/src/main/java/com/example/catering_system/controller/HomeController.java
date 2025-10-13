@@ -9,12 +9,12 @@ public class HomeController {
     // Redirect root ("/") to /home
     @GetMapping("/")
     public String homeRedirect() {
-        return "home";  // Redirect to /home which is the landing page
+        return "forward:/index.html";  // Serve the static welcome page
     }
 
     // Render the home page
     @GetMapping("/home")
     public String homePage() {
-        return "home";  // Ensure this matches the name of the home.html template
+        return "forward:/index.html";  // Align with static landing page
     }
 }

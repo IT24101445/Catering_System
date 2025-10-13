@@ -35,6 +35,19 @@ public class OrderService {
     public void confirmPayment(Long id) {
         orderRepository.findById(id).ifPresent(o -> { o.setPaymentConfirmed(true); orderRepository.save(o); });
     }
+
+    // Kitchen status pipeline
+    public void updateOrderStatus(Long id, String newStatus) {
+        orderRepository.findById(id).ifPresent(o -> {
+            o.setStatus(newStatus);
+            orderRepository.save(o);
+        });
+    }
+
+    // Queue sorted by delivery time
+    public List<Order> getQueueByDeliveryTime() {
+        return orderRepository.findAllByOrderByDeliveryTimeAsc();
+    }
 }
 
 

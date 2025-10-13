@@ -56,6 +56,13 @@ public class Order {
     @Column(name = "payment_confirmed")
     private Boolean paymentConfirmed = false;
 
+    // Kitchen and scheduling enhancements
+    @Column(name = "special_instructions")
+    private String specialInstructions;
+
+    @Column(name = "delivery_time")
+    private java.time.LocalDateTime deliveryTime;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Long getCustomerId() { return customerId; }
@@ -88,6 +95,12 @@ public class Order {
     public void setStatus(String status) { this.status = status; }
     public Boolean getPaymentConfirmed() { return paymentConfirmed; }
     public void setPaymentConfirmed(Boolean paymentConfirmed) { this.paymentConfirmed = paymentConfirmed; }
+
+    public String getSpecialInstructions() { return specialInstructions; }
+    public void setSpecialInstructions(String specialInstructions) { this.specialInstructions = specialInstructions; }
+
+    public java.time.LocalDateTime getDeliveryTime() { return deliveryTime; }
+    public void setDeliveryTime(java.time.LocalDateTime deliveryTime) { this.deliveryTime = deliveryTime; }
 }
 
 

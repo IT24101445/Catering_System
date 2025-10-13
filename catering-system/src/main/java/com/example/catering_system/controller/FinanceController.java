@@ -58,6 +58,11 @@ public class FinanceController {
         model.addAttribute("totalPaid", totalPaid);
         model.addAttribute("newCandidates", newCandidates);
         model.addAttribute("recentPayments", thisMonthPayments.stream().limit(10).collect(Collectors.toList()));
+        // Revenue overview (simple example)
+        double paid = invoiceService.getAllInvoices().stream().filter(i -> "Paid".equalsIgnoreCase(i.getStatus())).mapToDouble(i -> i.getAmount()).sum();
+        double pending = invoiceService.getAllInvoices().stream().filter(i -> "Unpaid".equalsIgnoreCase(i.getStatus()) || "Pending".equalsIgnoreCase(i.getStatus())).mapToDouble(i -> i.getAmount()).sum();
+        model.addAttribute("revPaid", paid);
+        model.addAttribute("revPending", pending);
         return "finance-dashboard";
     }
 

@@ -27,4 +27,10 @@ public class InvoiceService {
             invoiceRepository.save(inv);
         });
     }
+
+    public double sumAmountByStatus(String status) {
+        return invoiceRepository.findAll().stream()
+                .filter(i -> status.equalsIgnoreCase(i.getStatus()))
+                .mapToDouble(Invoice::getAmount).sum();
+    }
 }

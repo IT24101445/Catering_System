@@ -35,4 +35,20 @@ public class MenuService {
             menuItemRepository.save(item);
         });
     }
+
+    // Inventory operations
+    public void updateStock(Long id, int newStockLevel) {
+        menuItemRepository.findById(id).ifPresent(item -> {
+            item.setStockLevel(newStockLevel);
+            item.setAvailable(newStockLevel > 0);
+            menuItemRepository.save(item);
+        });
+    }
+
+    public void toggleAvailability(Long id, boolean available) {
+        menuItemRepository.findById(id).ifPresent(item -> {
+            item.setAvailable(available);
+            menuItemRepository.save(item);
+        });
+    }
 }

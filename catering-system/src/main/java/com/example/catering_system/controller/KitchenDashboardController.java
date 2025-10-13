@@ -31,8 +31,14 @@ public class KitchenDashboardController {
         } else {
             model.addAttribute("menuItems", menuService.getAllMenuItems());
         }
-        model.addAttribute("orders", orderService.getKitchenPending());
+        model.addAttribute("orders", orderService.getQueueByDeliveryTime());
         return "kitchen-dashboard"; // Renders kitchen-dashboard.html
+    }
+
+    @PostMapping("/kitchen/order/{id}/status")
+    public String updateKitchenStatus(@PathVariable Long id, @RequestParam String status) {
+        orderService.updateOrderStatus(id, status);
+        return "redirect:/kitchen-dashboard";
     }
 
     @GetMapping("/kitchen")

@@ -58,6 +58,15 @@ public class DeliveryService {
         return repo.save(d);
     }
 
+    // Proof of delivery capture
+    @Transactional
+    public Delivery attachProofOfDelivery(Long id, String signatureRef) {
+        Delivery d = repo.findById(id).orElseThrow(() -> new NoSuchElementException("Delivery not found"));
+        d.setProofOfDeliverySignatureRef(signatureRef);
+        d.setStatus("DELIVERED");
+        return repo.save(d);
+    }
+
     // DELETE
     @Transactional
     public void delete(Long id) {

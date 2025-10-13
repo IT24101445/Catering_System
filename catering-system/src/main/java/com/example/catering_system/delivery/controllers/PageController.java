@@ -4,11 +4,13 @@ package com.example.catering_system.delivery.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/delivery")
 public class PageController {
 
-    @GetMapping({"/", "/home"})
+    @GetMapping({"/", "/home", ""})
     public String home() {
         return "supervisor-login"; // default to login
     }
