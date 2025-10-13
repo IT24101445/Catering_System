@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class InvoiceController {
@@ -22,6 +21,7 @@ public class InvoiceController {
     @PostMapping("/invoice/mark-paid")
     public String markInvoiceAsPaid(Long invoiceId) {
         // Logic to mark invoice as paid in the database
+        invoiceService.markPaid(invoiceId);
         return "redirect:/invoices";  // Redirect back to invoice list
     }
 }

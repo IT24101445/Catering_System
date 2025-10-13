@@ -1,9 +1,6 @@
 package com.example.catering_system.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class MenuItem {
@@ -11,14 +8,32 @@ public class MenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(name = "name")
     private String name;
+    
+    @Column(name = "description")
     private String description;
+    
+    @Column(name = "price")
     private double price;
+    
+    @Column(name = "image_url")
     private String imageUrl;
+    
+    @Column(name = "category")
     private String category;
+    
+    @Column(name = "cuisine")
     private String cuisine; // e.g., Indian, Italian
+    
+    @Column(name = "event_type")
     private String eventType; // e.g., Wedding, Corporate
+    
+    @Column(name = "archived")
     private Boolean archived = false;
+    
+    @Column(name = "dishes_included")
     private String dishesIncluded; // comma-separated dishes
 
     public Long getId() {

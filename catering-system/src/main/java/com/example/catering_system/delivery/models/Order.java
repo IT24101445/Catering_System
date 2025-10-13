@@ -3,7 +3,7 @@ package com.example.catering_system.delivery.models;
 
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name = "DeliveryOrder")
 @Table(name = "orders") // avoid SQL reserved word "ORDER"
 public class Order {
 
@@ -20,7 +20,7 @@ public class Order {
     @Column(name = "dropoff_address", nullable = false, length = 500)
     private String dropoffAddress;
 
-    @Column(name = "amount", precision = 10, scale = 2)
+    @Column(name = "amount")
     private Double amount;
 
     @Column(name = "kitchen_status", length = 20)

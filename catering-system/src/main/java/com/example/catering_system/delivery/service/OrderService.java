@@ -4,18 +4,19 @@ package com.example.catering_system.delivery.service;
 
 import com.example.catering_system.delivery.repository.OrderRepository;
 import com.example.catering_system.delivery.models.Order;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
-@Service
+@Service("deliveryOrderService")
 public class OrderService {
 
     private final OrderRepository repo;
 
-    public OrderService(OrderRepository repo) {
+    public OrderService(@Qualifier("deliveryOrderRepository") OrderRepository repo) {
         this.repo = repo;
     }
 

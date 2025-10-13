@@ -1,10 +1,6 @@
 package com.example.catering_system.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -12,10 +8,19 @@ public class EventBudget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    
+    @Column(name = "event_name")
     private String eventName;
+    
+    @Column(name = "budget_amount")
     private double budgetAmount;
+    
+    @Column(name = "event_date")
     private Date eventDate;
+    
+    @Column(name = "amount_spent")
     private double amountSpent;
 
     // Getters and Setters

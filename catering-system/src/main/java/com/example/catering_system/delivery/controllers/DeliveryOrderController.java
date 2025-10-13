@@ -3,19 +3,20 @@ package com.example.catering_system.delivery.controllers;
 import com.example.catering_system.delivery.dto.DeliverySupervisor.ApiError;
 import com.example.catering_system.delivery.models.Order;
 import com.example.catering_system.delivery.repository.OrderRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-@RestController
+@RestController("deliveryOrderController")
 @RequestMapping("/api/delivery-orders")
 public class DeliveryOrderController {
 
     private final OrderRepository orderRepository;
 
-    public DeliveryOrderController(OrderRepository orderRepository) {
+    public DeliveryOrderController(@Qualifier("deliveryOrderRepository") OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 

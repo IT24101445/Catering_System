@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
+@Repository("deliveryOrderRepository")
 public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByCustomerNameIgnoreCase(String customerName);
 }

@@ -3,7 +3,7 @@ package com.example.catering_system.model;
 import jakarta.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity(name = "CustomerOrder")
 @Table(name = "customer_order")
 public class Order {
 
@@ -11,25 +11,49 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "customer_id")
     private Long customerId;
+    
+    @Column(name = "customer_name")
     private String customerName;
+    
+    @Column(name = "customer_phone")
     private String customerPhone;
+    
+    @Column(name = "customer_email")
     private String customerEmail;
 
+    @Column(name = "event_date")
     private Date eventDate;
+    
+    @Column(name = "event_type")
     private String eventType;
+    
+    @Column(name = "location")
     private String location;
+    
+    @Column(name = "guest_count")
     private Integer guestCount;
+    
+    @Column(name = "dietary_requirements")
     private String dietaryRequirements;
 
+    @Column(name = "selected_menu")
     private String selectedMenu; // comma-separated names or ids
+    
+    @Column(name = "cuisines")
     private String cuisines; // comma-separated
 
+    @Column(name = "per_plate_price")
     private Double perPlatePrice;
+    
+    @Column(name = "total_amount")
     private Double totalAmount;
 
+    @Column(name = "status")
     private String status; // Pending, In Preparation, Ready, Completed
 
+    @Column(name = "payment_confirmed")
     private Boolean paymentConfirmed = false;
 
     public Long getId() { return id; }

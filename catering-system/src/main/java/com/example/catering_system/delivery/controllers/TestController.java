@@ -4,6 +4,7 @@ import com.example.catering_system.delivery.models.Driver;
 import com.example.catering_system.delivery.models.Order;
 import com.example.catering_system.delivery.repository.DriverRepository;
 import com.example.catering_system.delivery.repository.OrderRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class TestController {
     private final DriverRepository driverRepository;
     private final OrderRepository orderRepository;
 
-    public TestController(DriverRepository driverRepository, OrderRepository orderRepository) {
+    public TestController(DriverRepository driverRepository, @Qualifier("deliveryOrderRepository") OrderRepository orderRepository) {
         this.driverRepository = driverRepository;
         this.orderRepository = orderRepository;
     }

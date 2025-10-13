@@ -1,9 +1,6 @@
 package com.example.catering_system.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -11,11 +8,22 @@ public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    
+    @Column(name = "customer_id")
     private Long customerId;
+    
+    @Column(name = "amount")
     private double amount;
+    
+    @Column(name = "issue_date")
     private Date issueDate;
+    
+    @Column(name = "due_date")
     private Date dueDate;
+    
+    @Column(name = "status")
     private String status;  // Paid/Unpaid
 
     public Long getId() {
