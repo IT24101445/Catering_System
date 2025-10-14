@@ -3,185 +3,330 @@
 
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Golden Dish Catering</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* Basic Styling */
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
-            color: #333;
+            font-family: 'Lato', sans-serif;
+            color: #333333;
         }
 
-        header {
-    position: relative;
-    background-image: url('resources/static/header-image.jpg');
-    background-size: cover;
-    background-position: center;
-    padding: 100px 0;
-    text-align: center;
-}
-
-.header-text {
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
-    padding: 20px;
-    display: inline-block;
-    border-radius: 8px;
-}
-
-header h1, header p {
-    color: white;
-}
-
-
-        header h1 {
-            font-size: 3em;
-            margin: 0;
-        }
-
-        header p {
-            font-size: 1.5em;
-            margin-top: 20px;
-        }
-
-        .menu-section {
-            padding: 50px 0;
-            text-align: center;
-        }
-
-        .menu-section h2 {
-            font-size: 2.5em;
-            color: #e4a801;
-        }
-
-        .menu-section p {
-            font-size: 1.2em;
-            color: #555;
-            margin-top: 10px;
-        }
-
-        .button-group {
-            margin-top: 20px;
-        }
-
-        .button-group a {
-            padding: 10px 30px;
-            text-decoration: none;
-            background-color: #e4a801;
-            color: white;
-            font-size: 1.2em;
-            border-radius: 25px;
-            margin: 10px;
-            transition: background-color 0.3s;
-        }
-
-        .button-group a:hover {
-            background-color: #d27c00;
-        }
-
-        .admin-login-button {
-            padding: 12px 40px;
-            text-decoration: none;
-            background-color: #333;
-            color: white;
-            font-size: 1.2em;
-            border-radius: 25px;
-            margin: 20px;
-            transition: background-color 0.3s;
-        }
-
-        .admin-login-button:hover {
-            background-color: #444;
-        }
-
-        .footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .footer p {
-            margin: 0;
-        }
+        /* Navbar Styling */
         .navbar {
-            background-color: #e4a801; /* Yellow background */
-            padding: 10px 20px;
+            background-color: #333333;
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar .logo img {
+            width: 50px;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 10px;
         }
 
         .navbar a {
             color: white;
             text-decoration: none;
-            padding: 10px 20px;
-            font-size: 1.1em;
-            font-weight: bold;
+            padding: 10px 18px;
+            font-size: 0.95rem;
+            font-weight: 500;
             text-transform: uppercase;
             transition: background-color 0.3s ease;
+            border-radius: 4px;
         }
 
         .navbar a:hover {
-            background-color: #d27c00; /* Darker yellow when hovered */
+            background-color: #FFD700;
+            color: #333;
         }
-          /* Logo image styling */
-    .logo img {
-        width: 50px;  /* Adjust size of the logo */
-        height: auto;
-        border-radius: 8px;  /* Optional: Adds rounded corners */
-    }
+
+        /* Header Banner */
+        .header-banner {
+            background-image: url('/images/header-image.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .header-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
+        }
+        
+        .header-banner h1 {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            z-index: 2;
+            text-align: center;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Tagline Section */
+        .tagline {
+            background-color: #FFF9E6;
+            padding: 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        /* Menus Section */
+        .menus-section {
+            padding: 4rem 2rem;
+            text-align: center;
+            background-color: #ffffff;
+        }
+        
+        .menus-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .menus-description {
+            color: #666;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .menu-card {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-top: 5px solid #FFD700;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .menu-card h3 {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        
+        .menu-card p {
+            color: #777;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333333;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .navbar .nav-links {
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .header-banner h1 {
+                font-size: 2.5rem;
+                padding: 0 20px;
+            }
+            
+            .menus-section h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Page Transition Animations */
+        body {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 215, 0, 0.3);
+            border-top-color: #FFD700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #FFD700;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            font-weight: 500;
+        }
     </style>
 </head>
 
 <body>
-
-<div class="navbar">
-    <div class="logo">
-        <img src="/images/logo.png" alt="Golden Dish Logo">
-
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Redirecting...</div>
     </div>
-    <div>
-        <a href="/">Home</a>
-        <a href="/supervisor/login">Supervisor Login</a>
-        <a href="/driver/login">Driver Login</a>
-        <a href="/driver/signup">Driver Signup</a>
-    </div>
-</div>
-<!-- Header Section -->
-<header style="background-image: url('/images/header-image.jpg'); background-size: cover; background-position: center; padding: 100px 0; text-align: center; color: white;">
-    <h1>Welcome to Golden Dish Catering</h1>
-    <p>We provide exquisite food for your special occasions</p>
-</header>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="/images/logo.png" alt="Golden Dish Logo">
+        </div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/delivery/supervisor/login">Supervisor Login</a>
+            <a href="/delivery/driver/login">Driver Login</a>
+            <a href="/customer">Customer Service Login</a>
+            <a href="/event/login">Event Coordinator Login</a>
+        </div>
+    </nav>
 
+    <!-- Header Banner -->
+    <header class="header-banner">
+        <h1>Golden Dish Catering</h1>
+    </header>
 
+    <!-- Tagline Section -->
+    <section class="tagline">
+        <p>We provide exquisite food for your special occasions.</p>
+    </section>
 
+    <!-- Menus Section -->
+    <section class="menus-section">
+        <h2>Our Special Menus</h2>
+        <p class="menus-description">Dedicated to providing a memorable culinary experience with exceptional food quality.</p>
+        
+        <div class="menu-grid">
+            <div class="menu-card">
+                <h3>Continental Menu</h3>
+                <p>Elegant European classics crafted with finesse.</p>
+            </div>
+            <div class="menu-card">
+                <h3>Occasion-Based Menus</h3>
+                <p>Tailored perfectly for weddings, corporate events, and more.</p>
+            </div>
+            <div class="menu-card">
+                <h3>Fusion Menu</h3>
+                <p>A creative blend of global flavors and techniques.</p>
+            </div>
+            <div class="menu-card">
+                <h3>Kids Menu</h3>
+                <p>Fun, healthy, and delicious options for the little ones.</p>
+            </div>
+        </div>
+    </section>
 
-<!-- Menu Section -->
-<div class="menu-section">
-    <h2>Our Special Menus</h2>
-    <p>Dedicated to providing a memorable culinary experience with exceptional food quality</p>
-
-    <div class="button-group">
-        <a href="#continental">Continental Menu</a>
-        <a href="#occasion">Occasion-Based Menus</a>
-        <a href="#fusion">Fusion Menu</a>
-        <a href="#kids">Kids Menu</a>
-    </div>
-</div>
-
-
-
-
-
-<!-- Footer Section -->
-<div class="footer">
-    <p>&copy; 2025 Golden Dish Catering. All Rights Reserved.</p>
-</div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Golden Dish Catering. All Rights Reserved.</p>
+    </footer>
 
 </body>
+
+<script>
+  (function() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const next = params.get('next');
+      
+      if (next === 'event-login' || next === 'event-register') {
+        // Add fade-out animation
+        document.body.style.transition = 'opacity 0.5s ease-out';
+        document.body.style.opacity = '1';
+        
+        setTimeout(function() {
+          document.body.style.opacity = '0';
+        }, 100);
+        
+        setTimeout(function() {
+          if (next === 'event-login') {
+            window.location.href = '/event/login';
+          } else if (next === 'event-register') {
+            window.location.href = '/event/register';
+          }
+        }, 600);
+      }
+    } catch (e) { /* no-op */ }
+  })();
+</script>
 
 </html>
