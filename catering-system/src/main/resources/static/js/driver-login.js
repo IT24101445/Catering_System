@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const driver = await response.json();
                 // Store driver info in sessionStorage
                 sessionStorage.setItem('driver', JSON.stringify(driver));
-                // Redirect to driver dashboard
-                window.location.href = '/driver/dashboard';
+                // Redirect to driver dashboard (correct route under /delivery)
+                window.location.href = '/delivery/driver/dashboard';
             } else {
                 const error = await response.json();
                 showError(error.message || 'Login failed');

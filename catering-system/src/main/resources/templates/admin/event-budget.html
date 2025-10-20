@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Budgets</title>
+    <style>
+        /* Inline styles for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ff9800;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .budget-list {
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        footer {
+            background-color: #f8f8f8;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            const eventName = document.getElementById('eventName').value.trim();
+            const budgetAmount = document.getElementById('budgetAmount').value;
+            const eventDate = document.getElementById('eventDate').value;
+            
+            if (!eventName) {
+                alert('Please enter an event name');
+                return false;
+            }
+            
+            if (!budgetAmount || budgetAmount <= 0) {
+                alert('Please enter a valid budget amount greater than 0');
+                return false;
+            }
+            
+            if (!eventDate) {
+                alert('Please select an event date');
+                return false;
+            }
+            
+            console.log('Form validation passed, submitting...');
+            return true;
+        }
+    </script>
+</head>
+<body>
+<header>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Event Budgets</h1>
+        <div>
+            <a href="/home" style="color: white; text-decoration: none; margin-right: 15px; padding: 8px 15px; background-color: rgba(255,255,255,0.2); border-radius: 5px;">Home</a>
+            <a href="/finance-dashboard" style="color: white; text-decoration: none; padding: 8px 15px; background-color: rgba(255,255,255,0.2); border-radius: 5px;">Finance Dashboard</a>
+        </div>
+    </div>
+</header>
+<main>
+    <!-- Success/Error Messages -->
+    <div th:if="${success}" class="alert alert-success" style="margin: 20px; padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
+        <span th:text="${success}"></span>
+    </div>
+    
+    <div th:if="${error}" class="alert alert-error" style="margin: 20px; padding: 15px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;">
+        <span th:text="${error}"></span>
+    </div>
+
+    <!-- Add Event Budget Form -->
+    <div class="budget-form" style="margin: 20px; padding: 20px; background-color: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <h2>Add New Event Budget</h2>
+        <form th:action="@{/event-budget/add}" th:object="${eventBudget}" method="post" style="display: flex; flex-direction: column; gap: 10px;" onsubmit="return validateForm()">
+            <div>
+                <label for="eventName" style="display: block; margin-bottom: 5px; font-weight: bold;">Event Name:</label>
+                <input type="text" th:field="*{eventName}" id="eventName" placeholder="Enter event name" required 
+                       style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+            
+            <div>
+                <label for="budgetAmount" style="display: block; margin-bottom: 5px; font-weight: bold;">Budget Amount ($):</label>
+                <input type="number" th:field="*{budgetAmount}" id="budgetAmount" placeholder="Enter budget amount" 
+                       step="0.01" min="0" required 
+                       style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+            
+            <div>
+                <label for="eventDate" style="display: block; margin-bottom: 5px; font-weight: bold;">Event Date:</label>
+                <input type="date" th:field="*{eventDate}" id="eventDate" required 
+                       style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+            
+            <div>
+                <label for="amountSpent" style="display: block; margin-bottom: 5px; font-weight: bold;">Amount Spent ($):</label>
+                <input type="number" th:field="*{amountSpent}" id="amountSpent" placeholder="Enter amount spent" 
+                       step="0.01" min="0" value="0" 
+                       style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+            
+            <button type="submit" style="padding: 12px 20px; background-color: #ff9800; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                Add Event Budget
+            </button>
+        </form>
+    </div>
+    
+    <div class="budget-list">
+        <h2>Event Budget List</h2>
+        <div th:if="${#lists.isEmpty(eventBudgets)}" style="text-align: center; padding: 40px; color: #666;">
+            <p>No event budgets found. Add your first event budget above!</p>
+        </div>
+        <div th:unless="${#lists.isEmpty(eventBudgets)}">
+            <div class="budget-item" style="background-color: #f8f9fa; font-weight: bold;">
+                <div>Event Name</div>
+                <div>Budget Amount</div>
+                <div>Amount Spent</div>
+                <div>Event Date</div>
+                <div>Status</div>
+            </div>
+            <div class="budget-item" th:each="budget : ${eventBudgets}" style="border-left: 4px solid #ff9800;">
+                <div th:text="${budget.eventName}">Event Name</div>
+                <div th:text="'$' + ${#numbers.formatDecimal(budget.budgetAmount, 1, 2)}">Budget Amount</div>
+                <div th:text="'$' + ${#numbers.formatDecimal(budget.amountSpent, 1, 2)}">Amount Spent</div>
+                <div th:text="${#dates.format(budget.eventDate, 'yyyy-MM-dd')}">Event Date</div>
+                <div th:style="${budget.amountSpent > budget.budgetAmount} ? 'color: red; font-weight: bold;' : 'color: green;'"
+                     th:text="${budget.amountSpent > budget.budgetAmount} ? 'OVER BUDGET' : 'ON TRACK'">Status</div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <p>&copy; 2025 Catering System</p>
+</footer>
+</body>
+</html>

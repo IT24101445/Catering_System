@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Registration - Event Management</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f8f8; color: #333; }
+    .navbar { background-color: #e4a801; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .navbar a { color: white; text-decoration: none; padding: 10px 20px; font-size: 1.1em; font-weight: bold; text-transform: uppercase; transition: background-color 0.3s ease; }
+    .navbar a:hover { background-color: #d27c00; }
+    .logo img { width: 50px; height: auto; border-radius: 8px; }
+    header { background-color: #000; color: white; text-align: center; padding: 30px 0; }
+    header h1 { font-size: 2.2em; margin: 0; }
+    header p  { font-size: 1.1em; margin-top: 10px; }
+    
+    /* Registration form enhancements */
+    .register-container { 
+      background: linear-gradient(135deg, black 50%, gray 50%);
+      min-height: 60vh;
+      padding: 40px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .register-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      padding: 2rem;
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    .register-title {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+      color: #555;
+      font-size: 0.9rem;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #e4a801;
+      box-shadow: 0 0 0 3px rgba(228, 168, 1, 0.1);
+    }
+    
+    .register-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #e4a801 0%, #d27c00 100%);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .register-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(228, 168, 1, 0.3);
+    }
+    
+    .register-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .error-message {
+      background: #fee;
+      border: 1px solid #fcc;
+      color: #c33;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 1rem;
+      font-size: 12px;
+    }
+    
+    .success-message {
+      background: #efe;
+      border: 1px solid #cfc;
+      color: #363;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 1rem;
+      font-size: 12px;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .form-row .form-group {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>User Registration</h1>
+  <p>Create your account to access the event management system</p>
+</header>
+
+<div class="register-container">
+  <div class="register-card">
+    <h2 class="register-title">
+      <i class="fas fa-user-plus"></i>
+      Create New Account
+    </h2>
+    
+    <form id="register-form" autocomplete="off">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">
+            <i class="fas fa-user"></i> First Name
+          </label>
+          <input id="firstName" type="text" required placeholder="Enter your first name" />
+        </div>
+        
+        <div class="form-group">
+          <label for="lastName">
+            <i class="fas fa-user"></i> Last Name
+          </label>
+          <input id="lastName" type="text" required placeholder="Enter your last name" />
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">
+          <i class="fas fa-envelope"></i> Email Address
+        </label>
+        <input id="email" type="email" required placeholder="Enter your email" />
+      </div>
+      
+      <div class="form-group">
+        <label for="password">
+          <i class="fas fa-lock"></i> Password
+        </label>
+        <input id="password" type="password" required placeholder="Enter your password" />
+      </div>
+      
+      <div class="form-group">
+        <label for="confirmPassword">
+          <i class="fas fa-lock"></i> Confirm Password
+        </label>
+        <input id="confirmPassword" type="password" required placeholder="Confirm your password" />
+      </div>
+      
+      <button id="register-btn" type="button" class="register-btn">
+        <i class="fas fa-user-plus"></i> Create Account
+      </button>
+    </form>
+
+    <div id="info" class="hidden"></div>
+
+    <div id="fail-box" class="hidden">
+      <div class="error-message">
+        <p><strong>Registration failed.</strong></p>
+        <p id="fail-text">Please check your information and try again.</p>
+        <div style="margin-top: 1rem; text-align: center;">
+          <button id="try-again" class="register-btn" style="width: auto; padding: 8px 16px; font-size: 14px;">
+            <i class="fas fa-redo"></i> Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 2rem; text-align: center; font-size: 14px; color: #666;">
+      <p>Already have an account? <a href="/login" style="color: #e4a801; text-decoration: none; font-weight: 600;">Login here</a></p>
+    </div>
+  </div>
+</div>
+
+<div class="bg-[#333] text-white text-center py-2">
+  <p style="font-size: 12px;">&copy; 2025 Golden Dish Caterings </p>
+</div>
+
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<script defer src="/js/register.js?v=2"></script>
+
+</body>
+</html>

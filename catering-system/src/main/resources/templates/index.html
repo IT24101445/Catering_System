@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management - Catering System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito Sans', sans-serif;
+        }
+
+        :root {
+            --primary: #c41e3a;
+            --secondary: #2c5530;
+            --accent: #f8b500;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --white: #FFFFFF;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #007bff;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #a0162c;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header Styles */
+        header {
+            background-color:rgba(15, 23, 42, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin-bottom: 0;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #f0f0f0;
+        }
+
+        .user-email {
+            color: #28a745 !important;
+            font-weight: 600 !important;
+        }
+
+        .user-email:hover {
+            color: lightgreen !important;
+        }
+
+        .active-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #28a745;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 6px rgba(40, 167, 69, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+            }
+        }
+
+        .logout-btn {
+            background-color: #dc3545 !important;
+            color: white !important;
+            padding: 8px 16px !important;
+            border-radius: 4px !important;
+            text-decoration: none !important;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333 !important;
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+            url('https://images.unsplash.com/photo-1484659619207-9165d119dafe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%253D%253D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
+            color: var(--white);
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Service Description */
+        .description {
+            padding: 40px 0;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .description-left {
+            flex: 1;
+            text-align: left;
+        }
+
+        .description-right {
+            flex: 1;
+            text-align: left;
+            position: relative;
+        }
+
+        .description-right::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background-color: var(--secondary);
+        }
+
+        .description h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            font-family: Montserrat;
+        }
+
+        .description p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--gray);
+        }
+
+        /* Features Section */
+        .features-section {
+            background-color: #f8f9fa;
+        }
+
+        .features-section .section-title h2 {
+            color: var(--secondary);
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background-color: black;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+        }
+
+        .feature-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            flex-grow: 1;
+        }
+
+        .feature-cta {
+            margin-top: 20px;
+        }
+
+        .btn-feature {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: black;
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .btn-feature:hover {
+            background-color: black;
+            transform: translateX(15px);
+        }
+
+        /* Button morphs into long arrow on feature card hover */
+        .feature-card:hover .btn-feature {
+            width: 150px; /* Extend to half card width */
+            height: 50px;
+            border-radius: 25px; /* Pill shape */
+            transform: translateX(15px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .feature-card:hover .btn-feature i {
+            transform: translateX(40px); /* Move icon to the right end */
+            transition: transform 0.4s ease;
+        }
+
+        /* Add "Click here" text on hover */
+        .feature-card:hover .btn-feature::after {
+            content: 'Click here';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            animation: fadeInText 0.3s ease 0.2s forwards;
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+
+        /* Events Section */
+        .events-section {
+            background-color: white;
+        }
+
+        .events-heading {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .events-heading h2 {
+            font-size: 2.2rem;
+            color: var(--secondary);
+            display: inline-block;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #28a745;
+        }
+
+        .event-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            margin-bottom: 30px;
+            height: 100%;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-img-container {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-background-image {
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80') no-repeat center center/cover;
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .status-badge.planned {
+            background-color: #17a2b8;
+        }
+
+        .status-badge.new {
+            background-color: #28a745;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .status-badge.in-progress {
+            background-color: var(--accent);
+            color: var(--dark);
+        }
+
+        .status-badge.completed {
+            background-color: var(--secondary);
+        }
+
+        .status-badge.cancelled {
+            background-color: var(--primary);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-text {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-text i {
+            width: 20px;
+            margin-right: 10px;
+            color: green;
+        }
+
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-actions a {
+            flex: 1;
+            min-width: 100px;
+            text-align: center;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+
+        .btn-warning {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: var(--dark);
+        }
+
+        .btn-danger {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Event Card Buttons - Color Coded */
+        .event-card-btn {
+            border-radius: 30px !important;
+            color: white !important;
+            padding: 8px 20px !important;
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+            min-width: 110px !important;
+            text-align: center !important;
+            border: 2px solid transparent !important;
+        }
+
+        /* View Details Button - Blue */
+        .btn-info.event-card-btn {
+            background: #3d8bff !important;
+            border-color: #3d8bff !important;
+        }
+
+        .btn-info.event-card-btn:hover {
+            background: darkblue !important;
+            border-color: darkblue !important;
+        }
+
+        /* Update Button - Yellow */
+        .btn-warning.event-card-btn {
+            background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+            border-color: #ffc107 !important;
+            color: #212529 !important;
+        }
+
+        .btn-warning.event-card-btn:hover {
+            background: linear-gradient(135deg, #e0a800, #d39e00) !important;
+            border-color: #e0a800 !important;
+            color: #212529 !important;
+        }
+
+        /* Delete Button - Red */
+        .btn-danger.event-card-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333) !important;
+            border-color: #dc3545 !important;
+        }
+
+        .btn-danger.event-card-btn:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130) !important;
+            border-color: #c82333 !important;
+        }
+
+        .event-card-btn:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .event-card-btn:active {
+            transform: translateY(0) !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        /* Feature Cards - Black Styling */
+        .feature-card {
+            background: linear-gradient(135deg, #2c3e50, #1a252f) !important;
+            border: 2px solid #000000 !important;
+            border-radius: 15px !important;
+            color: white !important;
+            padding: 30px !important;
+            text-align: center !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .feature-card:hover {
+            background: linear-gradient(135deg, #34495e, #2c3e50) !important;
+            transform: translateY(-5px) !important;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        .feature-card .feature-icon {
+            color: #eeffee !important;
+            font-size: 1.5rem !important;
+            margin-bottom: 20px !important;
+        }
+
+        .feature-card h4 {
+            color: white !important;
+            font-size: 1.5rem !important;
+            margin-bottom: 15px !important;
+        }
+
+        .feature-card p {
+            color: #bdc3c7 !important;
+            font-size: 1rem !important;
+            margin-bottom: 20px !important;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .minimal-icon {
+            font-size: 4rem;
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        .minimal-title {
+            font-size: 2rem;
+            color: black;
+            margin-bottom: 15px;
+        }
+
+        .decoration-line {
+            width: 100px;
+            height: 3px;
+            background-color: lightblue;
+            margin: 0 auto 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(15, 23, 42, 0.9);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            gap: 30px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 280px;
+            margin-bottom: 30px;
+            padding: 0 15px;
+        }
+
+        .footer-about {
+            flex: 3;
+            max-width: 500px;
+            margin-right: auto;
+        }
+
+        .footer-links-contact {
+            display: flex;
+            flex: 1;
+            gap: 40px;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-left: auto;
+            padding-left: 50px;
+        }
+
+        .footer-links-contact .footer-column {
+            flex: 0 0 auto;
+            min-width: 180px;
+        }
+
+        .footer-links-contact .footer-column:first-child {
+            text-align: center;
+        }
+
+        .footer-links-contact .footer-column:first-child ul {
+            display: inline-block;
+            text-align: left;
+        }
+
+        .footer-column h5 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+            padding-left: 0;
+        }
+
+        .footer-column ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .footer-column ul li a i {
+            margin-right: 10px;
+            width: 18px;
+            text-align: center;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .footer-about p {
+            color: #ddd;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            text-align: justify;
+        }
+
+        .footer-contact p {
+            color: #ddd;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .footer-contact i {
+            width: 18px;
+            margin-right: 10px;
+            color: var(--accent);
+            text-align: center;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links-contact {
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .footer-column {
+                min-width: 100%;
+                margin-bottom: 40px;
+            }
+
+            .footer-about {
+                max-width: 100%;
+                margin-right: 0;
+            }
+
+            .footer-about p {
+                text-align: center;
+            }
+
+            .footer-contact p {
+                justify-content: center;
+            }
+
+            .hero-section h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .description {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .description-left,
+            .description-right {
+                text-align: center;
+            }
+
+            .description-right::before {
+                display: none;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .hero-section h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .card-actions {
+                flex-direction: column;
+            }
+
+            .card-actions a {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                padding: 10px 20px;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            nav ul {
+                position: static;
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            nav ul li {
+                margin: 5px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="container header-content">
+        <div class="logo">
+            <img src="/images/logo.png" alt="Golden Dish Caterers Logo">
+            <span class="logo-text">Golden Dish Caterings</span>
+        </div>
+        <div class="nav-container">
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Menu</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="/event/bookings" style="background-color: #FFD700; color: #333; padding: 8px 16px; border-radius: 5px; font-weight: 600;"><i class="fas fa-bell"></i> New Events</a></li>
+                    <li><a href="#" class="user-email"><span class="active-dot"></span><span th:text="${userEmail}">User</span></a></li>
+                    <li><a href="/event/login" class="logout-btn" onclick="handleLogout()">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <h1><b>Golden Dish Caterings Event Management</b></h1>
+        <p>Professional Catering & Event Management Platform</p>
+    </div>
+</section>
+
+<!-- Service Description -->
+<div class="container py-5">
+    <div class="description">
+        <div class="description-left">
+            <h2 style="color: black; margin-bottom: 0;">Our Event Management System</h2>
+        </div>
+        <div class="description-right">
+            <p style="color: black; margin-bottom: 0;">
+                The <span style="font-weight: bold; color: black;">Event Management module</span>
+                centralizes all event planning in one place. It allows you to
+                <span style="font-weight: bold; color: black;">manage schedules, update details,</span>
+                and <span style="font-weight: bold; color: black;">assign resources,</span> with
+                <span style="font-weight: bold; color: black;">sharing updates.</span> while monitoring an entire process with
+                connecting all other professions.
+                By streamlining coordination and resource management
+                with timely updates and notifications,
+                it ensures every event is well-organized and successful delivery.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section id="features" class="features-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <div class="section-title">
+                    <h2 style="color: black;">Features</h2>
+                </div>
+                <p class="section-subtitle">Everything you need to manage your events efficiently</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-plus"></i>
+                    </div>
+                    <h4>Create Event</h4>
+                    <p>Create and customize events with detailed information, categories, and settings.</p>
+                    <div class="feature-cta">
+                        <a href="/events/form" class="btn-feature">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h4>Assign Resources</h4>
+                    <p>Assign and manage all resources to events easily.</p>
+                    <div class="feature-cta">
+                        <a href="/resources" class="btn-feature">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h4>Add Event updates</h4>
+                    <p>Allow coordinators, chefs, and all other stakeholders to see updates instantly in one place.</p>
+                    <div class="feature-cta">
+                        <a href="/updates" class="btn-feature">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Events Section -->
+<section class="events-section">
+    <div class="container">
+
+        <!-- System Statistics Section -->
+        <div class="row mb-5" th:if="${totalEvents != null}">
+            <div class="col-md-3 mb-3">
+                <div class="card text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <div class="card-body">
+                        <h3 th:text="${totalEvents}">0</h3>
+                        <p class="mb-0">Total Events</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                    <div class="card-body">
+                        <h3 th:text="${newEvents}">0</h3>
+                        <p class="mb-0">New Events</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                    <div class="card-body">
+                        <h3 th:text="${updatedEvents}">0</h3>
+                        <p class="mb-0">Updated Events</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white;">
+                    <div class="card-body">
+                        <h3 th:text="${completedEvents}">0</h3>
+                        <p class="mb-0">Completed Events</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Notifications Section -->
+        <div class="row mb-5" th:if="${recentUpdates != null and !recentUpdates.empty}">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <h4 class="mb-0">
+                            <i class="fas fa-bell me-2"></i>Recent Notifications
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            <div th:each="update : ${recentUpdates}" class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold" th:text="${update.description}">Update Description</div>
+                                    <small class="text-muted" th:text="${update.date}">Update Date</small>
+                                </div>
+                                <span class="badge bg-primary rounded-pill" th:if="${update.event != null}" th:text="${update.event.name}">Event Name</span>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="/updates" class="btn btn-outline-primary">
+                                <i class="fas fa-eye me-2"></i>View All Updates
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Events Heading -->
+        <div class="events-heading" th:if="${events != null and !events.empty}">
+            <h2 style="color: black;">All Events</h2>
+        </div>
+
+        <!-- Events Grid -->
+        <div class="row" th:if="${events != null and !events.empty}">
+            <div class="col-lg-4 col-md-6 mb-4" th:each="event : ${events}">
+                <div class="card event-card">
+                    <div class="card-img-container">
+                        <div class="card-background-image"></div>
+                        <div class="card-overlay">
+                            <span class="status-badge"
+                                  th:classappend="${event.status != null ? event.status.toLowerCase().replace(' ', '-') : 'planned'}"
+                                  th:text="${event.status != null ? event.status : 'Planned'}"></span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text">
+                            <i class="fas fa-tag"></i>
+                            <strong>Event:</strong> <span th:text="${event.name}"></span>
+                        </div>
+                        <div class="card-text">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <strong>Venue:</strong> <span th:text="${event.venue}"></span>
+                        </div>
+                        <div class="card-text">
+                            <i class="fas fa-users"></i>
+                            <strong>Guests:</strong> <span th:text="${event.guestCount}"></span>
+                        </div>
+                        <div class="card-text">
+                            <i class="fas fa-clock"></i>
+                            <strong>Date & Time:</strong> <span th:text="${event.dateTime}"></span>
+                        </div>
+                        <div class="card-actions">
+                            <a th:href="@{/events/{id}(id=${event.id})}" class="btn btn-info event-card-btn">
+                                <i class="fas fa-eye"></i> View Details
+                            </a>
+                            <a th:href="@{/events/form(id=${event.id})}" class="btn btn-warning event-card-btn">
+                                <i class="fas fa-edit"></i> Update
+                            </a>
+                            <a th:href="@{/events/delete/{id}(id=${event.id})}"
+                               class="btn btn-danger delete-btn event-card-btn">
+                                <i class="fas fa-trash"></i> Cancel & Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${events == null or events.empty}" class="text-center">
+            <div class="empty-state">
+                <div class="minimal-icon">
+                    <i class="fa fa-spinner"></i>
+                </div>
+                <h1 class="minimal-title">No Events Yet</h1>
+                <div class="decoration-line"></div>
+                <p class="text-muted mb-4">Get started by creating your event</p>
+                <a href="/events/form" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus"></i> Create new event here 🎉🎆
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column footer-about">
+                <h5>About Us</h5>
+                <p>Golden Dish Caterers is a premium catering service specializing in weddings, corporate events, and private parties. We're committed to delivering exceptional food and service.</p>
+            </div>
+
+            <div class="footer-links-contact">
+                <div class="footer-column">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#"><i class="fas fa-concierge-bell"></i> Services</a></li>
+                        <li><a href="#"><i class="fas fa-utensils"></i> Menu</a></li>
+                        <li><a href="about.html"><i class="fas fa-images"></i> About Us</a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column footer-contact">
+                    <h5>Contact Us</h5>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, Colombo, Sri Lanka</p>
+                    <p><i class="fas fa-phone"></i> +94 11 234 5678</p>
+                    <p><i class="fas fa-envelope"></i> info@goldendish.lk</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Golden Dish Caterers | Serving Sri Lanka</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Mobile menu toggle
+    document.querySelector('.mobile-toggle').addEventListener('click', function() {
+        document.querySelector('nav ul').classList.toggle('show');
+    });
+
+    // Handle logout
+    function handleLogout() {
+        // Clear session storage immediately
+        sessionStorage.clear();
+        // Redirect to logout endpoint
+        window.location.href = '/logout';
+    }
+
+    // Check authentication status on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if user is logged in via session storage
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        const loginTime = sessionStorage.getItem('loginTime');
+
+        if (isLoggedIn !== 'true') {
+            // User not logged in, redirect to landing page
+            window.location.href = '/';
+            return;
+        }
+
+        // Check if session is still valid (24 hours)
+        if (loginTime) {
+            const loginDate = new Date(loginTime);
+            const now = new Date();
+            const hoursDiff = (now - loginDate) / (1000 * 60 * 60);
+
+            if (hoursDiff >= 24) {
+                // Session expired, clear storage and redirect
+                sessionStorage.clear();
+                window.location.href = '/';
+                return;
+            }
+        }
+    });
+</script>
+</body>
+</html>

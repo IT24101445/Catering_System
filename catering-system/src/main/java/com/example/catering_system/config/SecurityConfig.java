@@ -1,5 +1,6 @@
 package com.example.catering_system.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,13 +13,50 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
+    
+    @Autowired
+    private CustomAuthenticationFailureHandler failureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // ALLOW EVERYTHING
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/images/**",
+                                "/css/**",
+                                "/js/**",
+                                "/event/**",
+                                "/kitchen/**",
+                                "/login/customer",
+                                "/login/customer-admin",
+                                "/customer",
+                                "/register/customer",
+                                "/register",
+                                "/book-event",
+                                "/menus.html",
+                                "/error"
+                        ).permitAll()
+                        .requestMatchers("/api/bookings").authenticated()
+                        .requestMatchers("/dashboard-customer").authenticated()
+                        .anyRequest().permitAll()
+                )
+                .formLogin(login -> login
+                        .loginPage("/login/customer")
+                        .loginProcessingUrl("/login")
+                        .usernameParameter("email")
+                        .successHandler(successHandler)
+                        .failureHandler(failureHandler)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login/customer?logout")
+                        .permitAll()
                 );
 
         return http.build();

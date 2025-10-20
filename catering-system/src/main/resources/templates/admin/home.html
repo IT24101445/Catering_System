@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Catering System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 p-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <h1 class="text-white text-2xl font-bold">Catering System</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-white">Welcome, <span th:text="${session.username}">User</span>!</span>
+                    <a href="/logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="border-4 border-dashed border-gray-200 rounded-lg h-96 flex items-center justify-center">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Welcome to Catering System</h2>
+                    <p class="text-lg text-gray-600 mb-8">Manage your catering business efficiently</p>
+                    
+                    <!-- Quick Actions -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        <!-- Finance Dashboard -->
+                        <a href="/finance-dashboard" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-blue-500">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">📊</div>
+                                <h3 class="font-semibold text-gray-900">Finance Dashboard</h3>
+                                <p class="text-sm text-gray-600">Financial overview & analytics</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Event Budgets -->
+                        <a href="/event-budgets" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">💰</div>
+                                <h3 class="font-semibold text-gray-900">Event Budgets</h3>
+                                <p class="text-sm text-gray-600">Manage event budgets</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Invoices -->
+                        <a href="/invoices" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-yellow-500">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">📄</div>
+                                <h3 class="font-semibold text-gray-900">Invoices</h3>
+                                <p class="text-sm text-gray-600">Manage invoices</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Payments -->
+                        <a href="/payments" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-purple-500">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">💳</div>
+                                <h3 class="font-semibold text-gray-900">Payments</h3>
+                                <p class="text-sm text-gray-600">Record payments</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Staff Payments -->
+                        <a href="/staff-payments" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-red-500">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">👥</div>
+                                <h3 class="font-semibold text-gray-900">Staff Payments</h3>
+                                <p class="text-sm text-gray-600">Manage staff payments</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Add Staff Payment -->
+                        <a href="/staff-payments/add" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-indigo-500">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">➕</div>
+                                <h3 class="font-semibold text-gray-900">Add Staff Payment</h3>
+                                <p class="text-sm text-gray-600">Add new staff payment</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Add Event Budget -->
+                        <a href="/event-budget/add" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-teal-500">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">📝</div>
+                                <h3 class="font-semibold text-gray-900">Add Event Budget</h3>
+                                <p class="text-sm text-gray-600">Create new event budget</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Revenue Management -->
+                        <a href="/revenue" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-emerald-500">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">📈</div>
+                                <h3 class="font-semibold text-gray-900">Revenue</h3>
+                                <p class="text-sm text-gray-600">Track income & revenue</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Expense Management -->
+                        <a href="/expenses" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-orange-500">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">📉</div>
+                                <h3 class="font-semibold text-gray-900">Expenses</h3>
+                                <p class="text-sm text-gray-600">Track costs & expenses</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Cash Flow Management -->
+                        <a href="/cashflow" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-cyan-500">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">💸</div>
+                                <h3 class="font-semibold text-gray-900">Cash Flow</h3>
+                                <p class="text-sm text-gray-600">Monitor cash flow</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

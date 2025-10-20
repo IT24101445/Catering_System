@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Dish Caterings - Event Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', 'Playfair Display', 'Times New Roman', serif;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Dynamic Background Images */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .background-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            min-height: 100vh;
+            background-color: #1e293b; /* Fallback color */
+        }
+
+        .background-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 50%, rgba(30, 41, 59, 0.6) 75%);
+            z-index: 2;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+                opacity: 0.1;
+            }
+        }
+
+        /* Main Container */
+        .landing-container {
+            position: relative;
+            z-index: 4;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .company-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.02em;
+            line-height: 1.1;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .tagline {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.8rem;
+            color: #ffffff;
+            font-weight: 500;
+            margin-bottom: 2.5rem;
+            line-height: 1.4;
+            font-style: italic;
+            letter-spacing: 0.01em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .description {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.4rem;
+            color: #ffffff;
+            font-weight: 400;
+            margin-bottom: 3.5rem;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            letter-spacing: 0.01em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            animation: fadeInUp 1.2s ease-out 0.9s both;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'Crimson Text', serif;
+            padding: 1rem 2.2rem;
+            border-radius: 35px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-width: 160px;
+            text-align: center;
+            letter-spacing: 0.02em;
+        }
+
+        .info-icon {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 16px;
+            font-style: italic;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .info-icon::before {
+            content: 'i';
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, greenyellow, green);
+            color: white;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: #bb86fc;
+            transition: height 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:hover::before {
+            height: 100%;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .company-name {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+
+            .description {
+                font-size: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+                min-width: 160px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .company-name {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+            }
+
+            .description {
+                font-size: 0.95rem;
+            }
+
+            .landing-container {
+                padding: 1rem;
+            }
+
+            .btn {
+                padding: 0.9rem 1.5rem;
+                font-size: 0.95rem;
+                min-width: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dynamic Background Images -->
+    <div class="background-container">
+        <div class="background-slide active" style="background-image: url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')"></div>
+        <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');"></div>
+        <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');"></div>
+        <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80');"></div>
+        <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+        <div class="background-slide" style="background-image: none"></div>
+        <div class="background-overlay"></div>
+    </div>
+
+    <!-- Main Landing Content -->
+    <div class="landing-container">
+        <div class="hero-section">
+            <h1 class="company-name">Golden Dish Caterings</h1>
+            <p class="tagline">- Event Management System - </p>
+            <p class="description">
+                Streamline planning, amplify engagement, and measure your success - all from a single, powerful dashboard.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="/login" class="btn btn-primary">
+                    Get Started
+                </a>
+                <a href="#" class="btn btn-secondary">
+                    <span class="info-icon"></span>Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Background image rotation
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.background-slide');
+        const totalSlides = slides.length;
+
+        console.log('Total slides found:', totalSlides);
+        console.log('Slides:', slides);
+
+        function changeBackground() {
+            console.log('Changing background from slide', currentSlide);
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            console.log('Changed to slide', currentSlide);
+        }
+
+        // Test if images are loading
+        slides.forEach((slide, index) => {
+            const img = new Image();
+            img.onload = () => console.log(`Image ${index} loaded successfully`);
+            img.onerror = () => console.log(`Image ${index} failed to load`);
+            img.src = slide.style.backgroundImage.slice(5, -2); // Extract URL from background-image
+        });
+
+        // Change background every 5 seconds
+        setInterval(changeBackground, 5000);
+    </script>
+</body>
+</html>

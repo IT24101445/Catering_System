@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Form - Event Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --card-hover: #252525;
+            --accent: #2a7fff;
+            --accent-hover: #3d8bff;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #333333;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: 'Nunito Sans', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .header h1 {
+            font-weight: 600;
+            font-size: 36px;
+            color: var(--text-primary);
+            margin: 0;
+            display: inline-block;
+        }
+
+        .admin-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 15px;
+            display: inline-block;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: white;
+            color: #333;
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        textarea.form-control {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 th:text="${resource.id != null ? 'Update Resource' : 'Create New Resource'}">Resource Form</h1>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <form th:action="@{/resources/save}" th:object="${resource}" method="post">
+                <input type="hidden" th:field="*{id}" />
+                
+                <div class="form-group">
+                    <label for="name">Resource Name *</label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter resource name" required>
+                    <div th:if="${nameError}" th:text="${nameError}" style="color: #f44336; font-size: 12px; margin-top: 5px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="type">Resource Type *</label>
+                    <select id="type" th:field="*{type}" class="form-control" required>
+                        <option value="">Select resource type</option>
+                        <optgroup label="Staff Resources">
+                            <option value="Chefs">Chefs</option>
+                            <option value="Waiters">Waiters</option>
+                            <option value="Drivers">Drivers</option>
+                            <option value="Event setup crew">Event setup crew</option>
+                        </optgroup>
+                        <optgroup label="Physical Resources">
+                            <option value="Halls / venues">Halls / venues</option>
+                            <option value="Tables, chairs">Tables, chairs</option>
+                            <option value="Decoration items">Decoration items</option>
+                            <option value="Audio/visual equipment">Audio/visual equipment</option>
+                            <option value="Vehicles for transport">Vehicles for transport</option>
+                        </optgroup>
+                        <optgroup label="Consumables">
+                            <option value="Food packages">Food packages</option>
+                            <option value="Drinks">Drinks</option>
+                            <option value="Ingredients">Ingredients</option>
+                            <option value="Flowers">Flowers</option>
+                        </optgroup>
+                    </select>
+                    <div th:if="${typeError}" th:text="${typeError}" style="color: #f44336; font-size: 12px; margin-top: 5px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">Quantity *</label>
+                    <input type="number" id="quantity" th:field="*{quantity}" class="form-control" placeholder="Enter quantity" min="1" required>
+                    <div th:if="${quantityError}" th:text="${quantityError}" style="color: #f44336; font-size: 12px; margin-top: 5px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventId">Assign to Event *</label>
+                    <select id="eventId" name="eventId" class="form-control" required>
+                        <option value="">Select an event</option>
+                        <option th:each="event : ${events}" th:value="${event.id}" th:text="${event.name}" th:selected="${resource.event != null and resource.event.id == event.id}"></option>
+                    </select>
+                    <div th:if="${eventError}" th:text="${eventError}" style="color: #f44336; font-size: 12px; margin-top: 5px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="note">Special Notes</label>
+                    <textarea id="note" th:field="*{note}" class="form-control" placeholder="Add special notes for this resource" rows="3"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> <span th:text="${resource.id != null ? 'Update Resource' : 'Create Resource'}">Save Resource</span>
+                    </button>
+                    <a href="/resources" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title th:text="${pageTitle}">Confirmed Menus</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .page-wrap { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+        .top-nav{position:sticky;top:0;z-index:1000;background:#1f2330;color:#fff;}
+        .top-nav .nav-wrap{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
+        .top-nav .brand{font-weight:700;letter-spacing:.3px;}
+        .top-nav .nav-links{display:flex;gap:10px;}
+        .top-nav .nav-links a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px;}
+        .top-nav .nav-links a.active{background:rgba(255,255,255,.14);}
+        .menu-card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .menu-card h3 { color: #1f2330; margin-bottom: 16px; font-weight: 600; }
+        .menu-item { border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin-bottom: 16px; background: #fff; }
+        .menu-item h4 { margin: 0 0 12px 0; color: #1f2330; font-weight: 600; }
+        .menu-item .status { display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; margin-bottom: 12px; }
+        .status.confirmed { background: #d4edda; color: #155724; }
+        .menu-details { background: #f8f9fa; border-radius: 8px; padding: 16px; margin: 12px 0; }
+        .menu-details h6 { margin: 0 0 8px 0; color: #495057; font-weight: 600; }
+        .menu-details p { margin: 0; color: #6c757d; }
+        .action-buttons { margin-top: 16px; }
+        .action-buttons .btn { margin-right: 8px; }
+    </style>
+</head>
+<body>
+<nav class="top-nav">
+    <div class="nav-wrap">
+        <div class="brand">Catering System - Head Chef</div>
+        <div class="nav-links">
+            <a th:href="@{/login/portal}" th:classappend="${activePage}=='home' ? ' active' : ''">Home</a>
+            <a th:href="@{/kitchen/head-chef}" th:classappend="${activePage}=='head-chef' ? ' active' : ''">Dashboard</a>
+            <a th:href="@{/kitchen/head-chef/confirmed-menus}" th:classappend="${activePage}=='head-chef' ? ' active' : ''">Confirmed Menus</a>
+            <a th:href="@{/kitchen/head-chef/events}" th:classappend="${activePage}=='head-chef' ? ' active' : ''">Events</a>
+            <a th:href="@{/kitchen/head-chef/delivery-times}" th:classappend="${activePage}=='head-chef' ? ' active' : ''">Delivery Times</a>
+            <a th:href="@{/kitchen/head-chef/notifications}" th:classappend="${activePage}=='head-chef' ? ' active' : ''">Notifications</a>
+        </div>
+    </div>
+</nav>
+
+<main class="page-wrap">
+    <div class="menu-card">
+        <h3>Confirmed Menus</h3>
+        <p class="text-muted mb-4">Access confirmed menus to prepare the correct dishes for upcoming events.</p>
+        
+        <div th:if="${menus != null and !menus.empty}">
+            <div th:each="menu : ${menus}" class="menu-item">
+                <h4 th:text="${menu.name}">Menu Name</h4>
+                <span class="status confirmed" th:text="${menu.status}">confirmed</span>
+                
+                <div class="menu-details">
+                    <h6>Menu Information</h6>
+                    <p><strong>Menu ID:</strong> <span th:text="${menu.id}">#123</span></p>
+                    <p th:if="${menu.eventId != null}"><strong>Event ID:</strong> <span th:text="${menu.eventId}">#456</span></p>
+                    <p th:if="${menu.items != null and !menu.items.empty}"><strong>Items:</strong> <span th:text="${#strings.listJoin(menu.items, ', ')}">Item 1, Item 2, Item 3</span></p>
+                </div>
+                
+                <div class="action-buttons">
+                    <a th:href="@{'/kitchen/head-chef/confirmed-menus/' + ${menu.id}}" class="btn btn-primary">View Details</a>
+                    <a th:href="@{'/kitchen/head-chef/events/' + ${menu.eventId}}" th:if="${menu.eventId != null}" class="btn btn-outline-secondary">View Event</a>
+                </div>
+            </div>
+        </div>
+        
+        <div th:if="${menus == null or menus.empty}" class="text-center py-5">
+            <div class="text-muted">
+                <i class="fas fa-utensils" style="font-size: 3rem; margin-bottom: 16px;"></i>
+                <h5>No Confirmed Menus</h5>
+                <p>There are currently no confirmed menus available.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="text-center mt-4">
+    <small>Catering System © 2025. All rights reserved.</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

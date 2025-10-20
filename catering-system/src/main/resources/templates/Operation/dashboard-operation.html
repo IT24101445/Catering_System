@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Operation Manager Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(90deg, #2e7d32, #4caf50);
+            color: white;
+            padding: 15px 20px;
+            text-align: right;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .header .logo i {
+            margin-right: 10px;
+        }
+        .header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s;
+        }
+        .header a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2e7d32;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        h1 i, h2 i {
+            margin-right: 10px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .notification {
+            background: linear-gradient(90deg, #e8f5e9, #c8e6c9);
+            color: #2e7d32;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #4caf50;
+            display: flex;
+            align-items: center;
+        }
+        .notification i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 15px;
+            border: none;
+            text-align: left;
+        }
+        th {
+            background-color: #4caf50;
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f1f8e9;
+        }
+        tr:hover {
+            background-color: #e8f5e9;
+        }
+        .assign-form {
+            display: flex;
+            align-items: center;
+        }
+        .assign-form select {
+            padding: 8px;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .assign-form button {
+            padding: 8px 15px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .assign-form button:hover {
+            background-color: #388e3c;
+        }
+        .view-orders {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f1f8e9;
+            border-radius: 8px;
+            border-left: 5px solid #4caf50;
+        }
+        .view-orders a {
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        .view-orders a i {
+            margin-right: 8px;
+        }
+        .form-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        .form-section h2 {
+            margin-bottom: 15px;
+            color: #2e7d32;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            flex: 1;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #4caf50;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        .btn i {
+            margin-right: 8px;
+        }
+        .btn-primary {
+            background-color: #4caf50;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #388e3c;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-pending {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        .status-assigned {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status-available {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status-unavailable {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        /* Enhanced Table Styling */
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .enhanced-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+        
+        .enhanced-table thead {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+        }
+        
+        .enhanced-table th {
+            padding: 16px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .enhanced-table th i {
+            margin-right: 8px;
+            opacity: 0.9;
+        }
+        
+        .order-row {
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+        
+        .order-row:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .order-row td {
+            padding: 16px 12px;
+            vertical-align: middle;
+        }
+        
+        .order-id {
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 16px;
+        }
+        
+        .customer-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .order-details {
+            color: #666;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .status-cell {
+            text-align: center;
+        }
+        
+        .assign-cell {
+            min-width: 250px;
+        }
+        
+        .assign-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .staff-select {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .staff-select:focus {
+            border-color: #4caf50;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .assign-btn {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .assign-btn:hover {
+            background: linear-gradient(135deg, #45a049, #3d8b40);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+        
+        .actions-cell {
+            text-align: center;
+        }
+        
+        .delete-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            color: #4caf50;
+            margin-bottom: 16px;
+        }
+        
+        .empty-state h3 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="logo">
+        <i class="fas fa-utensils"></i>
+        Catering Management
+    </div>
+    <div>
+        <span>Operation Manager Dashboard</span>
+        <a href="/operation/assigned-orders"><i class="fas fa-tasks"></i> Assigned Orders</a>
+        <a href="/operation/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="dashboard-header">
+        <h1><i class="fas fa-tachometer-alt"></i> Welcome, Operation Manager</h1>
+    </div>
+
+    <!-- Success Message -->
+    <div th:if="${successMessage}" class="success-message" style="background-color: #d4edda; color: #155724; padding: 12px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+        <i class="fas fa-check-circle"></i>
+        <span th:text="${successMessage}"></span>
+    </div>
+
+    <!-- Error Message -->
+    <div th:if="${errorMessage}" class="error-message" style="background-color: #f8d7da; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+        <i class="fas fa-exclamation-circle"></i>
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <div class="notification">
+        <i class="fas fa-info-circle"></i>
+        You have <span th:text="${orders.size()}">0</span> pending orders to assign
+    </div>
+
+    <h2><i class="fas fa-clipboard-list"></i> Pending Orders</h2>
+    
+    <!-- Enhanced Pending Orders Table -->
+    <div class="table-container">
+        <table class="enhanced-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-hashtag"></i> Order ID</th>
+                    <th><i class="fas fa-user"></i> Customer</th>
+                    <th><i class="fas fa-info-circle"></i> Details</th>
+                    <th><i class="fas fa-clock"></i> Status</th>
+                    <th><i class="fas fa-users"></i> Assign Staff</th>
+                    <th><i class="fas fa-cogs"></i> Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orders}" class="order-row">
+                    <td class="order-id" th:text="${order.id}">1</td>
+                    <td class="customer-name" th:text="${order.customerName}"></td>
+                    <td class="order-details" th:text="${order.details}"></td>
+                    <td class="status-cell">
+                        <span class="status-badge status-pending">
+                            <i class="fas fa-clock"></i>
+                            <span th:text="${order.status}">PENDING</span>
+                        </span>
+                    </td>
+                    <td class="assign-cell">
+                        <form class="assign-form" action="/operation/assign" method="post">
+                            <input type="hidden" name="orderId" th:value="${order.id}">
+                            <div class="assign-controls">
+                                <select name="staffId" required class="staff-select">
+                                    <option value="">👤 Select Staff Member</option>
+                                    <option th:each="staff : ${staffList}"
+                                            th:value="${staff.id}"
+                                            th:text="${staff.name} + ' (' + ${staff.role} + ')'">
+                                    </option>
+                                </select>
+                                <button type="submit" class="assign-btn">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Assign</span>
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                    <td class="actions-cell">
+                        <a th:href="@{'/operation/orders/delete/' + ${order.id}}" 
+                           onclick="return confirm('⚠️ Are you sure you want to delete this order?\n\nThis action cannot be undone!')"
+                           class="delete-btn">
+                            <i class="fas fa-trash"></i>
+                            <span>Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(orders)}" class="empty-state">
+            <i class="fas fa-clipboard-check"></i>
+            <h3>No Pending Orders</h3>
+            <p>All orders have been assigned! Great job! 🎉</p>
+        </div>
+    </div>
+
+    <div class="view-orders">
+        <h2><i class="fas fa-eye"></i> View Assigned Orders</h2>
+        <p><a href="/operation/assigned-orders"><i class="fas fa-arrow-right"></i> View all assigned orders with staff details</a></p>
+    </div>
+
+    <h2><i class="fas fa-users"></i> Available Staff</h2>
+    <table>
+        <tr>
+            <th>Staff ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Available</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="staff : ${staffList}">
+            <td th:text="${staff.id}"></td>
+            <td th:text="${staff.name}"></td>
+            <td th:text="${staff.role}"></td>
+            <td>
+                <span th:if="${staff.available}" class="status-badge status-available">Yes</span>
+                <span th:unless="${staff.available}" class="status-badge status-unavailable">No</span>
+            </td>
+            <td>
+                <a th:href="@{'/operation/staff/delete/' + ${staff.id}}" 
+                   onclick="return confirm('Are you sure you want to delete this staff member?')"
+                   style="color: #dc3545; text-decoration: none; font-weight: bold;">
+                    <i class="fas fa-trash"></i> Delete
+                </a>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Create New Order Form -->
+    <div class="form-section">
+        <h2><i class="fas fa-plus-circle"></i> Create New Order</h2>
+        <form action="/operation/orders/create" method="post">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="customerName">Customer Name</label>
+                    <input type="text" id="customerName" name="customerName" placeholder="Enter customer name" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="details">Order Details</label>
+                    <input type="text" id="details" name="details" placeholder="Enter order details" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Create Order</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Add New Staff Form -->
+    <div class="form-section">
+        <h2><i class="fas fa-user-plus"></i> Add New Staff</h2>
+        <form action="/operation/staff/add" method="post">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="staffName">Staff Name</label>
+                    <input type="text" id="staffName" name="name" placeholder="Enter staff name" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="staffRole">Role</label>
+                    <select id="staffRole" name="role" required>
+                        <option value="">Select Role</option>
+                        <option value="Chef">Chef</option>
+                        <option value="Waiter">Waiter</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Bartender">Bartender</option>
+                        <option value="Host">Host</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-user-check"></i> Add Staff</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

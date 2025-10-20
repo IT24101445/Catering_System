@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Dish Catering - Menus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-yellow: #FFD700;
+            --light-yellow: #FFF9E6;
+            --dark-yellow: #E6C200;
+            --dark-text: #333333;
+            --light-text: #666666;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--light-yellow);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-yellow), var(--dark-yellow));
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--dark-text);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .admin-btn {
+            background-color: var(--dark-text);
+            color: var(--primary-yellow);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-btn:hover {
+            background-color: #222;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Page Title */
+        .page-title {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1555244162-803834f70033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .page-title h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-yellow);
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Menu Navigation */
+        .menu-nav {
+            background-color: var(--white);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .menu-nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .menu-nav-item {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-nav-item:hover, .menu-nav-item.active {
+            background-color: var(--primary-yellow);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Menu Section */
+        .menu-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .menu-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .menu-intro h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-intro h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-yellow);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .menu-intro p {
+            color: var(--light-text);
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .menu-category {
+            margin-bottom: 4rem;
+        }
+
+        .category-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--dark-text);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .category-title::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-yellow);
+            bottom: 0;
+            left: 0;
+        }
+
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-item {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .item-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .menu-item:hover .item-image img {
+            transform: scale(1.1);
+        }
+
+        .item-content {
+            padding: 1.5rem;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+
+        .item-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-yellow);
+        }
+
+        .item-description {
+            color: var(--light-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .item-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--light-yellow);
+            color: var(--dark-text);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Call to Action */
+        .cta-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 5rem 2rem;
+            margin-top: 3rem;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-yellow);
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-yellow);
+            color: var(--dark-text);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: var(--dark-yellow);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-text);
+            color: var(--white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-logo i {
+            font-size: 2rem;
+            color: var(--primary-yellow);
+        }
+
+        .footer-logo h2 {
+            font-size: 1.8rem;
+            color: var(--primary-yellow);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-yellow);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .page-title h1 {
+                font-size: 2.2rem;
+            }
+
+            .menu-intro h2 {
+                font-size: 2rem;
+            }
+
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-nav-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .page-title {
+                padding: 3rem 1rem;
+            }
+
+            .page-title h1 {
+                font-size: 1.8rem;
+            }
+
+            .menu-section {
+                padding: 2rem 1rem;
+            }
+
+            .cta-section {
+                padding: 3rem 1rem;
+            }
+
+            .cta-content h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Menu Page Specific Styles */
+        .menu-page {
+            display: none;
+        }
+
+        .menu-page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <i class="fas fa-utensils"></i>
+            <h1>Golden Dish Catering</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#" class="active">Menus</a></li>
+                <li><a href="book-event.html">Book Event</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <button class="admin-btn" onclick="redirectToAdmin()">
+            <i class="fas fa-user-shield"></i> Admin Login
+        </button>
+    </div>
+</header>
+
+<!-- Page Title -->
+<section class="page-title">
+    <h1>Our Special Menus</h1>
+    <p>Dedicated to providing a memorable culinary experience with exceptional food quality</p>
+</section>
+
+<!-- Menu Navigation -->
+<section class="menu-nav">
+    <div class="menu-nav-container">
+        <a href="#" class="menu-nav-item active" data-menu="continental">
+            <i class="fas fa-bread-slice"></i> Continental Menu
+        </a>
+        <a href="#" class="menu-nav-item" data-menu="kids">
+            <i class="fas fa-child"></i> Kids Menu
+        </a>
+        <a href="#" class="menu-nav-item" data-menu="occasion">
+            <i class="fas fa-glass-cheers"></i> Occasion-Based Menus
+        </a>
+        <a href="#" class="menu-nav-item" data-menu="fusion">
+            <i class="fas fa-globe-americas"></i> Fusion Menu
+        </a>
+    </div>
+</section>
+
+<!-- Continental Menu -->
+<section id="continental-menu" class="menu-page active">
+    <div class="menu-section">
+        <div class="menu-intro">
+            <h2>Continental Menu</h2>
+            <p>Experience the finest European cuisine with our carefully crafted continental dishes, featuring premium ingredients and authentic flavors.</p>
+        </div>
+
+        <div class="menu-category">
+            <h3 class="category-title">Appetizers</h3>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Bruschetta">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Classic Bruschetta</h4>
+                            <span class="item-price">$12</span>
+                        </div>
+                        <p class="item-description">Toasted bread topped with fresh tomatoes, basil, garlic, and extra virgin olive oil.</p>
+                        <div class="item-tags">
+                            <span class="tag">Vegetarian</span>
+                            <span class="tag">Gluten-Free Option</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1606755962773-3246d7c04d0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="French Onion Soup">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">French Onion Soup</h4>
+                            <span class="item-price">$10</span>
+                        </div>
+                        <p class="item-description">Rich beef broth with caramelized onions, topped with crusty bread and melted Gruyère cheese.</p>
+                        <div class="item-tags">
+                            <span class="tag">Chef's Special</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1626645735466-3c62b8b0b39c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Caprese Salad">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Caprese Salad</h4>
+                            <span class="item-price">$14</span>
+                        </div>
+                        <p class="item-description">Fresh mozzarella, ripe tomatoes, and basil leaves drizzled with balsamic reduction.</p>
+                        <div class="item-tags">
+                            <span class="tag">Vegetarian</span>
+                            <span class="tag">Gluten-Free</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-category">
+            <h3 class="category-title">Main Courses</h3>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Beef Wellington">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Beef Wellington</h4>
+                            <span class="item-price">$38</span>
+                        </div>
+                        <p class="item-description">Tender beef fillet wrapped in puff pastry with mushroom duxelles and prosciutto.</p>
+                        <div class="item-tags">
+                            <span class="tag">Signature Dish</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1598214886806-c87b84b7078b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1025&q=80" alt="Chicken Cordon Bleu">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Chicken Cordon Bleu</h4>
+                            <span class="item-price">$26</span>
+                        </div>
+                        <p class="item-description">Breaded chicken breast stuffed with ham and Swiss cheese, served with creamy sauce.</p>
+                        <div class="item-tags">
+                            <span class="tag">Popular Choice</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Seafood Paella">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Seafood Paella</h4>
+                            <span class="item-price">$32</span>
+                        </div>
+                        <p class="item-description">Traditional Spanish rice dish with saffron, shrimp, mussels, clams, and chorizo.</p>
+                        <div class="item-tags">
+                            <span class="tag">Seafood</span>
+                            <span class="tag">Spicy Option</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Kids Menu -->
+<section id="kids-menu" class="menu-page">
+    <div class="menu-section">
+        <div class="menu-intro">
+            <h2>Kids Menu</h2>
+            <p>Fun, nutritious, and delicious options specially designed for younger guests, ensuring everyone enjoys the celebration.</p>
+        </div>
+
+        <div class="menu-category">
+            <h3 class="category-title">Little Bites</h3>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Mini Burgers">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Mini Cheeseburgers</h4>
+                            <span class="item-price">$8</span>
+                        </div>
+                        <p class="item-description">Three bite-sized beef burgers with cheese, served with sweet potato fries.</p>
+                        <div class="item-tags">
+                            <span class="tag">Kid Favorite</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Chicken Tenders">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Chicken Tenders</h4>
+                            <span class="item-price">$7</span>
+                        </div>
+                        <p class="item-description">Crispy breaded chicken strips served with honey mustard and ketchup.</p>
+                        <div class="item-tags">
+                            <span class="tag">Gluten-Free Option</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1082&q=80" alt="Pizza">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Personal Pizzas</h4>
+                            <span class="item-price">$6</span>
+                        </div>
+                        <p class="item-description">Mini pizzas with tomato sauce, mozzarella, and choice of toppings.</p>
+                        <div class="item-tags">
+                            <span class="tag">Vegetarian Option</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-category">
+            <h3 class="category-title">Sweet Treats</h3>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80" alt="Ice Cream Sundae">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Build-Your-Own Sundae</h4>
+                            <span class="item-price">$5</span>
+                        </div>
+                        <p class="item-description">Vanilla ice cream with choice of toppings: sprinkles, chocolate sauce, fruits, and whipped cream.</p>
+                        <div class="item-tags">
+                            <span class="tag">Interactive</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1070&q=80" alt="Fruit Skewers">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Fruit Skewers</h4>
+                            <span class="item-price">$4</span>
+                        </div>
+                        <p class="item-description">Colorful skewers with seasonal fruits, served with yogurt dip.</p>
+                        <div class="item-tags">
+                            <span class="tag">Healthy</span>
+                            <span class="tag">Vegetarian</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1089&q=80" alt="Chocolate Cake">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Chocolate Lava Cake</h4>
+                            <span class="item-price">$6</span>
+                        </div>
+                        <p class="item-description">Warm chocolate cake with a molten center, served with vanilla ice cream.</p>
+                        <div class="item-tags">
+                            <span class="tag">Decadent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Occasion-Based Menu -->
+<section id="occasion-menu" class="menu-page">
+    <div class="menu-section">
+        <div class="menu-intro">
+            <h2>Occasion-Based Menus</h2>
+            <p>Customized menus tailored for weddings, corporate events, birthdays, and other special occasions to make your event unforgettable.</p>
+        </div>
+
+        <div class="menu-category">
+            <h3 class="category-title">Wedding Celebrations</h3>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1084&q=80" alt="Wedding Buffet">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Elegant Wedding Buffet</h4>
+                            <span class="item-price">$45/person</span>
+                        </div>
+                        <p class="item-description">A sophisticated spread featuring carving stations, seafood displays, and elegant sides perfect for your special day.</p>
+                        <div class="item-tags">
+                            <span class="tag">Customizable</span>
+                            <span class="tag">Premium</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" alt="Plated Dinner">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Plated Dinner Service</h4>
+                            <span class="item-price">$55/person</span>
+                        </div>
+                        <p class="item-description">Formal multi-course meal served to guests at their tables with professional waitstaff.</p>
+                        <div class="item-tags">
+                            <span class="tag">Formal</span>
+                            <span class="tag">Multiple Courses</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-category">
+            <h3 class="category-title">Corporate Events</h3>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1554679665-f55367f58b5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" alt="Networking Lunch">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Networking Lunch</h4>
+                            <span class="item-price">$28/person</span>
+                        </div>
+                        <p class="item-description">Light, elegant fare perfect for business meetings and networking events.</p>
+                        <div class="item-tags">
+                            <span class="tag">Professional</span>
+                            <span class="tag">Light</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1555244162-803834f70033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Cocktail Party">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Cocktail Reception</h4>
+                            <span class="item-price">$35/person</span>
+                        </div>
+                        <p class="item-description">Sophisticated passed hors d'oeuvres and stationary displays for corporate cocktail parties.</p>
+                        <div class="item-tags">
+                            <span class="tag">Finger Foods</span>
+                            <span class="tag">Elegant</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Fusion Menu -->
+<section id="fusion-menu" class="menu-page">
+    <div class="menu-section">
+        <div class="menu-intro">
+            <h2>Fusion Menu</h2>
+            <p>An exciting blend of global flavors and culinary traditions, creating unique dishes that surprise and delight the palate.</p>
+        </div>
+
+        <div class="menu-category">
+            <h3 class="category-title">East Meets West</h3>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1150&q=80" alt="Sushi Tacos">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Sushi Tacos</h4>
+                            <span class="item-price">$16</span>
+                        </div>
+                        <p class="item-description">Crispy wonton shells filled with fresh sushi-grade tuna, avocado, and spicy mayo.</p>
+                        <div class="item-tags">
+                            <span class="tag">Japanese-Mexican</span>
+                            <span class="tag">Innovative</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Korean BBQ Pizza">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Korean BBQ Pizza</h4>
+                            <span class="item-price">$18</span>
+                        </div>
+                        <p class="item-description">Thin crust pizza topped with bulgogi beef, kimchi, mozzarella, and gochujang sauce.</p>
+                        <div class="item-tags">
+                            <span class="tag">Korean-Italian</span>
+                            <span class="tag">Spicy</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Thai Curry Pasta">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Thai Curry Pasta</h4>
+                            <span class="item-price">$22</span>
+                        </div>
+                        <p class="item-description">Fresh pasta tossed in creamy Thai green curry sauce with shrimp and vegetables.</p>
+                        <div class="item-tags">
+                            <span class="tag">Thai-Italian</span>
+                            <span class="tag">Creamy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-category">
+            <h3 class="category-title">Global Inspirations</h3>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1150&q=80" alt="Mediterranean Tacos">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Mediterranean Tacos</h4>
+                            <span class="item-price">$14</span>
+                        </div>
+                        <p class="item-description">Soft tortillas filled with spiced lamb, tzatziki, feta, and fresh vegetables.</p>
+                        <div class="item-tags">
+                            <span class="tag">Greek-Mexican</span>
+                            <span class="tag">Fresh</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1552611052-33e04de081de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" alt="Indian-Spiced Burger">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h4 class="item-name">Indian-Spiced Burger</h4>
+                            <span class="item-price">$17</span>
+                        </div>
+                        <p class="item-description">Beef patty seasoned with garam masala, topped with mango chutney and mint raita.</p>
+                        <div class="item-tags">
+                            <span class="tag">Indian-American</span>
+                            <span class="tag">Spiced</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+    <div class="cta-content">
+        <h2>Ready to Plan Your Event?</h2>
+        <p>Contact us today to discuss your catering needs and let us create a memorable culinary experience for your special occasion.</p>
+        <a href="book-event.html" class="cta-button">Book Your Event Now</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-logo">
+            <i class="fas fa-utensils"></i>
+            <h2>Golden Dish Catering</h2>
+        </div>
+        <p>Creating unforgettable culinary experiences for your special moments</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Golden Dish Catering. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Redirect to admin page
+    function redirectToAdmin() {
+        alert('Redirecting to Admin Login Page...');
+        // window.location.href = "admin-login.html"; // Uncomment for actual implementation
+    }
+
+    // Menu navigation functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuNavItems = document.querySelectorAll('.menu-nav-item');
+        const menuPages = document.querySelectorAll('.menu-page');
+
+        menuNavItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Remove active class from all items
+                menuNavItems.forEach(navItem => {
+                    navItem.classList.remove('active');
+                });
+
+                // Add active class to clicked item
+                this.classList.add('active');
+
+                // Get the menu to show
+                const menuToShow = this.getAttribute('data-menu');
+
+                // Hide all menu pages
+                menuPages.forEach(page => {
+                    page.classList.remove('active');
+                });
+
+                // Show the selected menu page
+                document.getElementById(`${menuToShow}-menu`).classList.add('active');
+            });
+        });
+    });
+</script>
+</body>
+</html>

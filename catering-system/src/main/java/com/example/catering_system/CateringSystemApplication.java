@@ -8,8 +8,9 @@ import org.springframework.context.annotation.Bean;
 import com.example.catering_system.delivery.repository.DeliverySupervisorRepository;
 import com.example.catering_system.delivery.service.DeliverySupervisorService;
 
-@SpringBootApplication
-public class CateringSystemApplication {
+@SpringBootApplication(scanBasePackages = {"com.example.catering_system"})
+public class
+CateringSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CateringSystemApplication.class, args);

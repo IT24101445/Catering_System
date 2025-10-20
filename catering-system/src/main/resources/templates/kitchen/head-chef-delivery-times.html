@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title th:text="${pageTitle}">Delivery Times & Cooking Schedules</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .page-wrap { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+        .top-nav{position:sticky;top:0;z-index:1000;background:#1f2330;color:#fff;}
+        .top-nav .nav-wrap{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
+        .top-nav .brand{font-weight:700;letter-spacing:.3px;}
+        .top-nav .nav-links{display:flex;gap:10px;}
+        .top-nav .nav-links a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px;}
+        .top-nav .nav-links a.active{background:rgba(255,255,255,.14);}
+        .delivery-card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .delivery-card h3 { color: #1f2330; margin-bottom: 16px; font-weight: 600; }
+        .event-item { border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin-bottom: 16px; background: #fff; }
+        .event-item h4 { margin: 0 0 12px 0; color: #1f2330; font-weight: 600; }
+        .event-item .status { display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; margin-bottom: 12px; }
+        .status.confirmed { background: #d4edda; color: #155724; }
+        .status.planned { background: #fff3cd; color: #856404; }
+        .status.in_progress { background: #cce5ff; color: #004085; }
+        .event-details { background: #f8f9fa; border-radius: 8px; padding: 16px; margin: 12px 0; }
+        .event-details h6 { margin: 0 0 8px 0; color: #495057; font-weight: 600; }
+        .event-details p { margin: 0; color: #6c757d; }
+        .delivery-time { font-size: 1.2rem; font-weight: 700; color: #dc3545; }
+        .guest-count { font-size: 1.1rem; font-weight: 600; color: #28a745; }
+        .location { color: #6c757d; font-style: italic; }
+        .time-remaining { background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; padding: 12px; margin: 12px 0; }
+        .time-remaining h6 { margin: 0 0 8px 0; color: #856404; font-weight: 600; }
+        .time-remaining p { margin: 0; color: #856404; }
+        .action-buttons { margin-top: 16px; }
+        .action-buttons .btn { margin-right: 8px; }
+    </style>
+</head>
+<body>
+<nav class="top-nav">
+    <div class="nav-wrap">
+        <div class="brand">Catering System - Head Chef</div>
+        <div class="nav-links">
+            <a th:href="@{/}" th:classappend="${activePage}=='home' ? ' active' : ''">Home</a>
+            <a th:href="@{/head-chef}" th:classappend="${activePage}=='head-chef' ? ' active' : ''">Dashboard</a>
+            <a th:href="@{/head-chef/confirmed-menus}" th:classappend="${activePage}=='head-chef' ? ' active' : ''">Confirmed Menus</a>
+            <a th:href="@{/head-chef/events}" th:classappend="${activePage}=='head-chef' ? ' active' : ''">Events</a>
+            <a th:href="@{/head-chef/delivery-times}" th:classappend="${activePage}=='head-chef' ? ' active' : ''">Delivery Times</a>
+            <a th:href="@{/head-chef/notifications}" th:classappend="${activePage}=='head-chef' ? ' active' : ''">Notifications</a>
+        </div>
+    </div>
+</nav>
+
+<main class="page-wrap">
+    <div class="delivery-card">
+        <h3>Delivery Times & Cooking Schedules</h3>
+        <p class="text-muted mb-4">View upcoming delivery times to plan cooking schedules effectively.</p>
+        
+        <div th:if="${events != null and !events.empty}">
+            <div th:each="event : ${events}" class="event-item">
+                <h4 th:text="${event.name}">Event Name</h4>
+                <span class="status" th:classappend="${event.status}" th:text="${event.status}">confirmed</span>
+                
+                <div class="event-details">
+                    <h6>Event Information</h6>
+                    <p><strong>Event ID:</strong> <span th:text="${event.id}">#123</span></p>
+                    <p><strong>Guest Count:</strong> <span class="guest-count" th:text="${event.guestCount}">0</span> people</p>
+                    <p th:if="${event.deliveryTime != null}"><strong>Delivery Time:</strong> <span class="delivery-time" th:text="${#temporals.format(event.deliveryTime, 'yyyy-MM-dd HH:mm')}">2025-01-01 18:00</span></p>
+                    <p th:if="${event.location != null and !event.location.empty}"><strong>Location:</strong> <span class="location" th:text="${event.location}">Event Location</span></p>
+                    <p th:if="${event.notes != null and !event.notes.empty}"><strong>Notes:</strong> <span th:text="${event.notes}">Additional notes</span></p>
+                </div>
+                
+                <!-- Time Remaining Calculation -->
+                <div th:if="${event.deliveryTime != null}" class="time-remaining">
+                    <h6>Time Remaining</h6>
+                    <p th:text="${#temporals.format(event.deliveryTime, 'EEEE, MMMM dd, yyyy \'at\' HH:mm')}">Monday, January 01, 2025 at 18:00</p>
+                    <p class="text-muted">Plan your cooking schedule accordingly to ensure timely delivery.</p>
+                </div>
+                
+                <div class="action-buttons">
+                    <a th:href="@{'/head-chef/events/' + ${event.id}}" class="btn btn-primary">View Event Details</a>
+                    <a th:href="@{'/head-chef/cooking-schedules'}" class="btn btn-outline-secondary">View Cooking Schedules</a>
+                </div>
+            </div>
+        </div>
+        
+        <div th:if="${events == null or events.empty}" class="text-center py-5">
+            <div class="text-muted">
+                <i class="fas fa-clock" style="font-size: 3rem; margin-bottom: 16px;"></i>
+                <h5>No Upcoming Deliveries</h5>
+                <p>There are currently no upcoming events with delivery times scheduled.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="text-center mt-4">
+    <small>Catering System © 2025. All rights reserved.</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

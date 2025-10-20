@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Dish Catering - Login Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            color: #333333;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #333333;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar .logo img {
+            width: 50px;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .navbar a:hover {
+            background-color: #FFD700;
+            color: #333;
+        }
+
+        /* Header Banner */
+        .header-banner {
+            background-image: url('/images/header-image.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .header-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
+        }
+        
+        .header-banner h1 {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            z-index: 2;
+            text-align: center;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Tagline Section */
+        .tagline {
+            background-color: #FFF9E6;
+            padding: 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        /* Admin Section */
+        .admin-section {
+            padding: 4rem 2rem;
+            background-color: #ffffff;
+        }
+
+        .admin-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            margin: 0 0 0.75rem 0;
+            text-align: center;
+            color: #333;
+        }
+
+        .admin-description {
+            color: #666;
+            margin: 0 auto 2.5rem auto;
+            max-width: 720px;
+            text-align: center;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-card {
+            background: #111;
+            color: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            border: 1px solid #222;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+            text-align: center;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+            background: #0d0d0d;
+        }
+
+        .admin-card .icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin: 0 auto 12px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1f1f1f;
+            color: #FFD700;
+            font-size: 1.4rem;
+            border: 1px solid #2a2a2a;
+        }
+
+        .admin-card h3 {
+            margin: 8px 0 6px 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: #FFF9E6;
+        }
+
+        .admin-card p {
+            margin: 0 0 14px 0;
+            color: #cfcfcf;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            min-height: 2.7em;
+        }
+
+        .admin-card a.button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #FFD700;
+            color: #333;
+            border-radius: 999px;
+            padding: 10px 16px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .admin-card a.button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+            background: #f2cd00;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333333;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .navbar .nav-links {
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .header-banner h1 {
+                font-size: 2.5rem;
+                padding: 0 20px;
+            }
+            
+            .menus-section h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Page Transition Animations */
+        body {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Transition Overlay */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-out;
+        }
+
+        .transition-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Transition Overlay -->
+    <div class="transition-overlay" id="transitionOverlay"></div>
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="/images/logo.png" alt="Golden Dish Logo">
+        </div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/delivery/supervisor/login">Supervisor Login</a>
+            <a href="/delivery/driver/login">Driver Login</a>
+            <a href="/customer">Customer Service Login</a>
+            <a href="/event/login">Event Coordinator Login</a>
+        </div>
+    </nav>
+
+    <!-- Header Banner -->
+    <header class="header-banner">
+        <h1>Golden Dish Catering Admin Page</h1>
+    </header>
+
+    <!-- Tagline Section -->
+    <section class="tagline">
+        <p>Manage the Entire Catering & Event Process By Using Our System</p>
+    </section>
+
+    <!-- Admin Section -->
+    <section class="admin-section">
+        <h2>Administrator Access</h2>
+        <p class="admin-description">Choose your role to continue. Each portal provides tools tailored to your responsibilities.</p>
+
+        <div class="admin-grid">
+            <div class="admin-card">
+                <div class="icon"><i class="fas fa-user-shield"></i></div>
+                <h3>Operation Manager</h3>
+                <p>Manage all operational based works.</p>
+                <a class="button" href="/operation/login"><i class="fas fa-right-to-bracket"></i> Operation Manager Login</a>
+            </div>
+
+            <div class="admin-card">
+                <div class="icon"><i class="fas fa-calendar-check"></i></div>
+                <h3>Event Coordinator</h3>
+                <p>Manage events, schedules, updates, and assignments.</p>
+                <a class="button" href="/event/login"><i class="fas fa-right-to-bracket"></i> Coordinator Login</a>
+            </div>
+
+            <div class="admin-card">
+                <div class="icon"><i class="fas fa-warehouse"></i></div>
+                <h3>Kitchen</h3>
+                <p>Kitchen dashboards, prep lists, and production tracking.</p>
+                <a class="button" href="/kitchen/login"><i class="fas fa-right-to-bracket"></i> Kitchen Portal</a>
+            </div>
+
+            <div class="admin-card">
+                <div class="icon"><i class="fas fa-cogs"></i></div>
+                <h3>Admin and Finance</h3>
+                <p>System administration, financial management, and administrative controls.</p>
+                <a class="button" href="/admin-finance/login"><i class="fas fa-right-to-bracket"></i> Admin & Finance Portal</a>
+            </div>
+
+            <div class="admin-card">
+                <div class="icon"><i class="fas fa-headset"></i></div>
+                <h3>Customer Service</h3>
+                <p>Customer inquiries, orders, and service follow-ups.</p>
+                <a class="button" href="/customer"><i class="fas fa-right-to-bracket"></i> Customer Portal</a>
+            </div>
+
+            <div class="admin-card">
+                <div class="icon"><i class="fas fa-truck-fast"></i></div>
+                <h3>Delivery Supervisor</h3>
+                <p>Assignments, routing, and delivery monitoring.</p>
+                <a class="button" href="/delivery/supervisor/login"><i class="fas fa-right-to-bracket"></i> Supervisor Login</a>
+            </div>
+
+            <div class="admin-card">
+                <div class="icon"><i class="fas fa-id-card"></i></div>
+                <h3>Driver</h3>
+                <p>Driver login for route details and delivery updates.</p>
+                <a class="button" href="/delivery/driver/login"><i class="fas fa-right-to-bracket"></i> Driver Login</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Golden Dish Catering. All Rights Reserved.</p>
+    </footer>
+
+<script>
+  // Add smooth black gradient transition for Event Coordinator Login link
+  document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.navbar a');
+    const overlay = document.getElementById('transitionOverlay');
+    
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        
+        // Check if it's the event coordinator login link
+        if (href === '/event/login') {
+          e.preventDefault();
+          
+          // Show black gradient overlay
+          overlay.classList.add('active');
+          
+          // Redirect after smooth transition
+          setTimeout(function() {
+            window.location.href = '/event/login';
+          }, 300);
+        }
+      });
+    });
+  });
+</script>
+
+</html>

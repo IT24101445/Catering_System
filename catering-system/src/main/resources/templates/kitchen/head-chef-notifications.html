@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title th:text="${pageTitle}">Notifications</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .page-wrap { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+        .top-nav{position:sticky;top:0;z-index:1000;background:#1f2330;color:#fff;}
+        .top-nav .nav-wrap{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
+        .top-nav .brand{font-weight:700;letter-spacing:.3px;}
+        .top-nav .nav-links{display:flex;gap:10px;}
+        .top-nav .nav-links a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px;}
+        .top-nav .nav-links a.active{background:rgba(255,255,255,.14);}
+        .notifications-card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .notifications-card h3 { color: #1f2330; margin-bottom: 16px; font-weight: 600; }
+        .notification-item { border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin-bottom: 16px; background: #fff; }
+        .notification-item.unread { border-left: 4px solid #007bff; background: #f8f9fa; }
+        .notification-item h5 { margin: 0 0 8px 0; color: #1f2330; font-weight: 600; }
+        .notification-item .type { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; margin-bottom: 8px; }
+        .type.menu_change { background: #d1ecf1; color: #0c5460; }
+        .type.schedule_update { background: #d4edda; color: #155724; }
+        .type.event_update { background: #fff3cd; color: #856404; }
+        .type.system { background: #f8d7da; color: #721c24; }
+        .notification-item p { margin: 0 0 12px 0; color: #495057; line-height: 1.5; }
+        .notification-item .timestamp { color: #6c757d; font-size: 0.9rem; }
+        .notification-item .read-status { color: #28a745; font-size: 0.8rem; font-weight: 500; }
+        .action-buttons { margin-top: 16px; }
+        .action-buttons .btn { margin-right: 8px; }
+        .filter-buttons { margin-bottom: 24px; }
+        .filter-buttons .btn { margin-right: 8px; }
+    </style>
+</head>
+<body>
+<nav class="top-nav">
+    <div class="nav-wrap">
+        <div class="brand">Catering System - Head Chef</div>
+        <div class="nav-links">
+            <a th:href="@{/kitchen/home}" th:classappend="${activePage}=='home' ? ' active' : ''">Home</a>
+            <a th:href="@{/kitchen/dashboard}" th:classappend="${activePage}=='dashboard' ? ' active' : ''">Dashboard</a>
+            <a th:href="@{/kitchen/menus}" th:classappend="${activePage}=='menus' ? ' active' : ''">Menus</a>
+            <a th:href="@{/kitchen/events}" th:classappend="${activePage}=='events' ? ' active' : ''">Events</a>
+            <a th:href="@{/kitchen/notifications}" th:classappend="${activePage}=='notifications' ? ' active' : ''">Notifications</a>
+        </div>
+    </div>
+</nav>
+
+<main class="page-wrap">
+    <div class="notifications-card">
+        <h3>Notifications</h3>
+        <p class="text-muted mb-4">Stay updated with menu changes and system notifications.</p>
+        
+        <!-- Filter Buttons -->
+        <div class="filter-buttons">
+            <a th:href="@{/head-chef/notifications}" class="btn btn-outline-primary">All Notifications</a>
+            <a th:href="@{/head-chef/notifications/menu-changes}" class="btn btn-outline-secondary">Menu Changes</a>
+            <form th:action="@{/head-chef/notifications/mark-all-read}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-success">Mark All as Read</button>
+            </form>
+        </div>
+        
+        <div th:if="${notifications != null and !notifications.empty}">
+            <div th:each="notification : ${notifications}" class="notification-item" th:classappend="${!notification.isRead} ? 'unread' : ''">
+                <h5 th:text="${notification.title}">Notification Title</h5>
+                <span class="type" th:classappend="${notification.type}" th:text="${notification.type}">menu_change</span>
+                <p th:text="${notification.message}">Notification message content goes here.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="timestamp" th:text="${#temporals.format(notification.createdAt, 'yyyy-MM-dd HH:mm')}">2025-01-01 12:00</span>
+                    <div>
+                        <span th:if="${notification.isRead}" class="read-status">✓ Read</span>
+                        <span th:if="${!notification.isRead}" class="text-primary">● Unread</span>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <form th:action="@{'/head-chef/notifications/' + ${notification.id} + '/mark-read'}" method="post" style="display: inline;" th:if="${!notification.isRead}">
+                        <button type="submit" class="btn btn-sm btn-outline-primary">Mark as Read</button>
+                    </form>
+                    <span th:if="${notification.relatedId != null and notification.relatedType != null}">
+                        <a th:href="@{'/head-chef/' + ${notification.relatedType} + 's/' + ${notification.relatedId}}" 
+                           th:if="${notification.relatedType == 'menu'}" 
+                           class="btn btn-sm btn-outline-secondary">View Menu</a>
+                        <a th:href="@{'/head-chef/' + ${notification.relatedType} + 's/' + ${notification.relatedId}}" 
+                           th:if="${notification.relatedType == 'event'}" 
+                           class="btn btn-sm btn-outline-secondary">View Event</a>
+                        <a th:href="@{'/head-chef/' + ${notification.relatedType} + 's/' + ${notification.relatedId}}" 
+                           th:if="${notification.relatedType == 'schedule'}" 
+                           class="btn btn-sm btn-outline-secondary">View Schedule</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div th:if="${notifications == null or notifications.empty}" class="text-center py-5">
+            <div class="text-muted">
+                <i class="fas fa-bell-slash" style="font-size: 3rem; margin-bottom: 16px;"></i>
+                <h5>No Notifications</h5>
+                <p>You have no notifications at this time.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="text-center mt-4">
+    <small>Catering System © 2025. All rights reserved.</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

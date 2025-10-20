@@ -8,7 +8,7 @@
     if (!form) return;
 
     async function login(email, password) {
-        const res = await fetch(`${window.APP_CONFIG?.apiBase || ''}/supervisor/login`, {
+        const res = await fetch(`${window.APP_CONFIG?.apiBase || ''}/supervisors/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -33,7 +33,7 @@
         try {
             const user = await login(email, password);
             sessionStorage.setItem('supervisor', JSON.stringify(user));
-            window.location.assign('/supervisor/dashboard');
+            window.location.assign('/delivery/supervisor/dashboard');
         } catch (err) {
             errorEl.textContent = err.message || 'Login failed';
             errorEl.style.display = 'block';

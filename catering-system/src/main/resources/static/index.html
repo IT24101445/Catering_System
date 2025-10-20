@@ -1,332 +1,544 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Golden Dish Catering</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Golden Dish Catering - Online System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: 'Lato', sans-serif;
-            color: #333333;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Navbar Styling */
-        .navbar {
-            background-color: #333333;
-            padding: 15px 30px;
+        :root {
+            --primary-yellow: #FFD700;
+            --light-yellow: #FFF9E6;
+            --dark-yellow: #E6C200;
+            --dark-text: #333333;
+            --light-text: #666666;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--light-yellow);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-yellow), var(--dark-yellow));
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .navbar .logo img {
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
             width: 50px;
             height: auto;
             border-radius: 8px;
         }
 
-        .navbar .nav-links {
-            display: flex;
-            gap: 10px;
+        .logo i {
+            font-size: 2rem;
+            color: var(--dark-text);
         }
 
-        .navbar a {
-            color: white;
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
             text-decoration: none;
-            padding: 10px 18px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            transition: background-color 0.3s ease;
+            color: var(--dark-text);
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
             border-radius: 4px;
         }
 
-        .navbar a:hover {
-            background-color: #FFD700;
-            color: #333;
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
         }
 
-        /* Header Banner */
-        .header-banner {
-            background-image: url('/images/header-image.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 60vh;
+        .admin-btn {
+            background-color: var(--dark-text);
+            color: var(--primary-yellow);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            position: relative;
+            gap: 8px;
         }
-        
-        .header-banner::after {
+
+        .admin-btn:hover {
+            background-color: #222;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1555244162-803834f70033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-yellow);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-yellow);
+            color: var(--dark-text);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: var(--dark-yellow);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Menu Section */
+        .menu-section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
-        }
-        
-        .header-banner h1 {
-            color: white;
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            z-index: 2;
-            text-align: center;
-            margin: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-yellow);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        /* Tagline Section */
-        .tagline {
-            background-color: #FFF9E6;
-            padding: 2rem;
-            text-align: center;
-            font-size: 1.2rem;
-        }
-
-        /* Menus Section */
-        .menus-section {
-            padding: 4rem 2rem;
-            text-align: center;
-            background-color: #ffffff;
-        }
-        
-        .menus-section h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        
-        .menus-description {
-            color: #666;
-            margin-bottom: 3rem;
+        .section-title p {
+            color: var(--light-text);
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto;
         }
         
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
         }
-        
+
         .menu-card {
-            background: white;
-            padding: 2rem 1.5rem;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-top: 5px solid #FFD700;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-icon {
+            background-color: var(--primary-yellow);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-icon i {
+            font-size: 2.5rem;
+            color: var(--dark-text);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-content h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .card-content p {
+            color: var(--light-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-button {
+            display: inline-block;
+            background-color: var(--dark-text);
+            color: var(--white);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
             cursor: pointer;
         }
-        
-        .menu-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+
+        .card-button:hover {
+            background-color: var(--primary-yellow);
+            color: var(--dark-text);
         }
-        
-        .menu-card h3 {
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            color: #333;
+
+        /* Features Section */
+        .features {
+            background-color: var(--white);
+            padding: 5rem 2rem;
         }
-        
-        .menu-card p {
-            color: #777;
-            font-size: 0.9rem;
-            line-height: 1.6;
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            background-color: var(--light-yellow);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .feature-icon i {
+            font-size: 2rem;
+            color: var(--dark-yellow);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .feature-card p {
+            color: var(--light-text);
         }
 
         /* Footer */
         footer {
-            background-color: #333333;
-            color: white;
+            background-color: var(--dark-text);
+            color: var(--white);
+            padding: 3rem 2rem;
             text-align: center;
-            padding: 1.5rem;
-            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-logo i {
+            font-size: 2rem;
+            color: var(--primary-yellow);
+        }
+
+        .footer-logo h2 {
+            font-size: 1.8rem;
+            color: var(--primary-yellow);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-yellow);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .navbar {
+            .header-container {
                 flex-direction: column;
-                gap: 15px;
+                gap: 1rem;
             }
-            
-            .navbar .nav-links {
-                flex-direction: column;
-                width: 100%;
-                text-align: center;
+
+            nav ul {
+                gap: 1rem;
             }
-            
-            .header-banner h1 {
-                font-size: 2.5rem;
-                padding: 0 20px;
+
+            .hero h2 {
+                font-size: 2.2rem;
             }
-            
-            .menus-section h2 {
+
+            .section-title h2 {
                 font-size: 2rem;
             }
         }
 
-        /* Page Transition Animations */
-        body {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
+        @media (max-width: 480px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
             }
-            to {
-                opacity: 1;
+
+            .hero {
+                padding: 4rem 1rem;
+            }
+
+            .hero h2 {
+                font-size: 1.8rem;
             }
         }
 
-        /* Loading Overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease-out;
-        }
-
-        .loading-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 215, 0, 0.3);
-            border-top-color: #FFD700;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            color: #FFD700;
-            font-size: 1.2rem;
-            margin-top: 20px;
-            font-weight: 500;
-        }
     </style>
 </head>
 
 <body>
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Redirecting...</div>
-    </div>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="logo">
-            <img src="/images/logo.png" alt="Golden Dish Logo">
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="/images/logo.png" alt="Golden Dish Logo">
+                <h1>Golden Dish Caterings</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="menus.html">Menus</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div style="display: flex; gap: 1rem;">
+                <button class="admin-btn" onclick="window.location.href='/login/customer'" style="background-color: var(--primary-yellow); color: var(--dark-text);">
+                    <i class="fas fa-user"></i> Customer Login
+                </button>
+                <button class="admin-btn" onclick="window.location.href='/login-portal.html'">
+                    <i class="fas fa-user-shield"></i> Admin Login
+                </button>
+            </div>
         </div>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/delivery/supervisor/login">Supervisor Login</a>
-            <a href="/delivery/driver/login">Driver Login</a>
-            <a href="/customer">Customer Service Login</a>
-            <a href="/event/login">Event Coordinator Login</a>
-        </div>
-    </nav>
-
-    <!-- Header Banner -->
-    <header class="header-banner">
-        <h1>Golden Dish Catering</h1>
     </header>
 
-    <!-- Tagline Section -->
-    <section class="tagline">
-        <p>We provide exquisite food for your special occasions.</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Exquisite Catering for Your Special Occasions</h2>
+            <p>From intimate gatherings to grand celebrations, we create memorable culinary experiences with exceptional food quality and service.</p>
+            <a href="/book-event" class="cta-button">Book Your Event Now</a>
+        </div>
     </section>
 
-    <!-- Menus Section -->
-    <section class="menus-section">
-        <h2>Our Special Menus</h2>
-        <p class="menus-description">Dedicated to providing a memorable culinary experience with exceptional food quality.</p>
-        
+    <!-- Menu Section -->
+    <section class="menu-section">
+        <div class="section-title">
+            <h2>Our Special Menus</h2>
+            <p>Dedicated to providing a memorable culinary experience with exceptional food quality</p>
+        </div>
         <div class="menu-grid">
-            <div class="menu-card">
-                <h3>Continental Menu</h3>
-                <p>Elegant European classics crafted with finesse.</p>
+            <a href="/menus.html" style="text-decoration: none; color: inherit;">
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="fas fa-bread-slice"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Continental Menu</h3>
+                        <p>Experience the finest European cuisine with our carefully crafted continental dishes, featuring premium ingredients and authentic flavors.</p>
+                        <span class="card-button">View Menu</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/menus.html" style="text-decoration: none; color: inherit;">
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="fas fa-glass-cheers"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Occasion-Based Menus</h3>
+                        <p>Customized menus tailored for weddings, corporate events, birthdays, and other special occasions to make your event unforgettable.</p>
+                        <span class="card-button">View Options</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/menus.html" style="text-decoration: none; color: inherit;">
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Fusion Menu</h3>
+                        <p>An exciting blend of global flavors and culinary traditions, creating unique dishes that surprise and delight the palate.</p>
+                        <span class="card-button">Explore Fusion</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/menus.html" style="text-decoration: none; color: inherit;">
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Kids Menu</h3>
+                        <p>Fun, nutritious, and delicious options specially designed for younger guests, ensuring everyone enjoys the celebration.</p>
+                        <span class="card-button">See Kids Options</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="section-title">
+            <h2>Why Choose Golden Dish</h2>
+            <p>We go above and beyond to make your event exceptional</p>
+        </div>
+        <div class="features-container">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3>Premium Quality</h3>
+                <p>We source only the finest ingredients and maintain the highest standards in food preparation and presentation.</p>
             </div>
-            <div class="menu-card">
-                <h3>Occasion-Based Menus</h3>
-                <p>Tailored perfectly for weddings, corporate events, and more.</p>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Experienced Team</h3>
+                <p>Our professional chefs and service staff have years of experience in creating memorable dining experiences.</p>
             </div>
-            <div class="menu-card">
-                <h3>Fusion Menu</h3>
-                <p>A creative blend of global flavors and techniques.</p>
-            </div>
-            <div class="menu-card">
-                <h3>Kids Menu</h3>
-                <p>Fun, healthy, and delicious options for the little ones.</p>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>Sustainable Practices</h3>
+                <p>We're committed to environmentally friendly practices, from sourcing to waste reduction.</p>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Golden Dish Catering. All Rights Reserved.</p>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-utensils"></i>
+                <h2>Golden Dish Catering</h2>
+            </div>
+            <p>Creating unforgettable culinary experiences for your special moments</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Golden Dish Catering. All Rights Reserved.</p>
+            </div>
+        </div>
     </footer>
 
 </body>
 
-<script>
-  (function() {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const next = params.get('next');
-      
-      if (next === 'event-login' || next === 'event-register') {
-        // Add fade-out animation
-        document.body.style.transition = 'opacity 0.5s ease-out';
-        document.body.style.opacity = '1';
-        
-        setTimeout(function() {
-          document.body.style.opacity = '0';
-        }, 100);
-        
-        setTimeout(function() {
-          if (next === 'event-login') {
-            window.location.href = '/event/login';
-          } else if (next === 'event-register') {
-            window.location.href = '/event/register';
-          }
-        }, 600);
-      }
-    } catch (e) { /* no-op */ }
-  })();
-</script>
 
 </html>

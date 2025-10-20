@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Assigned Orders</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .header { background-color: #333; color: white; padding: 15px 20px; text-align: right; }
+        .header a { color: white; text-decoration: none; margin-left: 15px; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 20px; background: white; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #4CAF50; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-assigned {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status-pending {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <span>Assigned Orders</span>
+    <a href="/operation/dashboard">Dashboard</a>
+    <a href="/operation/logout">Logout</a>
+</div>
+
+<div class="container">
+    <a href="/operation/dashboard" class="back-link">&larr; Back to Dashboard</a>
+
+    <h1>Assigned Orders</h1>
+
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer Name</th>
+            <th>Order Details</th>
+            <th>Staff Name</th>
+            <th>Staff Role</th>
+            <th>Booking Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="order : ${assignedOrders}">
+            <td th:text="${order.orderId}"></td>
+            <td th:text="${order.customerName}"></td>
+            <td th:text="${order.details}"></td>
+            <td th:text="${order.staffName}"></td>
+            <td th:text="${order.staffRole}"></td>
+            <td th:text="${order.bookingDate}"></td>
+            <td>
+                <span th:if="${order.status == 'ASSIGNED'}" class="status-badge status-assigned" th:text="${order.status}">ASSIGNED</span>
+                <span th:if="${order.status == 'PENDING'}" class="status-badge status-pending" th:text="${order.status}">PENDING</span>
+                <span th:unless="${order.status == 'ASSIGNED' or order.status == 'PENDING'}" class="status-badge" th:text="${order.status}">OTHER</span>
+            </td>
+            <td>
+                <a th:href="@{'/operation/assigned-orders/delete/' + ${order.orderId}}" 
+                   onclick="return confirm('Are you sure you want to delete this assigned order?')"
+                   style="color: #dc3545; text-decoration: none; font-weight: bold;">
+                    <i class="fas fa-trash"></i> Delete
+                </a>
+            </td>
+        </tr>
+    </table>
+
+    <div th:if="${#lists.isEmpty(assignedOrders)}">
+        <p>No assigned orders found.</p>
+    </div>
+</div>
+</body>
+</html>

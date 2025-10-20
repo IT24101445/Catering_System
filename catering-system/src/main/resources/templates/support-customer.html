@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Support & Help - Modern Catering System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .support-card {
+            transition: transform 0.2s;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .support-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .faq-item {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .faq-question {
+            background: #f8f9fa;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        .faq-question:hover {
+            background: #e9ecef;
+        }
+        .faq-answer {
+            padding: 15px;
+            display: none;
+        }
+        .contact-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 30px;
+        }
+        .quick-action-btn {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+        .quick-action-btn:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-online { background-color: #28a745; }
+        .status-offline { background-color: #dc3545; }
+        .status-busy { background-color: #ffc107; }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">
+                <i class="fas fa-utensils me-2"></i>Modern Catering System
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/dashboard">
+                    <i class="fas fa-home me-1"></i>Dashboard
+                </a>
+                <a class="nav-link" href="/menu">
+                    <i class="fas fa-book me-1"></i>Menu
+                </a>
+                <a class="nav-link" href="/orders">
+                    <i class="fas fa-shopping-cart me-1"></i>Orders
+                </a>
+                <a class="nav-link active" href="/support">
+                    <i class="fas fa-life-ring me-1"></i>Support
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="text-center">
+                    <h1 class="display-4 text-primary mb-3">
+                        <i class="fas fa-life-ring me-3"></i>Support & Help Center
+                    </h1>
+                    <p class="lead text-muted">We're here to help you with any questions or issues you may have</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card support-card">
+                    <div class="card-body text-center">
+                        <h4 class="card-title mb-4">Quick Actions</h4>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <button class="btn quick-action-btn w-100" onclick="scrollToSection('faq')">
+                                    <i class="fas fa-question-circle me-2"></i>FAQ
+                                </button>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <button class="btn quick-action-btn w-100" onclick="scrollToSection('contact')">
+                                    <i class="fas fa-phone me-2"></i>Contact Us
+                                </button>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <button class="btn quick-action-btn w-100" onclick="scrollToSection('troubleshooting')">
+                                    <i class="fas fa-tools me-2"></i>Troubleshooting
+                                </button>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <button class="btn quick-action-btn w-100" onclick="scrollToSection('feedback')">
+                                    <i class="fas fa-comment-dots me-2"></i>Feedback
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- FAQ Section -->
+            <div class="col-lg-8">
+                <div class="card support-card mb-4" id="faq">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-question-circle me-2"></i>Frequently Asked Questions</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <strong><i class="fas fa-plus me-2"></i>How do I add a new menu item?</strong>
+                            </div>
+                            <div class="faq-answer">
+                                <p>To add a new menu item:</p>
+                                <ol>
+                                    <li>Go to the <strong>Menu</strong> page</li>
+                                    <li>Click the <strong>"Add New Item"</strong> button</li>
+                                    <li>Fill in all required fields (name, price, category, etc.)</li>
+                                    <li>Click <strong>"Save Item"</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <strong><i class="fas fa-plus me-2"></i>How do I create a new order?</strong>
+                            </div>
+                            <div class="faq-answer">
+                                <p>To create a new order:</p>
+                                <ol>
+                                    <li>Navigate to the <strong>Orders</strong> page</li>
+                                    <li>Click the <strong>"New Order"</strong> button</li>
+                                    <li>Select a customer from the dropdown</li>
+                                    <li>Choose order type (Delivery, Pickup, Dine-in, or Catering)</li>
+                                    <li>Add menu items and quantities</li>
+                                    <li>Review the order summary and click <strong>"Create Order"</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <strong><i class="fas fa-plus me-2"></i>How do I make an unavailable menu item available again?</strong>
+                            </div>
+                            <div class="faq-answer">
+                                <p>To reactivate an unavailable menu item:</p>
+                                <ol>
+                                    <li>Go to the <strong>Menu</strong> page</li>
+                                    <li>Click the <strong>"Unavailable Only"</strong> filter button</li>
+                                    <li>Find the item you want to reactivate</li>
+                                    <li>Click the green eye button (👁️) on the item card</li>
+                                    <li>The item will immediately become available again</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <strong><i class="fas fa-plus me-2"></i>How do I update order status?</strong>
+                            </div>
+                            <div class="faq-answer">
+                                <p>To update an order's status:</p>
+                                <ol>
+                                    <li>Go to the <strong>Orders</strong> page</li>
+                                    <li>Find the order you want to update</li>
+                                    <li>Click the <strong>"Update Status"</strong> button</li>
+                                    <li>Select the new status from the dropdown</li>
+                                    <li>Click <strong>"Update"</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <strong><i class="fas fa-plus me-2"></i>What payment methods are accepted?</strong>
+                            </div>
+                            <div class="faq-answer">
+                                <p>We currently support the following payment methods:</p>
+                                <ul>
+                                    <li>Cash on delivery</li>
+                                    <li>Credit/Debit cards</li>
+                                    <li>Digital wallets</li>
+                                    <li>Bank transfers</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <strong><i class="fas fa-plus me-2"></i>How do I contact customer support?</strong>
+                            </div>
+                            <div class="faq-answer">
+                                <p>You can reach our customer support team through:</p>
+                                <ul>
+                                    <li><strong>Phone:</strong> +1 (555) 123-4567</li>
+                                    <li><strong>Email:</strong> support@moderntechcatering.com</li>
+                                    <li><strong>Live Chat:</strong> Available during business hours</li>
+                                    <li><strong>Support Tickets:</strong> Submit a ticket through the system</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Troubleshooting Section -->
+                <div class="card support-card mb-4" id="troubleshooting">
+                    <div class="card-header bg-warning text-dark">
+                        <h4 class="mb-0"><i class="fas fa-tools me-2"></i>Troubleshooting Guide</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>Common Issues</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <strong>Page not loading:</strong> Refresh your browser or clear cache
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Can't save menu items:</strong> Check all required fields are filled
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Order creation fails:</strong> Ensure customer is selected and items added
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Buttons not working:</strong> Try refreshing the page
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h5><i class="fas fa-lightbulb text-info me-2"></i>Quick Fixes</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <strong>Clear browser cache</strong> and refresh
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Check internet connection</strong>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Try a different browser</strong>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Restart the application</strong> if needed
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact & Support Info -->
+            <div class="col-lg-4">
+                <!-- Contact Information -->
+                <div class="card support-card mb-4" id="contact">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0"><i class="fas fa-phone me-2"></i>Contact Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-info">
+                            <div class="mb-4">
+                                <h5><i class="fas fa-headset me-2"></i>Support Status</h5>
+                                <p class="mb-2">
+                                    <span class="status-indicator status-online"></span>
+                                    <strong>Online</strong> - Available now
+                                </p>
+                                <small>Business Hours: Mon-Fri 9AM-6PM</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6><i class="fas fa-phone me-2"></i>Phone Support</h6>
+                                <p class="mb-1"><strong>+1 (555) 123-4567</strong></p>
+                                <small>Available 24/7 for urgent issues</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6><i class="fas fa-envelope me-2"></i>Email Support</h6>
+                                <p class="mb-1"><strong>support@moderntechcatering.com</strong></p>
+                                <small>Response within 2 hours during business hours</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6><i class="fas fa-comments me-2"></i>Live Chat</h6>
+                                <p class="mb-1"><strong>Available Now</strong></p>
+                                <button class="btn btn-light btn-sm">Start Chat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="card support-card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0"><i class="fas fa-server me-2"></i>System Status</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-globe me-2"></i>Website</span>
+                                <span class="badge bg-success">Operational</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-database me-2"></i>Database</span>
+                                <span class="badge bg-success">Operational</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-shopping-cart me-2"></i>Order System</span>
+                                <span class="badge bg-success">Operational</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-book me-2"></i>Menu System</span>
+                                <span class="badge bg-success">Operational</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card support-card" id="feedback">
+                    <div class="card-header bg-secondary text-white">
+                        <h4 class="mb-0"><i class="fas fa-comment-dots me-2"></i>Send Feedback</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="feedbackForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="feedbackName" class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" id="feedbackName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="feedbackEmail" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="feedbackEmail" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="feedbackSubject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="feedbackSubject" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="feedbackMessage" class="form-label">Message</label>
+                                <textarea class="form-control" id="feedbackMessage" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="feedbackType" class="form-label">Feedback Type</label>
+                                <select class="form-select" id="feedbackType">
+                                    <option value="general">General Feedback</option>
+                                    <option value="bug">Bug Report</option>
+                                    <option value="feature">Feature Request</option>
+                                    <option value="support">Support Request</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Send Feedback
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Dashboard -->
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <a href="/dashboard" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // FAQ Toggle Functionality
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            
+            if (answer.style.display === 'none' || answer.style.display === '') {
+                answer.style.display = 'block';
+                icon.className = 'fas fa-minus me-2';
+            } else {
+                answer.style.display = 'none';
+                icon.className = 'fas fa-plus me-2';
+            }
+        }
+
+        // Smooth scrolling to sections
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Feedback form submission
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('feedbackName').value,
+                email: document.getElementById('feedbackEmail').value,
+                subject: document.getElementById('feedbackSubject').value,
+                message: document.getElementById('feedbackMessage').value,
+                type: document.getElementById('feedbackType').value
+            };
+            
+            // Here you would typically send the feedback to your backend
+            alert('Thank you for your feedback! We will get back to you soon.');
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Initialize FAQ items
+        document.addEventListener('DOMContentLoaded', function() {
+            // All FAQ answers start hidden
+            const faqAnswers = document.querySelectorAll('.faq-answer');
+            faqAnswers.forEach(answer => {
+                answer.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -20,9 +20,19 @@ public class PageController {
         return "supervisor-login";
     }
 
+    @GetMapping("/supervisor/register")
+    public String supervisorRegister() {
+        return "supervisor-register";
+    }
+
     @GetMapping("/supervisor/dashboard")
     public String dashboard() {
         return "supervisor-dashboard";
+    }
+
+    @GetMapping("/dashboard")
+    public String deliveryDashboard() {
+        return "delivery-dashboard";
     }
 
     @GetMapping("/drivers")

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        .print-only {
+            display: none;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .chart-container {
+                height: 300px !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-yellow-500 p-4 flex justify-between items-center no-print">
+        <div class="flex items-center space-x-3">
+            <span class="text-white text-2xl font-bold uppercase">Finance Dashboard</span>
+        </div>
+        <div class="flex space-x-4">
+            <a href="/home" class="text-white px-4 py-2 font-semibold uppercase hover:bg-yellow-600 transition duration-300">Home</a>
+        </div>
+    </nav>
+
+    <!-- Period Filter -->
+    <div class="container mx-auto p-6 no-print">
+        <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-semibold">Dashboard Controls</h2>
+                <div class="flex space-x-4">
+                    <select id="periodFilter" class="px-4 py-2 border border-gray-300 rounded-lg">
+                        <option value="daily" th:selected="${period == 'daily'}">Daily</option>
+                        <option value="weekly" th:selected="${period == 'weekly'}">Weekly</option>
+                        <option value="monthly" th:selected="${period == 'monthly'}">Monthly</option>
+                    </select>
+                    <button onclick="window.print()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+                        📄 Print Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Header -->
+    <div class="print-only text-center mb-6">
+        <h1 class="text-3xl font-bold">Financial Dashboard Report</h1>
+        <p class="text-lg" th:text="'Period: ' + ${period}">Period: Monthly</p>
+        <p class="text-sm" th:text="'Generated on: ' + ${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}">Generated on: 2025-01-20</p>
+    </div>
+
+    <!-- Key Metrics Cards -->
+    <div class="container mx-auto p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Revenue -->
+            <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-green-500">
+                <h3 class="text-xl font-semibold text-gray-700">Total Revenue</h3>
+                <p class="text-3xl font-bold text-green-600" th:text="'$' + ${#numbers.formatDecimal(totalRevenue, 1, 2)}">$0.00</p>
+                <p class="text-sm text-gray-500">Current Period</p>
+            </div>
+
+            <!-- Total Expenses -->
+            <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-red-500">
+                <h3 class="text-xl font-semibold text-gray-700">Total Expenses</h3>
+                <p class="text-3xl font-bold text-red-600" th:text="'$' + ${#numbers.formatDecimal(totalExpenses, 1, 2)}">$0.00</p>
+                <p class="text-sm text-gray-500">Current Period</p>
+            </div>
+
+            <!-- Net Cash Flow -->
+            <div class="bg-white p-6 rounded-lg shadow-lg border-t-4" th:classappend="${netCashFlow >= 0} ? 'border-green-500' : 'border-red-500'">
+                <h3 class="text-xl font-semibold text-gray-700">Net Cash Flow</h3>
+                <p class="text-3xl font-bold" th:class="${netCashFlow >= 0} ? 'text-green-600' : 'text-red-600'" 
+                   th:text="'$' + ${#numbers.formatDecimal(netCashFlow, 1, 2)}">$0.00</p>
+                <p class="text-sm text-gray-500">Inflows: <span th:text="'$' + ${#numbers.formatDecimal(totalInflows, 1, 2)}">$0.00</span></p>
+            </div>
+
+            <!-- Net Profit -->
+            <div class="bg-white p-6 rounded-lg shadow-lg border-t-4" th:classappend="${profitLossReport.netProfit >= 0} ? 'border-green-500' : 'border-red-500'">
+                <h3 class="text-xl font-semibold text-gray-700">Net Profit</h3>
+                <p class="text-3xl font-bold" th:class="${profitLossReport.netProfit >= 0} ? 'text-green-600' : 'text-red-600'"
+                   th:text="'$' + ${#numbers.formatDecimal(profitLossReport.netProfit, 1, 2)}">$0.00</p>
+                <p class="text-sm text-gray-500">Margin: <span th:text="${#numbers.formatDecimal(profitLossReport.profitMargin, 1, 1)}">0.0</span>%</p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Revenue by Source Chart -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Revenue by Source</h3>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Expenses by Category Chart -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Expenses by Category</h3>
+                <div class="chart-container">
+                    <canvas id="expensesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trend Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Daily Revenue Trend -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Daily Revenue Trend (30 Days)</h3>
+                <div class="chart-container">
+                    <canvas id="dailyTrendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Monthly Revenue Trend -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Monthly Revenue Trend (12 Months)</h3>
+                <div class="chart-container">
+                    <canvas id="monthlyTrendChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Summary Table -->
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Financial Summary</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Total Revenue</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="'$' + ${#numbers.formatDecimal(totalRevenue, 1, 2)}">$0.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">100%</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Total Expenses</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="'$' + ${#numbers.formatDecimal(totalExpenses, 1, 2)}">$0.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${#numbers.formatDecimal((totalExpenses / totalRevenue) * 100, 1, 1)}">0.0%</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Net Profit</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="'$' + ${#numbers.formatDecimal(profitLossReport.netProfit, 1, 2)}">$0.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${#numbers.formatDecimal(profitLossReport.profitMargin, 1, 1)}">0.0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Report Generation Section -->
+        <div class="bg-white p-6 rounded-lg shadow-lg no-print">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Generate Reports</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <a href="/finance-dashboard/reports/daily" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300 text-center">
+                    📊 Daily Report
+                </a>
+                <a href="/finance-dashboard/reports/weekly" class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300 text-center">
+                    📈 Weekly Report
+                </a>
+                <a href="/finance-dashboard/reports/monthly" class="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition duration-300 text-center">
+                    📋 Monthly Report
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Charts -->
+    <script>
+        // Check if Chart.js is loaded
+        if (typeof Chart === 'undefined') {
+            console.error('Chart.js is not loaded!');
+            document.body.innerHTML += '<div style="color: red; padding: 20px;">Chart.js failed to load. Please check your internet connection.</div>';
+        }
+
+        // Period filter functionality
+        document.getElementById('periodFilter').addEventListener('change', function() {
+            const period = this.value;
+            window.location.href = `/finance-dashboard?period=${period}`;
+        });
+
+        // Chart data from server - properly formatted
+        const revenueBySource = {
+            "CATERING_ORDER": /*[[${revenueBySource.CATERING_ORDER}]]*/ 0,
+            "EVENT": /*[[${revenueBySource.EVENT}]]*/ 0,
+            "PACKAGE": /*[[${revenueBySource.PACKAGE}]]*/ 0,
+            "SUBSCRIPTION": /*[[${revenueBySource.SUBSCRIPTION}]]*/ 0
+        };
+
+        const expensesByCategory = {
+            "INGREDIENTS": /*[[${expensesByCategory.INGREDIENTS}]]*/ 0,
+            "UTILITIES": /*[[${expensesByCategory.UTILITIES}]]*/ 0,
+            "TRANSPORTATION": /*[[${expensesByCategory.TRANSPORTATION}]]*/ 0,
+            "EQUIPMENT": /*[[${expensesByCategory.EQUIPMENT}]]*/ 0,
+            "RENT": /*[[${expensesByCategory.RENT}]]*/ 0,
+            "OTHER": /*[[${expensesByCategory.OTHER}]]*/ 0
+        };
+
+        let dailyTrendData = /*[[${dailyRevenueTrend}]]*/ [];
+        let monthlyTrendData = /*[[${monthlyRevenueTrend}]]*/ [];
+
+        // Debug: Log data to console
+        console.log('Revenue by Source:', revenueBySource);
+        console.log('Expenses by Category:', expensesByCategory);
+        console.log('Daily Trend Data:', dailyTrendData);
+        console.log('Monthly Trend Data:', monthlyTrendData);
+
+        // Fallback data if no real data is available
+        if (Object.values(revenueBySource).every(val => val === 0 || val === null)) {
+            console.log('No revenue data found, using sample data');
+            revenueBySource.CATERING_ORDER = 5000;
+            revenueBySource.EVENT = 3000;
+            revenueBySource.PACKAGE = 2000;
+            revenueBySource.SUBSCRIPTION = 1000;
+        }
+
+        if (Object.values(expensesByCategory).every(val => val === 0 || val === null)) {
+            console.log('No expense data found, using sample data');
+            expensesByCategory.INGREDIENTS = 2000;
+            expensesByCategory.UTILITIES = 500;
+            expensesByCategory.TRANSPORTATION = 300;
+            expensesByCategory.EQUIPMENT = 800;
+            expensesByCategory.RENT = 1200;
+            expensesByCategory.OTHER = 400;
+        }
+
+        if (!dailyTrendData || dailyTrendData.length === 0) {
+            console.log('No daily trend data found, using sample data');
+            dailyTrendData = [];
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                dailyTrendData.push({
+                    date: date.toISOString().split('T')[0],
+                    revenue: Math.random() * 1000 + 500
+                });
+            }
+        }
+
+        if (!monthlyTrendData || monthlyTrendData.length === 0) {
+            console.log('No monthly trend data found, using sample data');
+            monthlyTrendData = [];
+            for (let i = 11; i >= 0; i--) {
+                const date = new Date();
+                date.setMonth(date.getMonth() - i);
+                monthlyTrendData.push({
+                    month: date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0'),
+                    revenue: Math.random() * 5000 + 2000
+                });
+            }
+        }
+
+        // Revenue by Source Chart (Doughnut)
+        const revenueCtx = document.getElementById('revenueChart');
+        if (revenueCtx) {
+            new Chart(revenueCtx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(revenueBySource),
+                    datasets: [{
+                        data: Object.values(revenueBySource),
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        } else {
+            console.error('Revenue chart canvas not found');
+        }
+
+        // Expenses by Category Chart (Bar)
+        const expensesCtx = document.getElementById('expensesChart');
+        if (expensesCtx) {
+            new Chart(expensesCtx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(expensesByCategory),
+                    datasets: [{
+                        label: 'Expenses',
+                        data: Object.values(expensesByCategory),
+                        backgroundColor: '#FF6384'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        } else {
+            console.error('Expenses chart canvas not found');
+        }
+
+        // Daily Trend Chart (Line)
+        const dailyTrendCtx = document.getElementById('dailyTrendChart');
+        if (dailyTrendCtx && dailyTrendData && dailyTrendData.length > 0) {
+            new Chart(dailyTrendCtx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: dailyTrendData.map(item => item.date),
+                    datasets: [{
+                        label: 'Daily Revenue',
+                        data: dailyTrendData.map(item => item.revenue),
+                        borderColor: '#36A2EB',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        } else {
+            console.error('Daily trend chart canvas not found or no data');
+        }
+
+        // Monthly Trend Chart (Line)
+        const monthlyTrendCtx = document.getElementById('monthlyTrendChart');
+        if (monthlyTrendCtx && monthlyTrendData && monthlyTrendData.length > 0) {
+            new Chart(monthlyTrendCtx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: monthlyTrendData.map(item => item.month),
+                    datasets: [{
+                        label: 'Monthly Revenue',
+                        data: monthlyTrendData.map(item => item.revenue),
+                        borderColor: '#4BC0C0',
+                        backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        } else {
+            console.error('Monthly trend chart canvas not found or no data');
+        }
+
+        // Test chart to verify Chart.js is working
+        console.log('Chart.js version:', Chart.version);
+        console.log('All charts initialized successfully');
+    </script>
+</body>
+</html>

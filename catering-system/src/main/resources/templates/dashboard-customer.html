@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Modern Catering System</title>
+    
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .dashboard-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-icon-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .stat-icon-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .stat-icon-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .stat-icon-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .welcome-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+        
+        .feature-card h5 {
+            color: #1f2937;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card p {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-feature {
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-feature:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-utensils me-2"></i>
+                Golden Dish Catering
+            </a>
+            
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i>
+                        Admin User
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="mb-2">Customer Service Management System</h1>
+                    <p class="mb-0 opacity-75">Manage your catering business with powerful tools and insights</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="text-white">
+                        <i class="fas fa-calendar me-2"></i>
+                        <span th:text="${#temporals.format(#temporals.createNow(), 'MMMM dd, yyyy')}">October 02, 2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-1">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Total Customers</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-2">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Active Orders</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-3">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Menu Items</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-4">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-number">$2,347</div>
+                    <div class="stat-label">Today's Revenue</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Welcome Card -->
+        <div class="welcome-card">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h3 class="mb-3">🎉 Your System is Ready!</h3>
+                    <p class="mb-3">
+                        Welcome !!!. You now have access to advanced features
+                        including customer management, order tracking, menu management, and comprehensive analytics.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#features" class="btn-feature">
+                            <i class="fas fa-rocket me-2"></i>
+                            Explore Features
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-chart-line" style="font-size: 5rem; color: var(--primary-color); opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div id="features" class="feature-grid">
+            <div class="feature-card">
+                <h5><i class="fas fa-users me-2 text-primary"></i>Customer Management</h5>
+                <p>Manage customer profiles, preferences, loyalty points, and order history with advanced CRM features.</p>
+                <a href="/customers" class="btn-feature">
+                    <i class="fas fa-arrow-right me-1"></i>
+                    Manage Customers
+                </a>
+            </div>
+            
+            <div class="feature-card">
+                <h5><i class="fas fa-shopping-cart me-2 text-success"></i>Order Processing</h5>
+                <p>Handle orders from placement to delivery with real-time tracking and status management.</p>
+                <a href="/orders" class="btn-feature">
+                    <i class="fas fa-arrow-right me-1"></i>
+                    View Orders
+                </a>
+            </div>
+            
+            <div class="feature-card">
+                <h5><i class="fas fa-utensils me-2 text-warning"></i>Menu Management</h5>
+                <p>Create and manage your menu items with pricing, ingredients, and dietary information.</p>
+                <a href="/menu" class="btn-feature">
+                    <i class="fas fa-arrow-right me-1"></i>
+                    Manage Menu
+                </a>
+            </div>
+            
+            <div class="feature-card">
+                <h5><i class="fas fa-chart-bar me-2 text-info"></i>Analytics & Reports</h5>
+                <p>Get insights into your business performance with detailed analytics and reporting tools.</p>
+                <a href="/reports" class="btn-feature">
+                    <i class="fas fa-arrow-right me-1"></i>
+                    View Reports
+                </a>
+            </div>
+            
+            <div class="feature-card">
+                <h5><i class="fas fa-cog me-2 text-secondary"></i>System Settings</h5>
+                <p>Configure system settings, user roles, and permissions for your catering business.</p>
+                <a href="/settings" class="btn-feature">
+                    <i class="fas fa-arrow-right me-1"></i>
+                    Settings
+                </a>
+            </div>
+            
+            <div class="feature-card">
+                <h5><i class="fas fa-headset me-2 text-danger"></i>Support & Help</h5>
+                <p>Access documentation, tutorials, and support resources to get the most out of your system.</p>
+                <a href="/support" class="btn-feature">
+                    <i class="fas fa-arrow-right me-1"></i>
+                    Get Help
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4 bg-white border-top">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-muted">© 2024 Modern Catering System. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <span class="text-muted">Version 2.0.0</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stat numbers
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const finalValue = stat.textContent;
+                if (!isNaN(parseInt(finalValue))) {
+                    const target = parseInt(finalValue);
+                    let current = 0;
+                    const increment = target / 50;
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            stat.textContent = finalValue;
+                            clearInterval(timer);
+                        } else {
+                            stat.textContent = Math.floor(current);
+                        }
+                    }, 30);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

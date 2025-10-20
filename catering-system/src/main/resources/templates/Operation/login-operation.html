@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Operation Manager Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 400px; margin: 100px auto; padding: 20px; background: white; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        input[type=text], input[type=password] { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; box-sizing: border-box; }
+        input[type=submit] { width: 100%; background-color: #4CAF50; color: white; padding: 14px 20px; margin: 8px 0; border: none; cursor: pointer; }
+        input[type=submit]:hover { background-color: #45a049; }
+        .error { color: red; text-align: center; margin-top: 10px; }
+        .back-home-btn { 
+            display: inline-block; 
+            padding: 8px 16px; 
+            margin-bottom: 20px; 
+            background-color: #6c757d; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .back-home-btn:hover { 
+            background-color: #5a6268; 
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/login-portal.html" class="back-home-btn">← Back to Login Portal</a>
+    <h2>Operation Manager Login</h2>
+    <form action="/operation/login" method="post">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="submit" value="Login">
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <div style="text-align:center; margin-top:12px;">
+            <a href="/operation/register" style="display:inline-block; padding:8px 12px; border-radius:20px; background:#e8f5e9; color:#2e7d32; text-decoration:none; font-weight:700;">Don't have an account? Register here</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

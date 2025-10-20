@@ -100,14 +100,21 @@
         });
     }
 
-    // Orders
+    // Orders tab (wired to Deliveries API for CRUD)
     async function refreshOrders() {
-        const list = await http('GET', `${api}/orders`);
-        const rows = list.map(o => `<tr data-id="${o.id}">
-            <td>${o.id}</td>
-            <td><input class="input" value="${o.customerName || ''}" data-field="customerName" /></td>
-            <td><input class="input" value="${o.pickupAddress || ''}" data-field="pickupAddress" /></td>
-            <td><input class="input" value="${o.dropoffAddress || ''}" data-field="dropoffAddress" /></td>
+        const list = await http('GET', `${api}/deliveries`);
+        const rows = list.map(d => `<tr data-id="${d.id}">
+            <td>${d.id}</td>
+            <td><input class="input" value="-" data-field="customerName" disabled /></td>
+            <td><input class="input" value="${d.pickupAddress || ''}" data-field="pickupAddress" /></td>
+            <td><input class="input" value="${d.dropoffAddress || ''}" data-field="dropoffAddress" /></td>
+            <td>
+                <select class="input" data-field="status">
+                    <option value="PENDING" ${d.status === 'PENDING' ? 'selected' : ''}>Pending</option>
+                    <option value="IN_PROGRESS" ${d.status === 'IN_PROGRESS' ? 'selected' : ''}>In Progress</option>
+                    <option value="COMPLETED" ${d.status === 'COMPLETED' ? 'selected' : ''}>Completed</option>
+                </select>
+            </td>
             <td><button class="btn" data-action="update">Update</button> <button class="btn" data-action="delete">Remove</button></td>
         </tr>`).join('');
         setRows('ord-tbody', rows);
@@ -115,8 +122,16 @@
     function bindOrders() {
         $('#btn-ord-refresh').addEventListener('click', refreshOrders);
         $('#btn-ord-create').addEventListener('click', async () => {
-            await http('POST', `${api}/orders`, { customerName: val('ord-customer'), pickupAddress: val('ord-pickup'), dropoffAddress: val('ord-dropoff') });
-            refreshOrders();
+            try {
+                await http('POST', `${api}/deliveries`, {
+                    pickupAddress: val('ord-pickup'),
+                    dropoffAddress: val('ord-dropoff'),
+                    status: 'PENDING'
+                });
+                refreshOrders();
+            } catch (err) {
+                alert('Failed to create: ' + err.message);
+            }
         });
         document.getElementById('ord-tbody').addEventListener('click', async (e) => {
             const btn = e.target.closest('button');
@@ -124,12 +139,12 @@
             const tr = btn.closest('tr');
             const id = tr.getAttribute('data-id');
             if (btn.dataset.action === 'delete') {
-                await http('DELETE', `${api}/orders/${id}`);
+                await http('DELETE', `${api}/deliveries/${id}`);
                 refreshOrders();
             } else if (btn.dataset.action === 'update') {
                 const data = {};
-                tr.querySelectorAll('input[data-field]').forEach(inp => { const v = inp.value.trim(); if (v) data[inp.dataset.field] = v; });
-                await http('PUT', `${api}/orders/${id}`, data);
+                tr.querySelectorAll('input[data-field], select[data-field]').forEach(elem => { const v = elem.value.trim(); if (v) data[elem.dataset.field] = v; });
+                await http('PUT', `${api}/deliveries/${id}`, data);
                 refreshOrders();
             }
         });

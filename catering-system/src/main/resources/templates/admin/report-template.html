@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${reportType} + ' Financial Report'">Financial Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                font-size: 12px;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+        .report-header {
+            border-bottom: 2px solid #374151;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .financial-table th,
+        .financial-table td {
+            border: 1px solid #d1d5db;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        .financial-table th {
+            background-color: #f3f4f6;
+            font-weight: bold;
+        }
+        .total-row {
+            background-color: #f9fafb;
+            font-weight: bold;
+        }
+        .positive {
+            color: #059669;
+        }
+        .negative {
+            color: #dc2626;
+        }
+    </style>
+</head>
+
+<body class="bg-white p-8">
+    <!-- Report Header -->
+    <div class="report-header">
+        <h1 class="text-3xl font-bold text-gray-900" th:text="${reportType} + ' Financial Report'">Financial Report</h1>
+        <p class="text-lg text-gray-600" th:text="'Report Period: ' + ${reportDate}">Report Period: 2025-01-20</p>
+        <p class="text-sm text-gray-500" th:text="'Generated on: ' + ${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}">Generated on: 2025-01-20 10:30</p>
+    </div>
+
+    <!-- Executive Summary -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Executive Summary</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-700">Total Revenue</h3>
+                <p class="text-2xl font-bold text-green-600" th:text="'$' + ${#numbers.formatDecimal(report.totalRevenue, 1, 2)}">$0.00</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-700">Total Expenses</h3>
+                <p class="text-2xl font-bold text-red-600" th:text="'$' + ${#numbers.formatDecimal(report.totalExpenses, 1, 2)}">$0.00</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-700">Net Profit</h3>
+                <p class="text-2xl font-bold" th:class="${report.netProfit >= 0} ? 'text-green-600' : 'text-red-600'" 
+                   th:text="'$' + ${#numbers.formatDecimal(report.netProfit, 1, 2)}">$0.00</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue Breakdown -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Revenue Breakdown</h2>
+        <table class="financial-table">
+            <thead>
+                <tr>
+                    <th>Revenue Source</th>
+                    <th>Amount</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Catering Orders</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.cateringRevenue, 1, 2)}">$0.00</td>
+                    <td th:text="${#numbers.formatDecimal((report.cateringRevenue / report.totalRevenue) * 100, 1, 1)}">0.0%</td>
+                </tr>
+                <tr>
+                    <td>Events</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.eventRevenue, 1, 2)}">$0.00</td>
+                    <td th:text="${#numbers.formatDecimal((report.eventRevenue / report.totalRevenue) * 100, 1, 1)}">0.0%</td>
+                </tr>
+                <tr>
+                    <td>Packages</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.packageRevenue, 1, 2)}">$0.00</td>
+                    <td th:text="${#numbers.formatDecimal((report.packageRevenue / report.totalRevenue) * 100, 1, 1)}">0.0%</td>
+                </tr>
+                <tr>
+                    <td>Subscriptions</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.subscriptionRevenue, 1, 2)}">$0.00</td>
+                    <td th:text="${#numbers.formatDecimal((report.subscriptionRevenue / report.totalRevenue) * 100, 1, 1)}">0.0%</td>
+                </tr>
+                <tr class="total-row">
+                    <td><strong>Total Revenue</strong></td>
+                    <td><strong th:text="'$' + ${#numbers.formatDecimal(report.totalRevenue, 1, 2)}">$0.00</strong></td>
+                    <td><strong>100.0%</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Expense Breakdown -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Expense Breakdown</h2>
+        <table class="financial-table">
+            <thead>
+                <tr>
+                    <th>Expense Category</th>
+                    <th>Amount</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ingredient Costs</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.ingredientCosts, 1, 2)}">$0.00</td>
+                    <td th:text="${#numbers.formatDecimal((report.ingredientCosts / report.totalExpenses) * 100, 1, 1)}">0.0%</td>
+                </tr>
+                <tr>
+                    <td>Utility Costs</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.utilityCosts, 1, 2)}">$0.00</td>
+                    <td th:text="${#numbers.formatDecimal((report.utilityCosts / report.totalExpenses) * 100, 1, 1)}">0.0%</td>
+                </tr>
+                <tr>
+                    <td>Transportation Costs</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.transportationCosts, 1, 2)}">$0.00</td>
+                    <td th:text="${#numbers.formatDecimal((report.transportationCosts / report.totalExpenses) * 100, 1, 1)}">0.0%</td>
+                </tr>
+                <tr>
+                    <td>Equipment Costs</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.equipmentCosts, 1, 2)}">$0.00</td>
+                    <td th:text="${#numbers.formatDecimal((report.equipmentCosts / report.totalExpenses) * 100, 1, 1)}">0.0%</td>
+                </tr>
+                <tr>
+                    <td>Staff Payments</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.totalStaffPayments, 1, 2)}">$0.00</td>
+                    <td th:text="${#numbers.formatDecimal((report.totalStaffPayments / report.totalExpenses) * 100, 1, 1)}">0.0%</td>
+                </tr>
+                <tr class="total-row">
+                    <td><strong>Total Expenses</strong></td>
+                    <td><strong th:text="'$' + ${#numbers.formatDecimal(report.totalExpenses, 1, 2)}">$0.00</strong></td>
+                    <td><strong>100.0%</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Profit & Loss Summary -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Profit & Loss Summary</h2>
+        <table class="financial-table">
+            <tbody>
+                <tr>
+                    <td><strong>Total Revenue</strong></td>
+                    <td><strong th:text="'$' + ${#numbers.formatDecimal(report.totalRevenue, 1, 2)}">$0.00</strong></td>
+                </tr>
+                <tr>
+                    <td>Total Expenses</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.totalExpenses, 1, 2)}">$0.00</td>
+                </tr>
+                <tr>
+                    <td>Staff Payments</td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(report.totalStaffPayments, 1, 2)}">$0.00</td>
+                </tr>
+                <tr class="total-row">
+                    <td><strong>Gross Profit</strong></td>
+                    <td><strong th:text="'$' + ${#numbers.formatDecimal(report.grossProfit, 1, 2)}">$0.00</strong></td>
+                </tr>
+                <tr class="total-row">
+                    <td><strong>Net Profit</strong></td>
+                    <td><strong th:class="${report.netProfit >= 0} ? 'positive' : 'negative'" 
+                        th:text="'$' + ${#numbers.formatDecimal(report.netProfit, 1, 2)}">$0.00</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Profit Margin</strong></td>
+                    <td><strong th:class="${report.profitMargin >= 0} ? 'positive' : 'negative'" 
+                        th:text="${#numbers.formatDecimal(report.profitMargin, 1, 1)} + '%'">0.0%</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Key Performance Indicators -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Key Performance Indicators</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-700">Revenue Growth</h3>
+                <p class="text-sm text-gray-600">Compare with previous period</p>
+                <p class="text-2xl font-bold text-blue-600">N/A</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-700">Expense Ratio</h3>
+                <p class="text-sm text-gray-600">Expenses as % of Revenue</p>
+                <p class="text-2xl font-bold text-orange-600" th:text="${#numbers.formatDecimal((report.totalExpenses / report.totalRevenue) * 100, 1, 1)} + '%'">0.0%</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Controls -->
+    <div class="no-print mt-8 text-center">
+        <button onclick="window.print()" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300 mr-4">
+            🖨️ Print Report
+        </button>
+        <a href="/finance-dashboard" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition duration-300">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-8 pt-4 border-t border-gray-300 text-center text-sm text-gray-500">
+        <p>This report was generated automatically by the Catering System Finance Dashboard</p>
+        <p>For questions or concerns, please contact the finance department</p>
+    </div>
+</body>
+</html>

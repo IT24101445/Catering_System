@@ -10,7 +10,7 @@
         .navbar { background-color: #e4a801; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
         .navbar a { color: white; text-decoration: none; padding: 10px 20px; font-weight: bold; text-transform: uppercase; }
         .navbar a:hover { background-color: #d27c00; }
-        .card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.06); }
+        .card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.06); max-width: 400px; margin: 0 auto; }
         .input { border: 1px solid #d1d5db; border-radius: 8px; padding: 12px; width: 100%; }
         .btn { background-color: #e4a801; color: white; border-radius: 8px; padding: 12px; border: none; cursor: pointer; font-weight: 600; width: 100%; }
         .btn:hover { background-color: #d27c00; }
@@ -28,7 +28,6 @@
     </div>
     <div>
         <a href="/">Home</a>
-        <a href="/supervisor/login">Login</a>
     </div>
 </div>
 
@@ -37,7 +36,7 @@
     <p>Please sign in to continue</p>
 </header>
 
-<main class="max-w-md mx-auto p-4">
+<main class="mx-auto p-4">
     <div class="card">
         <form id="loginForm" class="grid gap-3">
             <label for="email" class="font-semibold">Email</label>
@@ -49,6 +48,12 @@
             <button id="loginBtn" type="submit" class="btn">Sign in</button>
             <div id="error" class="error" role="alert"></div>
         </form>
+
+        <hr class="my-6">
+        <div class="text-center">
+            <p class="text-gray-600 mb-3">Don't have an account?</p>
+            <a href="/delivery/supervisor/register" class="btn" style="display: inline-block; text-decoration: none; text-align: center;">Create New Supervisor Account</a>
+        </div>
     </div>
 </main>
 </body>

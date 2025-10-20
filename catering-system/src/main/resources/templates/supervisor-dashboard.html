@@ -34,12 +34,12 @@
     <script>
         function init() {
             const raw = sessionStorage.getItem('supervisor');
-            if (!raw) { window.location.replace('/supervisor/login'); return; }
+            if (!raw) { window.location.replace('/delivery/supervisor/login'); return; }
             const sup = JSON.parse(raw);
             const emailEl = document.getElementById('supEmail');
             if (emailEl) emailEl.textContent = sup.email;
         }
-        function logout() { sessionStorage.removeItem('supervisor'); window.location.replace('/supervisor/login'); }
+        function logout() { sessionStorage.removeItem('supervisor'); window.location.replace('/delivery/supervisor/login'); }
         window.addEventListener('DOMContentLoaded', init);
     </script>
 </head>
@@ -51,8 +51,6 @@
     </div>
     <div class="flex items-center gap-3">
         <a href="/delivery/dashboard" class="text-white hover:text-yellow-200">Delivery Dashboard</a>
-        <a href="/finance/dashboard" class="text-white hover:text-yellow-200">Finance Dashboard</a>
-        <a href="/kitchen/dashboard" class="text-white hover:text-yellow-200">Kitchen Dashboard</a>
         <span id="supEmail" class="text-white text-sm"></span>
         <button class="btn btn-secondary" onclick="logout()">Logout</button>
     </div>

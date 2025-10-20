@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updates & Notifications - Event Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-blue: #007bff;
+            --text-dark: #333333;
+            --text-muted: #6c757d;
+            --border-light: #e9ecef;
+            --success-green: #28a745;
+            --danger-red: #dc3545;
+            --warning-orange: #ffc107;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Nunito Sans', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .page-title i {
+            color: var(--primary-blue);
+            font-size: 24px;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            background-color: var(--text-muted);
+            color: white;
+        }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+            color: white;
+        }
+
+        .btn-create {
+            background-color: #1e40af;
+            color: white;
+        }
+
+        .btn-create:hover {
+            background-color: darkblue;
+            color: white;
+        }
+
+        /* Update Table Styling */
+        .updates-table-container {
+            background: rgba(255, 255, 255, 0.95);
+            margin-top: 20px;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .updates-table {
+            width: 100%;
+            margin: 0;
+            background: transparent;
+            border-collapse: collapse;
+        }
+
+        .updates-table thead {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+
+        .updates-table thead th {
+            padding: 15px 20px;
+            font-weight: 600;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .updates-table tbody tr {
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.2s ease;
+        }
+
+        .updates-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .updates-table tbody td {
+            padding: 15px 20px;
+            vertical-align: middle;
+            color: black;
+            border: 1.5px solid #ddd;
+        }
+
+        .update-description-cell {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: dimgray;
+            max-width: 300px;
+        }
+
+        .update-date-cell {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .update-time-cell {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .linked-event-cell {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .update-badge {
+            background:  linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+
+        .updates-table .btn {
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .updates-table .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-update {
+            background: #3b82f6;
+            color: white;
+            border: none;
+        }
+
+        .btn-update:hover {
+            background: darkblue;
+            color: white;
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #c82333, #a71e2a);
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        /* Responsive Table Design */
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .action-bar {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .updates-table-container {
+                overflow-x: auto;
+            }
+
+            .updates-table {
+                min-width: 800px;
+                table-layout: fixed;
+            }
+
+            .updates-table thead th,
+            .updates-table tbody td {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+
+            .update-description-cell {
+                max-width: 200px;
+            }
+
+            .action-buttons {
+                flex-direction: row;
+                gap: 5px;
+                flex-wrap: nowrap;
+            }
+
+            .updates-table .btn {
+                font-size: 0.8rem;
+                padding: 5px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .updates-table {
+                min-width: 600px;
+            }
+
+            .updates-table thead th,
+            .updates-table tbody td {
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+
+            .update-description-cell {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">
+                    <i class="fas fa-bell"></i>
+                    Updates & Notifications
+                </h1>
+                <p style="color: #666; font-size: 14px; margin: 5px 0 0 0; font-style: italic;">Event updates and changes dashboard</p>
+            </div>
+            <div class="action-bar">
+                <a href="/event/dashboard" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </a>
+                <a href="/updates/form" class="btn btn-create">
+                    <i class="fas fa-plus"></i>
+                    Create New Update
+                </a>
+            </div>
+        </div>
+
+        <!-- Updates List -->
+        <div class="updates-container">
+            <div th:if="${updates != null and !updates.empty}" class="updates-table-container">
+                <table class="updates-table table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-comment-alt"></i> Description</th>
+                            <th><i class="fas fa-calendar"></i> Date Created</th>
+                            <th><i class="fas fa-clock"></i> Time Created</th>
+                            <th><i class="fas fa-link"></i> Linked Event</th>
+                            <th><i class="fas fa-star"></i> Status</th>
+                            <th><i class="fas fa-cogs"></i> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="update : ${updates}">
+                            <td>
+                                <div class="update-description-cell" th:text="${update.description}"></div>
+                            </td>
+                            <td>
+                                <div class="update-date-cell" th:text="${#temporals.format(update.date, 'MMMM dd, yyyy')}"></div>
+                            </td>
+                            <td>
+                                <div class="update-time-cell" th:text="${#temporals.format(update.date, 'h:mm a')}"></div>
+                            </td>
+                            <td>
+                                <div class="linked-event-cell" th:if="${update.event != null}" th:text="${update.event.name}"></div>
+                                <span th:if="${update.event == null}" class="text-muted">-</span>
+                            </td>
+                            <td>
+                                <span class="update-badge">New</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a th:href="@{/updates/form(id=${update.id})}" class="btn btn-update">
+                                        <i class="fas fa-edit"></i> Update
+                                    </a>
+                                    <a th:href="@{/updates/delete/{id}(id=${update.id})}" class="btn btn-delete">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div th:if="${updates == null or updates.empty}" class="empty-state">
+                <i class="fas fa-bell-slash"></i>
+                <h3>No updates or notifications yet</h3>
+                <p>Add special updates about events here !</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

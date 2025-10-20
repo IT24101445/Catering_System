@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Golden Dish Catering</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-yellow: #FFD700;
+            --light-yellow: #FFF9E6;
+            --dark-yellow: #E6C200;
+            --dark-text: #333333;
+            --light-text: #666666;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--light-yellow);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-yellow), var(--dark-yellow));
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--dark-text);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .admin-btn {
+            background-color: var(--dark-text);
+            color: var(--primary-yellow);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-btn:hover {
+            background-color: #222;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Page Title */
+        .page-title {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1555244162-803834f70033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .page-title h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-yellow);
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-yellow);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title p {
+            color: var(--light-text);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 5rem;
+        }
+
+        @media (max-width: 900px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-text);
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--light-text);
+        }
+
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Values Section */
+        .values-section {
+            background-color: var(--white);
+            padding: 5rem 2rem;
+        }
+
+        .values-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .value-icon {
+            background-color: var(--light-yellow);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .value-icon i {
+            font-size: 2rem;
+            color: var(--dark-yellow);
+        }
+
+        .value-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .value-card p {
+            color: var(--light-text);
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+
+        .member-image {
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .team-member:hover .member-image img {
+            transform: scale(1.1);
+        }
+
+        .member-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .member-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+        }
+
+        .member-info .position {
+            color: var(--primary-yellow);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .member-info p {
+            color: var(--light-text);
+            margin-bottom: 1rem;
+        }
+
+        .member-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .member-social a {
+            color: var(--dark-text);
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .member-social a:hover {
+            color: var(--primary-yellow);
+        }
+
+        /* Testimonials Section */
+        .testimonials-section {
+            background-color: var(--white);
+            padding: 5rem 2rem;
+        }
+
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial {
+            background-color: var(--light-yellow);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 4rem;
+            color: var(--primary-yellow);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .testimonial-text {
+            margin-bottom: 1.5rem;
+            color: var(--light-text);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            color: var(--dark-text);
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            color: var(--primary-yellow);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+        }
+
+        /* Call to Action */
+        .cta-section {
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-text);
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--light-text);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-yellow);
+            color: var(--dark-text);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: var(--dark-yellow);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-text);
+            color: var(--white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-logo i {
+            font-size: 2rem;
+            color: var(--primary-yellow);
+        }
+
+        .footer-logo h2 {
+            font-size: 1.8rem;
+            color: var(--primary-yellow);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-yellow);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .page-title h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .page-title {
+                padding: 3rem 1rem;
+            }
+
+            .page-title h1 {
+                font-size: 1.8rem;
+            }
+
+            .about-section, .values-section, .team-section, .testimonials-section, .stats-section, .cta-section {
+                padding: 3rem 1rem;
+            }
+
+            .cta-content h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <i class="fas fa-utensils"></i>
+            <h1>Golden Dish Catering</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/menus.html">Menus</a></li>
+                <li><a href="#" class="active">About Us</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <button class="admin-btn" onclick="redirectToAdmin()">
+            <i class="fas fa-user-shield"></i> Admin Login
+        </button>
+    </div>
+</header>
+
+<!-- Page Title -->
+<section class="page-title">
+    <h1>About Golden Dish Catering</h1>
+    <p>Discover our story, our passion for culinary excellence, and the team behind your memorable dining experiences</p>
+    </section>
+
+<!-- About Section -->
+<section class="about-section">
+    <div class="section-title">
+        <h2>Our Story</h2>
+        <p>From humble beginnings to becoming a premier catering service</p>
+    </div>
+
+    <div class="about-content">
+        <div class="about-text">
+            <h3>Crafting Culinary Excellence Since 2025</h3>
+            <p>Golden Dish Catering was founded in 2025 with a vision to deliver exceptional dining experiences for every occasion. What began as a small local service has grown into a trusted name known for quality, creativity, and customer satisfaction</p>
+            <p>Our journey began with a simple philosophy: create exceptional food using the finest ingredients, and treat every client's event as if it were our own. This commitment to quality and personalized service has been the cornerstone of our success.</p>
+            <p>Over the years, we've had the privilege of catering thousands of events - from intimate family gatherings to corporate galas for hundreds of guests. Each event has taught us something new and helped us refine our craft.</p>
+        </div>
+        <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Our Catering Team">
+        </div>
+    </div>
+
+    <div class="about-content" style="flex-direction: row-reverse;">
+        <div class="about-text">
+            <h3>Our Commitment to Quality</h3>
+            <p>At Golden Dish Catering, we believe that exceptional food begins with exceptional ingredients. That's why we source our produce from local farms, our meats from trusted suppliers, and our seafood from sustainable fisheries.</p>
+            <p>Our culinary team, led by Executive Chef Maria Rodriguez, brings decades of combined experience from some of the finest restaurants and hotels. They continuously innovate while respecting traditional cooking techniques that bring out the best in every ingredient.</p>
+            <p>We're committed not just to great taste, but to creating visually stunning presentations that enhance your event's ambiance. Our dishes are crafted to be as beautiful as they are delicious.</p>
+        </div>
+        <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1555244162-803834f70033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Quality Ingredients">
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="values-section">
+    <div class="section-title">
+        <h2>Our Values</h2>
+        <p>The principles that guide everything we do</p>
+    </div>
+
+    <div class="values-container">
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <h3>Sustainability</h3>
+            <p>We're committed to environmentally responsible practices, from sourcing local ingredients to minimizing food waste and using eco-friendly packaging.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h3>Passion</h3>
+            <p>Our team is driven by a genuine love for food and creating memorable experiences. This passion shines through in every dish we create.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <h3>Partnership</h3>
+            <p>We view our clients as partners in creating their perfect event. Your vision becomes our mission, and we work collaboratively to bring it to life.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-award"></i>
+            </div>
+            <h3>Excellence</h3>
+            <p>We never settle for "good enough." From ingredient selection to final presentation, we strive for excellence in every detail.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <div class="section-title">
+        <h2>What Our Clients Say</h2>
+        <p>Don't just take our word for it - hear from our satisfied clients</p>
+    </div>
+
+    <div class="testimonials-container">
+        <div class="testimonial">
+            <div class="testimonial-text">
+                Golden Dish Catering made our wedding day absolutely perfect. The food was exquisite, and the service was impeccable. Our guests are still talking about the beef Wellington months later!
+            </div>
+            <div class="testimonial-author">
+                <div class="author-avatar">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Jennifer Martinez">
+                </div>
+                <div class="author-info">
+                    <h4>Jennifer Martinez</h4>
+                    <p>Wedding Client</p>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial">
+            <div class="testimonial-text">
+                We've used Golden Dish for our annual corporate gala for three years running. They consistently deliver exceptional food and professional service. Their team handles everything seamlessly.
+            </div>
+            <div class="testimonial-author">
+                <div class="author-avatar">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Robert Williams">
+                </div>
+                <div class="author-info">
+                    <h4>Robert Williams</h4>
+                    <p>Corporate Client</p>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial">
+            <div class="testimonial-text">
+                The fusion menu for our anniversary party was a huge hit! Creative, delicious, and beautifully presented. Golden Dish took care of every detail, allowing us to truly enjoy our celebration.
+            </div>
+            <div class="testimonial-author">
+                <div class="author-avatar">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Amanda Thompson">
+                </div>
+                <div class="author-info">
+                    <h4>Amanda Thompson</h4>
+                    <p>Anniversary Party Host</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="stats-container">
+        <div class="stat-item">
+            <h3>12+</h3>
+            <p>Years of Experience</p>
+        </div>
+        <div class="stat-item">
+            <h3>2,500+</h3>
+            <p>Events Catered</p>
+        </div>
+        <div class="stat-item">
+            <h3>98%</h3>
+            <p>Client Satisfaction</p>
+        </div>
+        <div class="stat-item">
+            <h3>50+</h3>
+            <p>Awards & Recognitions</p>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+    <div class="cta-content">
+        <h2>Ready to Create Your Perfect Event?</h2>
+        <p>Let us bring our passion for exceptional food and service to your next special occasion</p>
+        <a href="/book-event.html" class="cta-button">Book Your Event Now</a>
+    </div>
+    </section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-logo">
+            <i class="fas fa-utensils"></i>
+            <h2>Golden Dish Catering</h2>
+        </div>
+        <p>Creating unforgettable culinary experiences for your special moments</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Golden Dish Catering. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Redirect to admin page
+    function redirectToAdmin() {
+        alert('Redirecting to Admin Login Page...');
+        // window.location.href = "admin-login.html"; // Uncomment for actual implementation
+    }
+</script>
+</body>
+</html>
+
+
