@@ -41,15 +41,32 @@ public class DashboardController {
             model.addAttribute("totalCustomers", totalCustomers);
             model.addAttribute("totalMenuItems", totalMenuItems);
             model.addAttribute("activeOrders", activeOrders);
-            model.addAttribute("todaysRevenue", 2347.00); // Placeholder for now
+            
+            // Calculate monthly revenue (placeholder for now - should be implemented in service)
+            double monthlyRevenue = calculateMonthlyRevenue();
+            model.addAttribute("monthlyRevenue", monthlyRevenue);
         } catch (Exception e) {
             // If there's an error getting stats, use default values
             model.addAttribute("totalCustomers", 0);
             model.addAttribute("totalMenuItems", 0);
             model.addAttribute("activeOrders", 0);
-            model.addAttribute("todaysRevenue", 0.00);
+            model.addAttribute("monthlyRevenue", 0.00);
         }
         
         return "dashboard-customer";
+    }
+    
+    /**
+     * Calculate monthly revenue for the current month
+     * This is a placeholder implementation - should be replaced with actual service call
+     */
+    private double calculateMonthlyRevenue() {
+        try {
+            // TODO: Implement actual monthly revenue calculation from orderService
+            // For now, return a placeholder value
+            return 12500.00; // Placeholder monthly revenue
+        } catch (Exception e) {
+            return 0.00;
+        }
     }
 }

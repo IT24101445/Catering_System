@@ -217,8 +217,8 @@
                     <div class="stat-icon stat-icon-4">
                         <i class="fas fa-dollar-sign"></i>
                     </div>
-                    <div class="stat-number" th:text="'$' + ${#numbers.formatDecimal(todaysRevenue, 0, 0)}">$0</div>
-                    <div class="stat-label">Today's Revenue</div>
+                    <div class="stat-number" th:text="'$' + ${#numbers.formatDecimal(monthlyRevenue, 0, 0)}">$0</div>
+                    <div class="stat-label">Monthly Revenue</div>
                 </div>
             </div>
         </div>
