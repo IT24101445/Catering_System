@@ -81,7 +81,7 @@ public class AuthController {
     
     @GetMapping("/customer/logout")
     public String logout() {
-        return "redirect:/login/customer?logout";
+        return "redirect:/login-portal.html?logout";
     }
     
     @GetMapping("/book-event")

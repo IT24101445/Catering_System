@@ -253,4 +253,79 @@ public class EventController {
         }
         return "event-confirmed";
     }
+    
+    // Event Calendar Page
+    @GetMapping("/event/calendar")
+    public String eventCalendar(Model model, HttpSession session) {
+        // Check if user is logged in
+        Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");
+        if (isLoggedIn == null || !isLoggedIn) {
+            return "redirect:/login";
+        }
+        
+        // Get all events
+        List<Event> events = eventService.getAllEvents();
+        
+        // Calculate statistics
+        long totalEvents = events.size();
+        long newEvents = events.stream().filter(e -> "NEW".equals(e.getStatus())).count();
+        long updatedEvents = events.stream().filter(e -> e.isUpdated()).count();
+        long completedEvents = events.stream().filter(e -> "Completed".equals(e.getStatus())).count();
+        
+        // Get upcoming events (next 30 days)
+        java.time.LocalDate today = java.time.LocalDate.now();
+        java.time.LocalDate thirtyDaysFromNow = today.plusDays(30);
+        
+        List<Event> upcomingEvents = events.stream()
+            .filter(e -> e.getDateTime() != null && 
+                        e.getDateTime().toLocalDate().isAfter(today) && 
+                        e.getDateTime().toLocalDate().isBefore(thirtyDaysFromNow))
+            .sorted((e1, e2) -> e1.getDateTime().compareTo(e2.getDateTime()))
+            .collect(java.util.stream.Collectors.toList());
+        
+        // Get events for this month
+        List<Event> thisMonthEvents = events.stream()
+            .filter(e -> e.getDateTime() != null && 
+                        e.getDateTime().toLocalDate().getMonth() == today.getMonth() &&
+                        e.getDateTime().toLocalDate().getYear() == today.getYear())
+            .collect(java.util.stream.Collectors.toList());
+        
+        // Get events for next month
+        java.time.LocalDate nextMonth = today.plusMonths(1);
+        List<Event> nextMonthEvents = events.stream()
+            .filter(e -> e.getDateTime() != null && 
+                        e.getDateTime().toLocalDate().getMonth() == nextMonth.getMonth() &&
+                        e.getDateTime().toLocalDate().getYear() == nextMonth.getYear())
+            .collect(java.util.stream.Collectors.toList());
+        
+        // Get events for this quarter
+        int currentQuarter = (today.getMonthValue() - 1) / 3 + 1;
+        List<Event> quarterEvents = events.stream()
+            .filter(e -> e.getDateTime() != null) 
+            .filter(e -> {
+                int eventQuarter = (e.getDateTime().toLocalDate().getMonthValue() - 1) / 3 + 1;
+                return eventQuarter == currentQuarter && 
+                       e.getDateTime().toLocalDate().getYear() == today.getYear();
+            })
+            .collect(java.util.stream.Collectors.toList());
+        
+        // Set user email for display
+        String userEmail = (String) session.getAttribute("username");
+        if (userEmail == null) {
+            userEmail = "User";
+        }
+        
+        // Add all data to model
+        model.addAttribute("userEmail", userEmail);
+        model.addAttribute("totalEvents", totalEvents);
+        model.addAttribute("newEvents", newEvents);
+        model.addAttribute("updatedEvents", updatedEvents);
+        model.addAttribute("completedEvents", completedEvents);
+        model.addAttribute("upcomingEvents", upcomingEvents);
+        model.addAttribute("thisMonthEvents", thisMonthEvents);
+        model.addAttribute("nextMonthEvents", nextMonthEvents);
+        model.addAttribute("quarterEvents", quarterEvents);
+        
+        return "event-calendar";
+    }
 }

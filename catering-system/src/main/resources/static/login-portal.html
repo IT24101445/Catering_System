@@ -348,6 +348,12 @@
     const navLinks = document.querySelectorAll('.navbar a');
     const overlay = document.getElementById('transitionOverlay');
     
+    // Handle logout message
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('logout') === '') {
+      showLogoutMessage();
+    }
+    
     navLinks.forEach(function(link) {
       link.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
@@ -367,6 +373,45 @@
       });
     });
   });
+  
+  function showLogoutMessage() {
+    // Create logout message element
+    const messageDiv = document.createElement('div');
+    messageDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 10000;
+      font-weight: 600;
+      animation: slideIn 0.3s ease;
+    `;
+    messageDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 8px;"></i>You have been logged out successfully!';
+    
+    // Add CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(messageDiv);
+    
+    // Remove message after 4 seconds
+    setTimeout(() => {
+      messageDiv.style.animation = 'slideIn 0.3s ease reverse';
+      setTimeout(() => {
+        document.body.removeChild(messageDiv);
+      }, 300);
+    }, 4000);
+  }
 </script>
 
 </html>
