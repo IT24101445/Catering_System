@@ -27,9 +27,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             System.out.println("Redirecting to /dashboard-customer");
             response.sendRedirect(request.getContextPath() + "/dashboard-customer");
         } else {
-            // Redirect to home page for regular customers
-            System.out.println("Redirecting to home page");
-            response.sendRedirect(request.getContextPath() + "/");
+            // Redirect regular customers to the main (Thymeleaf) home page
+            System.out.println("Redirecting to /customer (main customer home)");
+            response.sendRedirect(request.getContextPath() + "/customer");
         }
     }
 }

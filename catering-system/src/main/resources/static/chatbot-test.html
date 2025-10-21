@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Test - Golden Dish Catering</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .test-info h3 {
+            color: #FFD700;
+            margin-top: 0;
+        }
+        
+        .test-steps {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .test-steps li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .test-steps li:before {
+            content: "✓ ";
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .back-link {
+            display: inline-block;
+            background: #FFD700;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #FFA500;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🤖 Chatbot Test Page</h1>
+        
+        <div class="test-info">
+            <h3>Golden Dish Catering Chatbot Features:</h3>
+            <ul class="test-steps">
+                <li>Time-based greetings (Good Morning/Afternoon/Evening/Night)</li>
+                <li>Smart responses to catering questions</li>
+                <li>Beautiful floating chat interface</li>
+                <li>Responsive design for mobile and desktop</li>
+                <li>Animated status indicators</li>
+                <li>Professional Golden Dish branding</li>
+            </ul>
+        </div>
+        
+        <div class="test-info">
+            <h3>Test Instructions:</h3>
+            <ul class="test-steps">
+                <li>Look for the floating chatbot button in the bottom-right corner</li>
+                <li>Click the button to open the chat window</li>
+                <li>Try asking questions like: "What's on your menu?", "How do I book?", "What are your prices?"</li>
+                <li>Test the time-based greeting (changes based on current time)</li>
+                <li>Try typing and sending messages</li>
+                <li>Test the close button functionality</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/" class="back-link">
+                <i class="fas fa-home"></i> Back to Main Page
+            </a>
+        </div>
+    </div>
+    
+    <!-- Chatbot Script -->
+    <script src="js/chatbot.js"></script>
+</body>
+</html>
+

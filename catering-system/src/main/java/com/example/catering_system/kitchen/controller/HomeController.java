@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@Controller("kitchenHomeController")
 public class HomeController {
 
     // New home page that shows after login

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class UserService {
+@Service("adminUserService")
+public class AdminUserService {
 
     @Autowired
     private UserRepository userRepository;

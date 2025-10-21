@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/staff-payments")
+@RequestMapping("/admin/staff-payments")
 public class StaffPaymentController {
 
     @Autowired
@@ -33,7 +33,7 @@ public class StaffPaymentController {
     @PostMapping("/add")
     public String addStaffPayment(@ModelAttribute StaffPayment staffPayment) {
         staffPaymentService.addStaffPayment(staffPayment);
-        return "redirect:/staff-payments";  // Redirect to the list of staff payments
+        return "redirect:/admin/staff-payments";  // Redirect to the list of staff payments
     }
 
     // Show the form to edit an existing staff payment
@@ -47,14 +47,14 @@ public class StaffPaymentController {
     @PostMapping("/edit/{id}")
     public String updateStaffPayment(@PathVariable Long id, @ModelAttribute StaffPayment staffPayment) {
         staffPaymentService.updateStaffPayment(id, staffPayment);
-        return "redirect:/staff-payments";  // Redirect to the list of staff payments
+        return "redirect:/admin/staff-payments";  // Redirect to the list of staff payments
     }
 
     // Handle deleting a staff payment
     @GetMapping("/delete/{id}")
     public String deleteStaffPayment(@PathVariable Long id) {
         staffPaymentService.deleteStaffPayment(id);
-        return "redirect:/staff-payments";  // Redirect to the list of staff payments
+        return "redirect:/admin/staff-payments";  // Redirect to the list of staff payments
     }
 
     // API endpoint to get all staff payments as JSON
@@ -65,7 +65,7 @@ public class StaffPaymentController {
     }
 
     // Endpoint to clear all staff payment data (use with caution)
-    @GetMapping("/staff-payments/clear-all")
+    @GetMapping("/clear-all")
     public String clearAllStaffPayments(RedirectAttributes redirectAttributes) {
         try {
             staffPaymentService.deleteAllStaffPayments();
@@ -73,6 +73,6 @@ public class StaffPaymentController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error clearing data: " + e.getMessage());
         }
-        return "redirect:/staff-payments";
+        return "redirect:/admin/staff-payments";
     }
 }

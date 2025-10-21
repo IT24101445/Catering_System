@@ -1,7 +1,7 @@
 package com.example.catering_system.operationManager.Controller;
 
 import com.example.catering_system.operationManager.Entity.Manager;
-import com.example.catering_system.operationManager.Service.DatabaseService;
+import com.example.catering_system.operationManager.Service.SimpleDatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 public class ManagerController {
 
     @Autowired
-    private DatabaseService dbService;
+    private SimpleDatabaseService dbService;
 
     // Show login page
     @GetMapping("/login")
@@ -46,11 +46,17 @@ public class ManagerController {
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password,
                         HttpSession session, Model model) {
+        System.out.println("=== CONTROLLER LOGIN DEBUG ===");
+        System.out.println("Received login request for username: " + username);
+        System.out.println("Password length: " + (password != null ? password.length() : "NULL"));
+        
         Manager manager = dbService.validateManager(username, password);
         if (manager != null) {
+            System.out.println("Login successful, redirecting to dashboard");
             session.setAttribute("manager", manager);
             return "redirect:/operation/dashboard";
         } else {
+            System.out.println("Login failed, showing error message");
             model.addAttribute("error", "Invalid username or password");
             return "Operation/login-operation";
         }
@@ -113,7 +119,14 @@ public class ManagerController {
             return "redirect:/operation/login";
         }
 
-        model.addAttribute("assignedOrders", dbService.getAssignedOrders());
+        System.out.println("=== ASSIGNED ORDERS DEBUG ===");
+        var assignedOrders = dbService.getAssignedOrders();
+        System.out.println("Found " + assignedOrders.size() + " assigned orders");
+        for (var order : assignedOrders) {
+            System.out.println("Order: " + order.getOrderId() + " - " + order.getCustomerName() + " - " + order.getStaffName());
+        }
+        
+        model.addAttribute("assignedOrders", assignedOrders);
         return "Operation/assignedOrders-operation";
     }
     // Create new order

@@ -25,7 +25,7 @@ public class DashboardController {
     @Autowired
     private OrderService orderService;
     
-    @GetMapping("/dashboard")
+    @GetMapping("/customer/dashboard")
     public String dashboard(Model model, Authentication authentication) {
         // Get current user info
         if (authentication != null && authentication.isAuthenticated()) {
@@ -50,6 +50,6 @@ public class DashboardController {
             model.addAttribute("todaysRevenue", 0.00);
         }
         
-        return "dashboard";
+        return "dashboard-customer";
     }
 }

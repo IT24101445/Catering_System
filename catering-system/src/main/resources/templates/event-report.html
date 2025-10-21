@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${reportType} + ' Report'">Events Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { font-size: 12px; }
+            .page-break { page-break-before: always; }
+        }
+        .report-header { border-bottom: 2px solid #374151; padding-bottom: 1rem; margin-bottom: 2rem; }
+        .data-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .data-table th, .data-table td { border: 1px solid #d1d5db; padding: 0.5rem; text-align: left; }
+        .data-table th { background-color: #f3f4f6; font-weight: bold; }
+        .summary-card { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; }
+    </style>
+</head>
+<body class="bg-white p-8">
+    <div class="report-header">
+        <h1 class="text-3xl font-bold text-gray-900" th:text="${reportType} + ' Report'">Events Report</h1>
+        <p class="text-lg text-gray-600" th:text="'Report Date: ' + ${reportDate}">Report Date: 2025-01-20</p>
+        <p class="text-sm text-gray-500" th:text="'Generated on: ' + ${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}">Generated on: 2025-01-20 10:30</p>
+    </div>
+
+    <!-- Summary -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+        <div class="summary-card text-center">
+            <div class="text-gray-700">Total Events</div>
+            <div class="text-2xl font-bold" th:text="${totalEvents}">0</div>
+        </div>
+        <div class="summary-card text-center">
+            <div class="text-gray-700">New</div>
+            <div class="text-2xl font-bold" th:text="${newEvents}">0</div>
+        </div>
+        <div class="summary-card text-center">
+            <div class="text-gray-700">Planned</div>
+            <div class="text-2xl font-bold" th:text="${plannedEvents}">0</div>
+        </div>
+        <div class="summary-card text-center">
+            <div class="text-gray-700">In Progress</div>
+            <div class="text-2xl font-bold" th:text="${inProgressEvents}">0</div>
+        </div>
+        <div class="summary-card text-center">
+            <div class="text-gray-700">Completed</div>
+            <div class="text-2xl font-bold" th:text="${completedEvents}">0</div>
+        </div>
+    </div>
+
+    <div class="mb-6">
+        <div class="summary-card">
+            <div class="text-gray-700">Total Guests Across Events</div>
+            <div class="text-2xl font-bold" th:text="${totalGuests}">0</div>
+        </div>
+    </div>
+
+    <!-- Events Table -->
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">All Events</h2>
+    <div class="overflow-x-auto">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Venue</th>
+                    <th>Guests</th>
+                    <th>Status</th>
+                    <th>Date & Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="event : ${events}">
+                    <td th:text="${event.id}"></td>
+                    <td th:text="${event.name}"></td>
+                    <td th:text="${event.venue}"></td>
+                    <td th:text="${event.guestCount}"></td>
+                    <td th:text="${event.status}"></td>
+                    <td th:text="${event.dateTime}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="no-print mt-8 text-center">
+        <button onclick="window.print()" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300 mr-4">🖨️ Print Report</button>
+        <a href="/event/dashboard" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition duration-300">← Back to Events</a>
+    </div>
+</body>
+</html>

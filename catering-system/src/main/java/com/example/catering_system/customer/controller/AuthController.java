@@ -19,7 +19,7 @@ public class AuthController {
         this.customerUserService = customerUserService;
     }
     
-    @GetMapping("/login")
+    @GetMapping("/customer/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                        @RequestParam(value = "logout", required = false) String logout,
                        Model model) {
@@ -49,7 +49,7 @@ public class AuthController {
         return "login-customer";
     }
     
-    @GetMapping("/customer")
+    @GetMapping("/customer/landing")
     public String customerLanding() {
         return "index-customer";
     }
@@ -79,7 +79,7 @@ public class AuthController {
         return "redirect:/login/customer?message=registered";
     }
     
-    @GetMapping("/logout")
+    @GetMapping("/customer/logout")
     public String logout() {
         return "redirect:/login/customer?logout";
     }
@@ -100,6 +100,31 @@ public class AuthController {
             model.addAttribute("message", "You have been logged out successfully.");
         }
         return "login-customer-admin";
+    }
+    
+    @GetMapping("/register/customer-admin")
+    public String showCustomerAdminRegister(Model model) {
+        model.addAttribute("registerRequest", new com.example.catering_system.customer.model.User());
+        return "register-customer-admin";
+    }
+
+    @PostMapping("/register/customer-admin")
+    public String handleCustomerAdminRegister(@ModelAttribute("registerRequest") com.example.catering_system.customer.model.User request,
+                                             Model model) {
+        // Use email as username for login compatibility
+        if (request.getUsername() == null || request.getUsername().isBlank()) {
+            request.setUsername(request.getEmail());
+        }
+        try {
+            customerUserService.createUser(request);
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("error", ex.getMessage());
+            return "register-customer-admin";
+        } catch (Exception ex) {
+            model.addAttribute("error", "Registration failed: " + ex.getMessage());
+            return "register-customer-admin";
+        }
+        return "redirect:/login/customer-admin?message=registered";
     }
 }
 

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "EventUser")
-@Table(name = "users")
+@Table(name = "event_users")
 public class User {
     
     @Id

@@ -19,7 +19,7 @@ public class InvoiceController {
     @Autowired
     private PaymentService paymentService;
 
-    @GetMapping("/invoices")
+    @GetMapping("/admin/invoices")
     public String viewInvoices(Model model) {
         try {
             model.addAttribute("invoices", invoiceService.getAllInvoices());
@@ -32,7 +32,7 @@ public class InvoiceController {
         return "admin/invoice";  // Returns admin/invoice.html
     }
     
-    @PostMapping("/invoices/create-sample")
+    @PostMapping("/admin/invoices/create-sample")
     public String createSampleInvoices(RedirectAttributes redirectAttributes) {
         try {
             // Create sample invoices if none exist
@@ -47,10 +47,10 @@ public class InvoiceController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error creating sample invoices: " + e.getMessage());
         }
-        return "redirect:/invoices";
+        return "redirect:/admin/invoices";
     }
 
-    @PostMapping("/invoice/mark-paid")
+    @PostMapping("/admin/invoice/mark-paid")
     public String markInvoiceAsPaid(@RequestParam Long invoiceId, RedirectAttributes redirectAttributes) {
         try {
             invoiceService.markAsPaid(invoiceId);
@@ -58,6 +58,28 @@ public class InvoiceController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error marking invoice as paid: " + e.getMessage());
         }
-        return "redirect:/invoices";  // Redirect back to invoice list
+        return "redirect:/admin/invoices";  // Redirect back to invoice list
+    }
+
+    @PostMapping("/admin/invoices/create")
+    public String createInvoice(
+            @RequestParam("customerId") Long customerId,
+            @RequestParam("amount") Double amount,
+            @RequestParam(value = "description", required = false) String description,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            if (customerId == null || amount == null || amount <= 0) {
+                redirectAttributes.addFlashAttribute("error", "Customer ID and a positive amount are required.");
+                return "redirect:/admin/invoices";
+            }
+
+            // Description is currently unused by the entity but supported by the service signature
+            invoiceService.createInvoice(customerId, amount, description != null ? description : "");
+            redirectAttributes.addFlashAttribute("success", "Invoice created successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error creating invoice: " + e.getMessage());
+        }
+        return "redirect:/admin/invoices";
     }
 }

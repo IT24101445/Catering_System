@@ -25,7 +25,7 @@ public class KitchenController {
     private UpdateService updateService;
     
     // Show kitchen dashboard
-    @GetMapping("/dashboard")
+    @GetMapping("/kitchen/dashboard")
     public String dashboard(HttpSession session, Model model) {
         // Check if user is logged in (using AuthController's session attribute)
         String user = (String) session.getAttribute("USER");

@@ -23,7 +23,7 @@ import jakarta.validation.constraints.Size;
  * Enhanced User Entity with Role-based Access Control
  */
 @Entity(name = "CustomerUser")
-@Table(name = "users")
+@Table(name = "customer_users")
 public class User {
     
     @Id

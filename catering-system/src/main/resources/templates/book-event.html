@@ -510,8 +510,8 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/menus.html">Menus</a></li>
+                    <li><a href="/customer">Home</a></li>
+                    <li><a href="#">Menus</a></li>
                     <li><a href="#">About Us</a></li>
                     <li><a href="#">Contact</a></li>
                 </ul>
@@ -563,6 +563,26 @@
             <div class="form-container">
                 <h2 class="form-title">Event Information</h2>
                 <form id="bookingForm" th:action="@{/api/bookings}" method="post">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="customerEmail" name="email" sec:authorize="isAuthenticated()" th:value="${#authentication.name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="e.g. 0771234567" required>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="eventType">Event Type</label>
                         <select class="form-control" id="eventType" name="eventType" required>
@@ -758,6 +778,51 @@
             // Set minimum date to today
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('eventDate').setAttribute('min', today);
+
+            // Handle booking form submit via fetch JSON to match API
+            const form = document.getElementById('bookingForm');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) submitBtn.disabled = true;
+
+                    // Collect form data
+                    const data = {
+                        firstName: document.getElementById('firstName')?.value || '',
+                        lastName: document.getElementById('lastName')?.value || '',
+                        email: document.getElementById('customerEmail')?.value || '',
+                        phone: document.getElementById('phone')?.value || '',
+                        eventType: document.getElementById('eventType')?.value || '',
+                        eventDate: document.getElementById('eventDate')?.value || '',
+                        eventTime: document.getElementById('eventTime')?.value || '',
+                        guestCount: parseInt(document.getElementById('guestCount')?.value || '0'),
+                        venueAddress: document.getElementById('venueAddress')?.value || '',
+                        menuType: (document.querySelector('input[name="menuType"]:checked')?.value) || '',
+                        additionalServices: Array.from(document.querySelectorAll('input[name="additionalServices"]:checked')).map(i => i.value).join(','),
+                        specialRequests: document.getElementById('specialRequests')?.value || ''
+                    };
+
+                    try {
+                        const res = await fetch(form.getAttribute('action'), {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        });
+                        const result = await res.json().catch(() => ({}));
+                        if (res.ok && result && result.success && result.bookingId) {
+                            // Redirect to customer home; user can view via My Bookings button
+                            window.location.href = '/customer';
+                        } else {
+                            alert('Failed to submit booking. ' + (result.message || 'Please try again.'));
+                        }
+                    } catch (err) {
+                        alert('Network error while submitting booking.');
+                    } finally {
+                        if (submitBtn) submitBtn.disabled = false;
+                    }
+                });
+            }
         });
     </script>
 </body>

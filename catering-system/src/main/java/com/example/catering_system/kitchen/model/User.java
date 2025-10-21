@@ -2,21 +2,21 @@ package com.example.catering_system.kitchen.model;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "Users")
+@Entity(name = "KitchenUser")
+@Table(name = "kitchen_users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private int id;
     
-    @Column(name = "Username", nullable = false, length = 100)
+    @Column(name = "Username", nullable = false, length = 100, columnDefinition = "varchar(100) default ''")
     private String username;
     
-    @Column(name = "Password", nullable = false, length = 255)
+    @Column(name = "Password", nullable = false, length = 255, columnDefinition = "varchar(255) default ''")
     private String password; // In real apps, store hashed passwords
     
-    @Column(name = "Role", nullable = false, length = 50)
+    @Column(name = "Role", nullable = false, length = 50, columnDefinition = "varchar(50) default 'USER'")
     private String role;     // Optional: "ADMIN", "CHEF", etc.
 
     public User() {

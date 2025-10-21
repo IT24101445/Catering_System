@@ -448,8 +448,8 @@
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="/menus.html">Menus</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/menus.html">Menus</a></li>
+                    <li><a href="/book-event">Book Event</a></li>
                 </ul>
             </nav>
             <div style="display: flex; gap: 1rem; align-items: center;">
@@ -458,6 +458,10 @@
                     <i class="fas fa-user-circle"></i>
                     <span sec:authentication="name"></span>
                 </div>
+                <!-- My Bookings visible when authenticated -->
+                <button sec:authorize="isAuthenticated()" class="admin-btn customer-btn" onclick="window.location.href='/customer/my-bookings'">
+                    <i class="fas fa-calendar-check"></i> My Bookings
+                </button>
                 <!-- Show Logout button ONLY when customer is authenticated -->
                 <button sec:authorize="isAuthenticated()" class="admin-btn customer-btn" onclick="window.location.href='/logout'">
                     <i class="fas fa-sign-out-alt"></i> Logout
@@ -466,8 +470,8 @@
                 <button sec:authorize="!isAuthenticated()" class="admin-btn customer-btn" onclick="window.location.href='/login/customer'">
                     <i class="fas fa-user"></i> Customer Login
                 </button>
-                <!-- Admin Login button always visible -->
-                <button class="admin-btn" onclick="window.location.href='/login-portal.html'">
+                <!-- Admin Login button hidden when authenticated -->
+                <button sec:authorize="!isAuthenticated()" class="admin-btn" onclick="window.location.href='/login-portal.html'">
                     <i class="fas fa-user-shield"></i> Admin Login
                 </button>
             </div>

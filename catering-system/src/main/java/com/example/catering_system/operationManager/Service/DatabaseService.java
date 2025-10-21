@@ -11,20 +11,54 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("operationDatabaseService")
 public class DatabaseService {
 
-    @Autowired
     private DataSource dataSource;
+    
+    @Autowired(required = false)
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     // Use Spring's DataSource for connection
     private Connection getConnection() throws SQLException {
+        if (dataSource == null) {
+            // Fallback to direct connection if DataSource is not available
+            return DriverManager.getConnection(
+                "jdbc:sqlserver://localhost:1433;databaseName=cateringDB;encrypt=true;trustServerCertificate=true",
+                "AD123", 
+                "finance123"
+            );
+        }
         return dataSource.getConnection();
     }
 
     // Validate manager login
     public Manager validateManager(String username, String password) {
+        System.out.println("=== OPERATION LOGIN DEBUG ===");
         System.out.println("Attempting to validate manager: " + username);
+        System.out.println("Password provided: " + (password != null ? "YES" : "NO"));
+        
+        // For now, use hardcoded credentials for testing
+        if ("admin".equals(username) && "admin123".equals(password)) {
+            System.out.println("=== LOGIN SUCCESS (HARDCODED) ===");
+            Manager manager = new Manager();
+            manager.setId(1);
+            manager.setUsername("admin");
+            manager.setPassword("admin123");
+            return manager;
+        }
+        
+        if ("manager".equals(username) && "manager123".equals(password)) {
+            System.out.println("=== LOGIN SUCCESS (HARDCODED) ===");
+            Manager manager = new Manager();
+            manager.setId(2);
+            manager.setUsername("manager");
+            manager.setPassword("manager123");
+            return manager;
+        }
+        
         String sql = "SELECT * FROM managers WHERE username = ? AND password = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -38,13 +72,17 @@ public class DatabaseService {
                 manager.setId(rs.getInt("id"));
                 manager.setUsername(rs.getString("username"));
                 manager.setPassword(rs.getString("password"));
+                System.out.println("=== LOGIN SUCCESS ===");
                 return manager;
             } else {
                 System.out.println("No manager found with username: " + username);
+                System.out.println("=== LOGIN FAILED - NO USER FOUND ===");
             }
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
+            System.out.println("Error details: " + e.getSQLState());
             e.printStackTrace();
+            System.out.println("=== LOGIN FAILED - DATABASE ERROR ===");
         }
         return null;
     }

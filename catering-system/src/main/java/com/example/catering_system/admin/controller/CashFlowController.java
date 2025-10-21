@@ -14,7 +14,7 @@ public class CashFlowController {
     @Autowired
     private CashFlowService cashFlowService;
 
-    @GetMapping("/cashflow")
+    @GetMapping("/admin/cashflow")
     public String viewCashFlow(Model model) {
         model.addAttribute("cashFlows", cashFlowService.getAllCashFlows());
         model.addAttribute("cashFlow", new CashFlow());
@@ -26,11 +26,11 @@ public class CashFlowController {
         try {
             if (cashFlow.getType() == null || cashFlow.getType().trim().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Type is required!");
-                return "redirect:/cashflow";
+                return "redirect:/admin/cashflow";
             }
             if (cashFlow.getAmount() <= 0) {
                 redirectAttributes.addFlashAttribute("error", "Amount must be greater than 0!");
-                return "redirect:/cashflow";
+                return "redirect:/admin/cashflow";
             }
             if (cashFlow.getFlowDate() == null) {
                 cashFlow.setFlowDate(new java.util.Date());
@@ -41,11 +41,11 @@ public class CashFlowController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error adding cash flow: " + e.getMessage());
         }
-        return "redirect:/cashflow";
+        return "redirect:/admin/cashflow";
     }
 
     // Endpoint to clear all cash flow data (use with caution)
-    @GetMapping("/cashflow/clear-all")
+    @GetMapping("/admin/cashflow/clear-all")
     public String clearAllCashFlow(RedirectAttributes redirectAttributes) {
         try {
             cashFlowService.deleteAllCashFlows();
@@ -53,6 +53,6 @@ public class CashFlowController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error clearing data: " + e.getMessage());
         }
-        return "redirect:/cashflow";
+        return "redirect:/admin/cashflow";
     }
 }

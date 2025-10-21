@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/delivery")
 public class PageController {
 
-    @GetMapping({"/", "/home", ""})
+    @GetMapping({"/delivery", "/delivery/home", "/delivery/"})
     public String home() {
         return "supervisor-login"; // default to login
     }

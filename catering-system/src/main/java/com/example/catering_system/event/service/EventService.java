@@ -4,6 +4,7 @@ import com.example.catering_system.event.entity.Event;
 import com.example.catering_system.event.repository.EventRepository;
 import com.example.catering_system.event.repository.ResourceRepository;
 import com.example.catering_system.event.repository.UpdateRepository;
+import com.example.catering_system.event.notification.EventNotificationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,9 @@ public class EventService {
     
     @Autowired
     private UpdateRepository updateRepository;      // Repository to interact with Update table
+    
+    @Autowired
+    private EventNotificationManager notificationManager;
 
     // Get all events from the database
     public List<Event> getAllEvents() {
@@ -34,11 +38,23 @@ public class EventService {
 
     // Save, Update, Delete event
     public Event saveEvent(Event event) {
-        return eventRepository.save(event);
+        Event savedEvent = eventRepository.save(event);
+        
+        // Notify observers of event creation/update
+        if (event.getId() == null) {
+            notifyEventCreated(savedEvent);
+        } else {
+            notifyEventUpdated(savedEvent);
+        }
+        
+        return savedEvent;
     }
 
     @Transactional
     public void deleteEvent(Long id) {
+        // Notify observers before deletion
+        notifyEventDeleted(id);
+        
         // First delete all linked resources
         resourceRepository.deleteByEventId(id);
         
@@ -53,8 +69,13 @@ public class EventService {
     public void markCompleted(Long id) {
         Optional<Event> eventOpt = getEventById(id);
         eventOpt.ifPresent(event -> {
+            String oldStatus = event.getStatus();
             event.setStatus("Completed");
             saveEvent(event);
+            
+            // Notify observers of status change
+            notifyEventStatusChanged(event, oldStatus, "Completed");
+            notifyEventCompleted(event);
         });
     }
 
@@ -103,5 +124,26 @@ public class EventService {
             }
         }
         System.out.println("=== All NEW events changed to Planned ===");
+    }
+    
+    // Notification methods using EventNotificationManager
+    private void notifyEventCreated(Event event) {
+        notificationManager.notifyEventCreated(event);
+    }
+    
+    private void notifyEventUpdated(Event event) {
+        notificationManager.notifyEventUpdated(event);
+    }
+    
+    private void notifyEventDeleted(Long eventId) {
+        notificationManager.notifyEventDeleted(eventId);
+    }
+    
+    private void notifyEventStatusChanged(Event event, String oldStatus, String newStatus) {
+        notificationManager.notifyEventStatusChanged(event, oldStatus, newStatus);
+    }
+    
+    private void notifyEventCompleted(Event event) {
+        notificationManager.notifyEventCompleted(event);
     }
 }

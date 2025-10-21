@@ -64,16 +64,16 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-gray-50 p-4 rounded-lg">
                 <h3 class="text-lg font-semibold text-gray-700">Total Revenue</h3>
-                <p class="text-2xl font-bold text-green-600" th:text="'$' + ${#numbers.formatDecimal(report.totalRevenue, 1, 2)}">$0.00</p>
+                <p class="text-2xl font-bold text-green-600" th:text="'$' + ${#numbers.formatDecimal(report.totalRevenue ?: 0, 1, 2)}">$0.00</p>
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
                 <h3 class="text-lg font-semibold text-gray-700">Total Expenses</h3>
-                <p class="text-2xl font-bold text-red-600" th:text="'$' + ${#numbers.formatDecimal(report.totalExpenses, 1, 2)}">$0.00</p>
+                <p class="text-2xl font-bold text-red-600" th:text="'$' + ${#numbers.formatDecimal(report.totalExpenses ?: 0, 1, 2)}">$0.00</p>
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
                 <h3 class="text-lg font-semibold text-gray-700">Net Profit</h3>
-                <p class="text-2xl font-bold" th:class="${report.netProfit >= 0} ? 'text-green-600' : 'text-red-600'" 
-                   th:text="'$' + ${#numbers.formatDecimal(report.netProfit, 1, 2)}">$0.00</p>
+                <p class="text-2xl font-bold" th:class="${(report.netProfit ?: 0) >= 0} ? 'text-green-600' : 'text-red-600'" 
+                   th:text="'$' + ${#numbers.formatDecimal(report.netProfit ?: 0, 1, 2)}">$0.00</p>
             </div>
         </div>
     </div>
@@ -222,7 +222,7 @@
         <button onclick="window.print()" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300 mr-4">
             🖨️ Print Report
         </button>
-        <a href="/finance-dashboard" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition duration-300">
+        <a href="/admin/finance-dashboard" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition duration-300">
             ← Back to Dashboard
         </a>
     </div>

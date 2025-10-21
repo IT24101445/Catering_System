@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -41,7 +42,12 @@ public class SecurityConfig {
                                 "/menus.html",
                                 "/error"
                         ).permitAll()
-                        .requestMatchers("/api/bookings").authenticated()
+                        // Allow readonly access to bookings for event page data loads
+                        .requestMatchers(HttpMethod.GET, "/api/bookings", "/api/bookings/**").permitAll()
+                        // Allow write/update for event module usage (handled by internal UI)
+                        .requestMatchers(HttpMethod.POST, "/api/bookings").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/bookings/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/bookings/**").permitAll()
                         .requestMatchers("/dashboard-customer").authenticated()
                         .anyRequest().permitAll()
                 )
@@ -52,6 +58,11 @@ public class SecurityConfig {
                         .successHandler(successHandler)
                         .failureHandler(failureHandler)
                         .permitAll()
+                )
+                .rememberMe(rm -> rm
+                        .key("golden-dish-remember-me-key")
+                        .rememberMeParameter("remember")
+                        .tokenValiditySeconds(60 * 60 * 24 * 14) // 14 days
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")

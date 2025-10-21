@@ -1,6 +1,7 @@
 package com.example.catering_system.operationManager.Entity;
 
 public class AssignedOrder {
+    private int id;
     private int orderId;
     private String customerName;
     private String details;
@@ -11,6 +12,8 @@ public class AssignedOrder {
     private String bookingDate;
 
     // Getters and Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
     public int getOrderId() { return orderId; }
     public void setOrderId(int orderId) { this.orderId = orderId; }
     public String getCustomerName() { return customerName; }

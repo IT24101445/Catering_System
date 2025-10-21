@@ -20,28 +20,28 @@ public class PaymentController {
     @Autowired
     private InvoiceService invoiceService;
 
-    @GetMapping("/payments")
+    @GetMapping("/admin/payments")
     public String showPaymentForm(Model model) {
         model.addAttribute("invoices", invoiceService.getAllInvoices());
         return "admin/payment"; // This matches your admin/payment.html
     }
 
-    @PostMapping("/payment/record")
+    @PostMapping("/admin/payment/record")
     public String recordPayment(@RequestParam Long invoiceId, @RequestParam double amount,
                                 @RequestParam String paymentMethod, RedirectAttributes redirectAttributes) {
         try {
             // Validate inputs
             if (invoiceId == null) {
                 redirectAttributes.addFlashAttribute("error", "Invoice ID is required!");
-                return "redirect:/payments";
+                return "redirect:/admin/payments";
             }
             if (amount <= 0) {
                 redirectAttributes.addFlashAttribute("error", "Amount must be greater than 0!");
-                return "redirect:/payments";
+                return "redirect:/admin/payments";
             }
             if (paymentMethod == null || paymentMethod.trim().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Payment method is required!");
-                return "redirect:/payments";
+                return "redirect:/admin/payments";
             }
 
             Payment payment = new Payment();
@@ -56,6 +56,6 @@ public class PaymentController {
             redirectAttributes.addFlashAttribute("error", "Error recording payment: " + e.getMessage());
         }
 
-        return "redirect:/invoices";  // Redirect to invoices page after recording the payment
+        return "redirect:/admin/invoices";  // Redirect to invoices page after recording the payment
     }
 }

@@ -32,7 +32,7 @@ public class FinanceDashboardController {
     @Autowired
     private StaffPaymentService staffPaymentService;
 
-    @GetMapping("/finance-dashboard")
+    @GetMapping("/admin/finance-dashboard")
     public String financeDashboard(Model model, @RequestParam(required = false) String period) {
         // Get current date and calculate date ranges
         Date today = new Date();
@@ -149,7 +149,7 @@ public class FinanceDashboardController {
     }
 
     // API endpoint for chart data
-    @GetMapping("/finance-dashboard/api/chart-data")
+    @GetMapping("/admin/finance-dashboard/api/chart-data")
     @ResponseBody
     public Map<String, Object> getChartData(@RequestParam(required = false) String period) {
         Date today = new Date();
@@ -190,17 +190,17 @@ public class FinanceDashboardController {
     }
 
     // Report generation endpoints
-    @GetMapping("/finance-dashboard/reports/daily")
+    @GetMapping("/admin/finance-dashboard/reports/daily")
     public String generateDailyReport(Model model) {
         Date today = new Date();
         Map<String, Object> report = profitLossService.getProfitLossReport(today, today);
         model.addAttribute("report", report);
         model.addAttribute("reportType", "Daily");
         model.addAttribute("reportDate", new SimpleDateFormat("yyyy-MM-dd").format(today));
-        return "report-template";
+        return "admin/report-template";
     }
 
-    @GetMapping("/finance-dashboard/reports/weekly")
+    @GetMapping("/admin/finance-dashboard/reports/weekly")
     public String generateWeeklyReport(Model model) {
         Date today = new Date();
         Date weekAgo = new Date(today.getTime() - (7L * 24 * 60 * 60 * 1000));
@@ -208,10 +208,10 @@ public class FinanceDashboardController {
         model.addAttribute("report", report);
         model.addAttribute("reportType", "Weekly");
         model.addAttribute("reportDate", new SimpleDateFormat("yyyy-MM-dd").format(weekAgo) + " to " + new SimpleDateFormat("yyyy-MM-dd").format(today));
-        return "report-template";
+        return "admin/report-template";
     }
 
-    @GetMapping("/finance-dashboard/reports/monthly")
+    @GetMapping("/admin/finance-dashboard/reports/monthly")
     public String generateMonthlyReport(Model model) {
         Date today = new Date();
         Date monthAgo = new Date(today.getTime() - (30L * 24 * 60 * 60 * 1000));
@@ -219,6 +219,6 @@ public class FinanceDashboardController {
         model.addAttribute("report", report);
         model.addAttribute("reportType", "Monthly");
         model.addAttribute("reportDate", new SimpleDateFormat("yyyy-MM-dd").format(monthAgo) + " to " + new SimpleDateFormat("yyyy-MM-dd").format(today));
-        return "report-template";
+        return "admin/report-template";
     }
 }

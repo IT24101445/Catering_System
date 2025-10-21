@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Notifications Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2A6EBB;
+            --primary-light: #4A8FD9;
+            --primary-dark: #1A4E8C;
+            --secondary: #6C757D;
+            --success: #28A745;
+            --warning: #FFC107;
+            --danger: #DC3545;
+            --info: #17A2B8;
+            --light: #F8F9FA;
+            --dark: #343A40;
+            --gray-100: #F8F9FA;
+            --gray-200: #E9ECEF;
+            --gray-300: #DEE2E6;
+            --gray-400: #CED4DA;
+            --gray-500: #ADB5BD;
+            --gray-600: #6C757D;
+            --gray-700: #495057;
+            --gray-800: #343A40;
+            --gray-900: #212529;
+            --border-radius: 10px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: #F5F7FB;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            box-shadow: var(--shadow-md);
+            padding: 0.8rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .main-container {
+            background: white;
+            border-radius: var(--border-radius);
+            margin: 2rem auto;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-300);
+        }
+
+        .page-title {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stats-card.warning {
+            border-left-color: var(--warning);
+        }
+
+        .stats-card.info {
+            border-left-color: var(--info);
+        }
+
+        .stats-card.danger {
+            border-left-color: var(--danger);
+        }
+
+        .stats-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .stats-card.warning .stats-icon {
+            color: var(--warning);
+        }
+
+        .stats-card.info .stats-icon {
+            color: var(--info);
+        }
+
+        .stats-card.danger .stats-icon {
+            color: var(--danger);
+        }
+
+        .stats-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-label {
+            font-size: 0.95rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .stats-subtext {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+        }
+
+        .quick-actions {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-modern {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary-modern {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+        }
+
+        .btn-primary-modern:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-success-modern {
+            background: linear-gradient(to right, var(--success), #34ce57);
+            color: white;
+        }
+
+        .btn-success-modern:hover {
+            background: linear-gradient(to right, #218838, var(--success));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-warning-modern {
+            background: linear-gradient(to right, var(--warning), #ffce3a);
+            color: var(--gray-800);
+        }
+
+        .btn-warning-modern:hover {
+            background: linear-gradient(to right, #e0a800, var(--warning));
+            color: var(--gray-800);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-info-modern {
+            background: linear-gradient(to right, var(--info), #39c2d4);
+            color: white;
+        }
+
+        .btn-info-modern:hover {
+            background: linear-gradient(to right, #138496, var(--info));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .notification-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border-left: 4px solid var(--gray-400);
+            position: relative;
+        }
+
+        .notification-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateX(5px);
+        }
+
+        .notification-card.unread {
+            background: #F0F7FF;
+            border-left-color: var(--primary);
+        }
+
+        .notification-card.urgent {
+            background: #FFF5F5;
+            border-left-color: var(--danger);
+        }
+
+        .notification-card.high {
+            border-left-color: var(--warning);
+        }
+
+        .notification-card.medium {
+            border-left-color: var(--info);
+        }
+
+        .notification-card.low {
+            border-left-color: var(--success);
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+            flex: 1;
+        }
+
+        .notification-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+        }
+
+        .notification-message {
+            color: var(--gray-700);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .priority-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+        }
+
+        .response-box {
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 3px solid var(--success);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--gray-500);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .urgent-section {
+            background: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .urgent-header {
+            background: linear-gradient(to right, var(--danger), #e55353);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-sm-modern {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            border-radius: 6px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .notification-header {
+                flex-direction: column;
+            }
+            
+            .notification-actions {
+                margin-top: 1rem;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/admin/home">
+                <i class="fas fa-bell"></i> Event Management
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="main-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-bell me-2"></i>Notifications Dashboard</h1>
+                <p class="page-subtitle">Monitor and manage all event-related notifications in one place</p>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="stats-card">
+                        <i class="fas fa-user-shield stats-icon"></i>
+                        <div class="stats-value" th:text="${unreadAdmin}">0</div>
+                        <div class="stats-label">Admin Notifications</div>
+                        <div class="stats-subtext">Requiring your attention</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stats-card warning">
+                        <i class="fas fa-utensils stats-icon"></i>
+                        <div class="stats-value" th:text="${unreadKitchen}">0</div>
+                        <div class="stats-label">Kitchen Updates</div>
+                        <div class="stats-subtext">Food preparation status</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stats-card info">
+                        <i class="fas fa-truck stats-icon"></i>
+                        <div class="stats-value" th:text="${unreadDelivery}">0</div>
+                        <div class="stats-label">Delivery Alerts</div>
+                        <div class="stats-subtext">Logistics and transport</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stats-card danger">
+                        <i class="fas fa-exclamation-triangle stats-icon pulse"></i>
+                        <div class="stats-value" th:text="${urgentNotifications.size()}">0</div>
+                        <div class="stats-label">Urgent Issues</div>
+                        <div class="stats-subtext">Require immediate action</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h5 class="section-title"><i class="fas fa-tools"></i> Quick Actions</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="/notifications/create-message" class="btn btn-modern btn-primary-modern">
+                        <i class="fas fa-plus"></i> New Message
+                    </a>
+                    <a href="/notifications/kitchen" class="btn btn-modern btn-warning-modern">
+                        <i class="fas fa-utensils"></i> Kitchen
+                    </a>
+                    <a href="/notifications/delivery" class="btn btn-modern btn-info-modern">
+                        <i class="fas fa-truck"></i> Delivery
+                    </a>
+                    <button class="btn btn-modern btn-success-modern" onclick="markAllAsRead()">
+                        <i class="fas fa-check-double"></i> Mark All Read
+                    </button>
+                </div>
+            </div>
+
+            <!-- Urgent Notifications -->
+            <div class="row mb-4" th:if="${urgentNotifications != null and !urgentNotifications.empty}">
+                <div class="col-12">
+                    <div class="urgent-section">
+                        <div class="urgent-header">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h5 class="mb-0">Urgent Notifications</h5>
+                        </div>
+                        <div class="p-3">
+                            <div th:each="notification : ${urgentNotifications}" class="notification-card urgent">
+                                <div class="notification-header">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <h6 class="notification-title mb-0" th:text="${notification.title}">Title</h6>
+                                            <span class="badge bg-danger priority-badge ms-2">URGENT</span>
+                                            <span th:if="${!notification.isRead}" class="notification-badge"></span>
+                                        </div>
+                                        <p class="notification-message" th:text="${notification.message}">Message</p>
+                                        <div class="notification-meta">
+                                            <span><i class="fas fa-clock me-1"></i> <span th:text="${#temporals.format(notification.createdAt, 'yyyy-MM-dd HH:mm')}">Date</span></span>
+                                            <span><i class="fas fa-user me-1"></i> <span th:text="${notification.senderName}">Sender</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions">
+                                        <a th:href="@{/notifications/mark-read/{id}(id=${notification.id})}" 
+                                           class="btn btn-success-modern btn-sm-modern">
+                                            <i class="fas fa-check"></i> Mark Read
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Notifications -->
+            <div class="row">
+                <div class="col-12">
+                    <h5 class="section-title"><i class="fas fa-list"></i> All Notifications</h5>
+                    
+                    <div th:if="${notifications != null and !notifications.empty}">
+                        <div th:each="notification : ${notifications}" 
+                             th:class="'notification-card ' + ${notification.priority.toLowerCase()} + ' ' + ${notification.isRead ? '' : 'unread'}">
+                            <div class="notification-header">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <h6 class="notification-title mb-0" th:text="${notification.title}">Title</h6>
+                                        <span th:class="'badge bg-' + ${notification.priority == 'URGENT' ? 'danger' : notification.priority == 'HIGH' ? 'warning' : notification.priority == 'MEDIUM' ? 'info' : 'success'} + ' priority-badge ms-2'"
+                                              th:text="${notification.priority}">Priority</span>
+                                        <span th:if="${!notification.isRead}" class="notification-badge"></span>
+                                    </div>
+                                    <p class="notification-message" th:text="${notification.message}">Message content</p>
+                                    <div class="notification-meta">
+                                        <span><i class="fas fa-user me-1"></i> <span th:text="${notification.senderName}">Sender</span></span>
+                                        <span><i class="fas fa-arrow-right me-1"></i> <span th:text="${notification.recipientType}">Recipient</span></span>
+                                        <span><i class="fas fa-clock me-1"></i> <span th:text="${#temporals.format(notification.createdAt, 'yyyy-MM-dd HH:mm')}">Date</span></span>
+                                    </div>
+                                    <div th:if="${notification.response != null}" class="response-box">
+                                        <strong>Response:</strong> <span th:text="${notification.response}">Response</span>
+                                        <br><small class="text-muted">
+                                            <i class="fas fa-reply"></i> 
+                                            <span th:text="${#temporals.format(notification.respondedAt, 'yyyy-MM-dd HH:mm')}">Response Date</span>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="action-buttons">
+                                        <a th:href="@{/notifications/mark-read/{id}(id=${notification.id})}" 
+                                           th:if="${!notification.isRead}"
+                                           class="btn btn-success-modern btn-sm-modern">
+                                            <i class="fas fa-check"></i> Read
+                                        </a>
+                                        <button th:if="${notification.notificationType == 'ADMIN_MESSAGE' and notification.response == null}"
+                                                class="btn btn-primary-modern btn-sm-modern" 
+                                                th:onclick="'showResponseForm(' + ${notification.id} + ')'">
+                                            <i class="fas fa-reply"></i> Respond
+                                        </button>
+                                        <a th:href="@{/notifications/event/{eventId}(eventId=${notification.eventId})}" 
+                                           class="btn btn-info-modern btn-sm-modern">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${notifications == null or notifications.empty}" class="empty-state">
+                        <i class="fas fa-bell-slash"></i>
+                        <h5>No notifications found</h5>
+                        <p>You're all caught up! Check back later for new notifications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="floating-action">
+        <a href="/notifications/create-message" class="btn btn-primary-modern rounded-circle" 
+           style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg);">
+            <i class="fas fa-plus fa-lg"></i>
+        </a>
+    </div>
+
+    <!-- Response Modal -->
+    <div class="modal fade" id="responseModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Respond to Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="responseForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="responseText" class="form-label">Your Response:</label>
+                            <textarea class="form-control" id="responseText" rows="4" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Send Response</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentNotificationId = null;
+        
+        function showResponseForm(notificationId) {
+            currentNotificationId = notificationId;
+            const modal = new bootstrap.Modal(document.getElementById('responseModal'));
+            modal.show();
+        }
+        
+        document.getElementById('responseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const responseText = document.getElementById('responseText').value;
+            
+            if (currentNotificationId && responseText.trim()) {
+                fetch(`/notifications/respond/${currentNotificationId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `response=${encodeURIComponent(responseText)}`
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                });
+            }
+        });
+        
+        function markAllAsRead() {
+            if (confirm('Mark all notifications as read?')) {
+                // Implementation for marking all as read
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

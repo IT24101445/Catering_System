@@ -16,7 +16,7 @@ public class RevenueController {
     @Autowired
     private RevenueService revenueService;
 
-    @GetMapping("/revenue")
+    @GetMapping("/admin/revenue")
     public String viewRevenue(Model model) {
         model.addAttribute("revenues", revenueService.getAllRevenues());
         model.addAttribute("revenue", new Revenue());
@@ -28,11 +28,11 @@ public class RevenueController {
         try {
             if (revenue.getSource() == null || revenue.getSource().trim().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Source is required!");
-                return "redirect:/revenue";
+                return "redirect:/admin/revenue";
             }
             if (revenue.getAmount() <= 0) {
                 redirectAttributes.addFlashAttribute("error", "Amount must be greater than 0!");
-                return "redirect:/revenue";
+                return "redirect:/admin/revenue";
             }
             if (revenue.getRevenueDate() == null) {
                 revenue.setRevenueDate(new java.util.Date());
@@ -46,11 +46,11 @@ public class RevenueController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error adding revenue: " + e.getMessage());
         }
-        return "redirect:/revenue";
+        return "redirect:/admin/revenue";
     }
 
     // Endpoint to clear all revenue data (use with caution)
-    @GetMapping("/revenue/clear-all")
+    @GetMapping("/admin/revenue/clear-all")
     public String clearAllRevenue(RedirectAttributes redirectAttributes) {
         try {
             revenueService.deleteAllRevenues();
@@ -58,6 +58,6 @@ public class RevenueController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error clearing data: " + e.getMessage());
         }
-        return "redirect:/revenue";
+        return "redirect:/admin/revenue";
     }
 }

@@ -14,23 +14,27 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
-    @GetMapping("/expenses")
+    @GetMapping("/admin/expenses")
     public String viewExpenses(Model model) {
         model.addAttribute("expenses", expenseService.getAllExpenses());
         model.addAttribute("expense", new Expense());
         return "admin/expenses";
     }
 
-    @PostMapping("/expenses/add")
+    @PostMapping("/admin/expenses/add")
     public String addExpense(@ModelAttribute Expense expense, RedirectAttributes redirectAttributes) {
         try {
             if (expense.getCategory() == null || expense.getCategory().trim().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Category is required!");
-                return "redirect:/expenses";
+                return "redirect:/admin/expenses";
+            }
+            if (expense.getSubcategory() == null || expense.getSubcategory().trim().isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Subcategory is required!");
+                return "redirect:/admin/expenses";
             }
             if (expense.getAmount() <= 0) {
                 redirectAttributes.addFlashAttribute("error", "Amount must be greater than 0!");
-                return "redirect:/expenses";
+                return "redirect:/admin/expenses";
             }
             if (expense.getExpenseDate() == null) {
                 expense.setExpenseDate(new java.util.Date());
@@ -44,11 +48,11 @@ public class ExpenseController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error adding expense: " + e.getMessage());
         }
-        return "redirect:/expenses";
+        return "redirect:/admin/expenses";
     }
 
     // Endpoint to clear all expense data (use with caution)
-    @GetMapping("/expenses/clear-all")
+    @GetMapping("/admin/expenses/clear-all")
     public String clearAllExpenses(RedirectAttributes redirectAttributes) {
         try {
             expenseService.deleteAllExpenses();
@@ -56,6 +60,6 @@ public class ExpenseController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error clearing data: " + e.getMessage());
         }
-        return "redirect:/expenses";
+        return "redirect:/admin/expenses";
     }
 }

@@ -15,6 +15,7 @@ public class Expense {
     private Long id;
 
     private String category; // "INGREDIENTS", "UTILITIES", "TRANSPORTATION", "EQUIPMENT", "RENT", "OTHER"
+    private String subcategory; // "FOOD", "BEVERAGES", "CLEANING", "MAINTENANCE", etc.
     private String description;
     private double amount;
     
@@ -30,8 +31,9 @@ public class Expense {
     // Constructors
     public Expense() {}
 
-    public Expense(String category, String description, double amount, Date expenseDate, String vendor) {
+    public Expense(String category, String subcategory, String description, double amount, Date expenseDate, String vendor) {
         this.category = category;
+        this.subcategory = subcategory;
         this.description = description;
         this.amount = amount;
         this.expenseDate = expenseDate;
@@ -54,6 +56,14 @@ public class Expense {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
     }
 
     public String getDescription() {

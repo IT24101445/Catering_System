@@ -54,6 +54,10 @@ public class EventBookingService {
         return bookingRepository.findAll();
     }
     
+    public List<EventBooking> getConfirmedBookings() {
+        return bookingRepository.findByStatus(EventBooking.BookingStatus.CONFIRMED);
+    }
+    
     public EventBooking getBookingById(Long id) {
         return bookingRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found with ID: " + id));

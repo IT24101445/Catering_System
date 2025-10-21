@@ -1,5 +1,7 @@
 package com.example.catering_system.event.controller;
 
+import com.example.catering_system.booking.entity.EventBooking;
+import com.example.catering_system.booking.service.EventBookingService;
 import com.example.catering_system.event.entity.Event;
 import com.example.catering_system.event.entity.Update;
 import com.example.catering_system.event.service.EventService;
@@ -22,6 +24,9 @@ public class EventController {
     
     @Autowired
     private UpdateService updateService;
+    
+    @Autowired
+    private EventBookingService eventBookingService;
     
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -185,5 +190,67 @@ public class EventController {
     public String markNewAsPlanned(@PathVariable Long id) {
         eventService.markNewAsPlanned(id);
         return "redirect:/event/dashboard";
+    }
+
+    // Print single event details with assigned resources
+    @GetMapping("/events/print/{id}")
+    public String printEvent(@PathVariable Long id, Model model, HttpSession session) {
+        Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");
+        if (isLoggedIn == null || !isLoggedIn) {
+            return "redirect:/login";
+        }
+        Optional<Event> eventOpt = eventService.getEventById(id);
+        if (eventOpt.isEmpty()) {
+            return "redirect:/event/dashboard";
+        }
+        model.addAttribute("event", eventOpt.get());
+        return "event-print";
+    }
+
+    // Generate Events Report (similar to admin report)
+    @GetMapping("/event/report")
+    public String generateEventReport(Model model, HttpSession session) {
+        Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");
+        if (isLoggedIn == null || !isLoggedIn) {
+            return "redirect:/login";
+        }
+
+        List<Event> events = eventService.getAllEvents();
+        long totalEvents = events.size();
+        long completedEvents = events.stream().filter(e -> "Completed".equals(e.getStatus())).count();
+        long plannedEvents = events.stream().filter(e -> "Planned".equals(e.getStatus())).count();
+        long newEvents = events.stream().filter(e -> "NEW".equals(e.getStatus())).count();
+        long inProgressEvents = events.stream().filter(e -> "In Progress".equalsIgnoreCase(e.getStatus())).count();
+        int totalGuests = events.stream().mapToInt(Event::getGuestCount).sum();
+
+        model.addAttribute("reportType", "Events");
+        model.addAttribute("reportDate", java.time.LocalDate.now().toString());
+        model.addAttribute("events", events);
+        model.addAttribute("totalEvents", totalEvents);
+        model.addAttribute("completedEvents", completedEvents);
+        model.addAttribute("plannedEvents", plannedEvents);
+        model.addAttribute("newEvents", newEvents);
+        model.addAttribute("inProgressEvents", inProgressEvents);
+        model.addAttribute("totalGuests", totalGuests);
+
+        return "event-report";
+    }
+
+    // Event: Confirmed bookings view
+    @GetMapping("/event/confirmed-bookings")
+    public String eventConfirmedBookings(Model model, HttpSession session) {
+        Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");
+        if (isLoggedIn == null || !isLoggedIn) {
+            return "redirect:/login";
+        }
+        try {
+            java.util.List<EventBooking> confirmed = eventBookingService.getConfirmedBookings();
+            model.addAttribute("bookings", confirmed);
+            model.addAttribute("canManage", true); // event module can approve/cancel
+        } catch (Exception e) {
+            model.addAttribute("error", "Error loading confirmed bookings: " + e.getMessage());
+            model.addAttribute("bookings", java.util.Collections.emptyList());
+        }
+        return "event-confirmed";
     }
 }

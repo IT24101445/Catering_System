@@ -15,8 +15,8 @@
                     <h1 class="text-white text-2xl font-bold">Expense Management</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="/home" class="text-white px-4 py-2 font-semibold uppercase hover:bg-orange-700 transition duration-300">Home</a>
-                    <a href="/finance-dashboard" class="text-white px-4 py-2 font-semibold uppercase hover:bg-orange-700 transition duration-300">Finance Dashboard</a>
+                    <a href="/admin/home" class="text-white px-4 py-2 font-semibold uppercase hover:bg-orange-700 transition duration-300">Home</a>
+                    <a href="/admin/finance-dashboard" class="text-white px-4 py-2 font-semibold uppercase hover:bg-orange-700 transition duration-300">Finance Dashboard</a>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
                 </div>
                 
                 <h2 class="text-xl font-bold text-gray-900 mb-4">Add New Expense</h2>
-                <form th:action="@{/expenses/add}" th:object="${expense}" method="post" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <form th:action="@{/admin/expenses/add}" th:object="${expense}" method="post" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
                         <label for="category" class="block text-sm font-medium text-gray-700">Expense Category</label>
                         <select th:field="*{category}" id="category" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
@@ -49,6 +49,12 @@
                             <option value="RENT">Rent</option>
                             <option value="OTHER">Other</option>
                         </select>
+                    </div>
+                    
+                    <div>
+                        <label for="subcategory" class="block text-sm font-medium text-gray-700">Subcategory</label>
+                        <input type="text" th:field="*{subcategory}" id="subcategory" placeholder="Enter subcategory" required 
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
                     </div>
                     
                     <div>
@@ -96,7 +102,7 @@
                         <button type="submit" class="flex-1 bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 font-medium">
                             Add Expense
                         </button>
-                        <a href="/expenses/clear-all" class="flex-1 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 font-medium text-center" 
+                        <a href="/admin/expenses/clear-all" class="flex-1 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 font-medium text-center" 
                            onclick="return confirm('Are you sure you want to clear ALL expense data? This cannot be undone!')">
                             Clear All Data
                         </a>

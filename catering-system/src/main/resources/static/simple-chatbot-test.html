@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chatbot Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .test-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <h1>🤖 Chatbot Test Page</h1>
+        <p><strong>Status:</strong> <span class="status">Application is running on port 8080</span></p>
+        <p><strong>Instructions:</strong> Look for the floating chatbot button in the bottom-right corner</p>
+        <p><strong>Expected:</strong> Golden button with robot icon and "Online" status</p>
+        <p><strong>If you don't see it:</strong> Check browser console for JavaScript errors</p>
+    </div>
+    
+    <div class="test-info">
+        <h3>Debug Information:</h3>
+        <p>✅ CSS file loaded: <code>css/chatbot.css</code></p>
+        <p>✅ JS file loaded: <code>js/chatbot.js</code></p>
+        <p>✅ Font Awesome loaded for icons</p>
+        <p>✅ Page loaded successfully</p>
+    </div>
+    
+    <div class="test-info">
+        <h3>Quick Links:</h3>
+        <p><a href="/">Main Page</a> | <a href="/chatbot-test.html">Full Test Page</a></p>
+    </div>
+    
+    <!-- Chatbot Script -->
+    <script src="js/chatbot.js"></script>
+    
+    <script>
+        // Debug script to check if chatbot loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, checking for chatbot...');
+            
+            setTimeout(function() {
+                const chatbotContainer = document.getElementById('chatbot-container');
+                if (chatbotContainer) {
+                    console.log('✅ Chatbot container found!');
+                } else {
+                    console.log('❌ Chatbot container not found!');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+

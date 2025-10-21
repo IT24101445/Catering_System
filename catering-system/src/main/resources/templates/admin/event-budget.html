@@ -71,8 +71,8 @@
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h1>Event Budgets</h1>
         <div>
-            <a href="/home" style="color: white; text-decoration: none; margin-right: 15px; padding: 8px 15px; background-color: rgba(255,255,255,0.2); border-radius: 5px;">Home</a>
-            <a href="/finance-dashboard" style="color: white; text-decoration: none; padding: 8px 15px; background-color: rgba(255,255,255,0.2); border-radius: 5px;">Finance Dashboard</a>
+            <a href="/admin/home" style="color: white; text-decoration: none; margin-right: 15px; padding: 8px 15px; background-color: rgba(255,255,255,0.2); border-radius: 5px;">Home</a>
+            <a href="/admin/finance-dashboard" style="color: white; text-decoration: none; padding: 8px 15px; background-color: rgba(255,255,255,0.2); border-radius: 5px;">Finance Dashboard</a>
         </div>
     </div>
 </header>
@@ -89,7 +89,7 @@
     <!-- Add Event Budget Form -->
     <div class="budget-form" style="margin: 20px; padding: 20px; background-color: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         <h2>Add New Event Budget</h2>
-        <form th:action="@{/event-budget/add}" th:object="${eventBudget}" method="post" style="display: flex; flex-direction: column; gap: 10px;" onsubmit="return validateForm()">
+        <form th:action="@{/admin/event-budget/add}" th:object="${eventBudget}" method="post" style="display: flex; flex-direction: column; gap: 10px;" onsubmit="return validateForm()">
             <div>
                 <label for="eventName" style="display: block; margin-bottom: 5px; font-weight: bold;">Event Name:</label>
                 <input type="text" th:field="*{eventName}" id="eventName" placeholder="Enter event name" required 

@@ -18,19 +18,19 @@ public class EventBudgetController {
     @Autowired
     private EventBudgetService eventBudgetService;
 
-    @GetMapping("/event-budgets")
+    @GetMapping("/admin/event-budgets")
     public String viewEventBudgets(Model model) {
         model.addAttribute("eventBudgets", eventBudgetService.getAllEventBudgets());
         model.addAttribute("eventBudget", new EventBudget());
         return "admin/event-budget";  // Returns admin/event-budget.html template
     }
 
-    @GetMapping("/event-budget")
+    @GetMapping("/admin/event-budget")
     public String viewEventBudget(Model model) {
         return viewEventBudgets(model);
     }
 
-    @PostMapping("/event-budget/add")
+    @PostMapping("/admin/event-budget/add")
     public String addEventBudget(@ModelAttribute EventBudget eventBudget, 
                                 RedirectAttributes redirectAttributes) {
         try {
@@ -39,12 +39,12 @@ public class EventBudgetController {
             // Validate required fields
             if (eventBudget.getEventName() == null || eventBudget.getEventName().trim().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Event name is required!");
-                return "redirect:/event-budgets";
+                return "redirect:/admin/event-budgets";
             }
             
             if (eventBudget.getBudgetAmount() <= 0) {
                 redirectAttributes.addFlashAttribute("error", "Budget amount must be greater than 0!");
-                return "redirect:/event-budgets";
+                return "redirect:/admin/event-budgets";
             }
             
             // Set default values if needed
@@ -64,18 +64,18 @@ public class EventBudgetController {
             redirectAttributes.addFlashAttribute("error", "Error adding event budget: " + e.getMessage());
         }
         
-        return "redirect:/event-budgets";  // Redirect back to event budget list
+        return "redirect:/admin/event-budgets";  // Redirect back to event budget list
     }
 
     // Alternative mapping for better compatibility
-    @PostMapping("/event-budgets/add")
+    @PostMapping("/admin/event-budgets/add")
     public String addEventBudgetAlternative(@ModelAttribute EventBudget eventBudget, 
                                           RedirectAttributes redirectAttributes) {
         return addEventBudget(eventBudget, redirectAttributes);
     }
 
     // Add a mapping for the add form page
-    @GetMapping("/event-budget/add")
+    @GetMapping("/admin/event-budget/add")
     public String showAddEventBudgetForm(Model model) {
         model.addAttribute("eventBudgets", eventBudgetService.getAllEventBudgets());
         model.addAttribute("eventBudget", new EventBudget());

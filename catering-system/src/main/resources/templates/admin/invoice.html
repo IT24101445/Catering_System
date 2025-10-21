@@ -12,9 +12,9 @@
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold">Invoice Management</h1>
             <div class="space-x-4">
-                <a href="/home" class="hover:text-blue-200">🏠 Home</a>
-                <a href="/finance-dashboard" class="hover:text-blue-200">📊 Finance Dashboard</a>
-                <a href="/payments" class="hover:text-blue-200">💳 Payments</a>
+                <a href="/admin/home" class="hover:text-blue-200">🏠 Home</a>
+                <a href="/admin/finance-dashboard" class="hover:text-blue-200">📊 Finance Dashboard</a>
+                <a href="/admin/payments" class="hover:text-blue-200">💳 Payments</a>
             </div>
         </div>
     </nav>
@@ -39,11 +39,26 @@
                 <h1 class="text-3xl font-bold text-gray-900">Invoice Management</h1>
                 <p class="text-gray-600">View and manage all invoices and payments</p>
                 <div class="mt-4">
-                    <form th:action="@{/invoices/create-sample}" method="post" class="inline">
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Create Sample Invoices
-                        </button>
-                    </form>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h3 class="font-medium text-blue-700 mb-2">Create Invoice</h3>
+                        <form th:action="@{/admin/invoices/create}" method="post" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                            <div>
+                                <label for="customerId" class="block text-sm font-medium text-gray-700">Customer ID</label>
+                                <input type="number" id="customerId" name="customerId" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                            </div>
+                            <div>
+                                <label for="amount" class="block text-sm font-medium text-gray-700">Amount</label>
+                                <input type="number" step="0.01" min="0.01" id="amount" name="amount" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                            </div>
+                            <div class="md:col-span-1 md:col-start-3 md:col-end-4">
+                                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                                <input type="text" id="description" name="description" placeholder="Optional" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 focus:outline-none">Create Invoice</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -80,7 +95,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <form th:if="${invoice.status == 'Unpaid'}" th:action="@{/invoice/mark-paid}" method="post" class="inline">
+                                    <form th:if="${invoice.status == 'Unpaid'}" th:action="@{/admin/invoice/mark-paid}" method="post" class="inline">
                                         <input type="hidden" name="invoiceId" th:value="${invoice.id}">
                                         <button type="submit" class="text-green-600 hover:text-green-900">Mark as Paid</button>
                                     </form>

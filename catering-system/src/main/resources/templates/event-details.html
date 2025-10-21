@@ -342,6 +342,9 @@
                 <a th:href="@{/events/form(id=${event.id})}" class="btn btn-warning">
                     <i class="fas fa-edit"></i> Edit Event
                 </a>
+                <a th:href="@{/events/print/{id}(id=${event.id})}" class="btn btn-primary">
+                    <i class="fas fa-print"></i> Print Event
+                </a>
                 <a href="/event/dashboard" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Back to Home
                 </a>
