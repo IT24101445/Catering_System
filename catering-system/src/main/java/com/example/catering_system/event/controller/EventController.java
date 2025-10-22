@@ -207,7 +207,7 @@ public class EventController {
         return "event-print";
     }
 
-    // Generate Events Report (similar to admin report)
+    // Generate Events Report
     @GetMapping("/event/report")
     public String generateEventReport(Model model, HttpSession session) {
         Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");

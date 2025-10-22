@@ -9,66 +9,80 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #c41e3a;
-            --secondary: #2c5530;
-            --accent: #f8b500;
+            --primary: #2c3e50;
+            --primary-light: #34495e;
+            --secondary: #3498db;
+            --accent: #9b59b6;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
             --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
             --white: #FFFFFF;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --border: #e9ecef;
         }
 
         body {
             font-family: 'Nunito Sans', sans-serif;
-            background-color: var(--light);
+            background-color: #f5f7fa;
             color: var(--dark);
+            line-height: 1.6;
         }
 
         .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
         }
 
         .navbar-brand {
-            font-weight: 700;
-            color: white;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.25rem;
         }
 
         .calendar-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            padding: 3rem 0;
+            padding: 3.5rem 0 2.5rem;
             margin-bottom: 2rem;
         }
 
         .calendar-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
             padding: 2rem;
             margin-bottom: 2rem;
+            border: 1px solid var(--border);
         }
 
         .event-highlight {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            border-radius: 8px;
-            padding: 0.5rem;
-            margin: 0.25rem 0;
+            background: var(--white);
+            color: var(--dark);
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0;
             font-size: 0.9rem;
             font-weight: 500;
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
         }
 
         .event-highlight.new {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-left-color: var(--secondary);
         }
 
         .event-highlight.updated {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-left-color: var(--success);
         }
 
         .event-highlight.completed {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-left-color: var(--gray);
         }
 
         .calendar-legend {
@@ -84,89 +98,238 @@
             align-items: center;
             gap: 0.5rem;
             font-weight: 500;
+            font-size: 0.9rem;
         }
 
         .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
         }
 
         .back-btn {
             position: fixed;
             top: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: 50px;
+            background: var(--white);
+            color: var(--primary);
+            padding: 0.75rem 1.25rem;
+            border-radius: 6px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             transition: all 0.3s ease;
             z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
         }
 
         .back-btn:hover {
-            background: rgba(0, 0, 0, 0.9);
+            background: var(--primary);
             color: white;
-            transform: translateX(-5px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .calendar-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
-            background: white;
-            border-radius: 10px;
+            background: var(--card-bg);
+            border-radius: 8px;
             padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow);
             text-align: center;
+            border: 1px solid var(--border);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
         }
 
         .stat-number {
-            font-size: 2rem;
+            font-size: 2.25rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            color: var(--primary);
         }
 
         .stat-label {
             color: var(--gray);
             font-weight: 500;
+            font-size: 0.9rem;
         }
 
         .upcoming-events {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 1.75rem;
+            height: 100%;
+            border: 1px solid var(--border);
         }
 
         .event-item {
-            border-left: 4px solid var(--primary);
-            padding: 1rem;
+            border-left: 3px solid var(--secondary);
+            padding: 1.25rem;
             margin-bottom: 1rem;
-            background: #f8f9fa;
-            border-radius: 0 8px 8px 0;
+            background: var(--white);
+            border-radius: 0 6px 6px 0;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+        }
+
+        .event-item:hover {
+            border-left-width: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .event-date {
             font-weight: 600;
-            color: var(--primary);
+            color: var(--secondary);
             margin-bottom: 0.5rem;
+            font-size: 0.85rem;
         }
 
         .event-title {
-            font-weight: 700;
-            margin-bottom: 0.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
         }
 
         .event-description {
             color: var(--gray);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 0.75rem;
+            color: var(--secondary);
+        }
+
+        .calendar-embed {
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            margin: 0;
             font-size: 0.9rem;
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 0.5rem 1.25rem;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .status-new {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary);
+        }
+
+        .status-updated {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+        }
+
+        .status-completed {
+            background: rgba(149, 165, 166, 0.1);
+            color: var(--gray);
+        }
+
+        @media (max-width: 768px) {
+            .calendar-header {
+                padding: 2.5rem 0 2rem;
+            }
+            
+            .calendar-container {
+                padding: 1.5rem;
+            }
+            
+            .calendar-legend {
+                gap: 1rem;
+            }
+            
+            .legend-item {
+                font-size: 0.85rem;
+            }
+            
+            .stat-card {
+                padding: 1.25rem;
+            }
+            
+            .back-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -180,23 +343,16 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="/event/dashboard">
-                <i class="fas fa-calendar-alt me-2"></i>
                 Event Calendar
             </a>
-            <div class="navbar-nav ms-auto">
-                <span class="navbar-text" th:text="${userEmail}">User</span>
-                <a href="/event/logout" class="btn btn-outline-light ms-3">
-                    <i class="fas fa-sign-out-alt me-1"></i>Logout
-                </a>
-            </div>
         </div>
     </nav>
 
     <!-- Header -->
     <div class="calendar-header">
         <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-3">Event Calendar</h1>
-            <p class="lead">View all your events in a comprehensive calendar view</p>
+            <h1 class="display-5 fw-bold mb-3">Event Calendar</h1>
+            <p class="lead mb-0">Manage and monitor all your events in one place</p>
         </div>
     </div>
 
@@ -222,57 +378,41 @@
             </div>
         </div>
 
-        <!-- Calendar Legend -->
-        <div class="calendar-legend">
-            <div class="legend-item">
-                <div class="legend-color" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
-                <span>New Events</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);"></div>
-                <span>Updated Events</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                <span>Completed Events</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
-                <span>All Events</span>
-            </div>
-        </div>
 
         <!-- Google Calendar Integration -->
         <div class="calendar-container">
-            <h3 class="mb-4"><i class="fas fa-calendar me-2"></i>Event Calendar View</h3>
+            <h3 class="section-title"><i class="fas fa-calendar-alt"></i>Calendar View</h3>
             <div class="row">
                 <div class="col-lg-8">
                     <!-- Google Calendar Embed -->
-                    <div class="ratio ratio-16x9">
-                        <iframe 
-                            src="https://calendar.google.com/calendar/embed?src=your-calendar-id%40gmail.com&ctz=America%2FNew_York&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0"
-                            style="border: 0; border-radius: 10px;"
-                            width="100%" 
-                            height="100%" 
-                            frameborder="0" 
-                            scrolling="no">
-                        </iframe>
+                    <div class="calendar-embed">
+                        <div class="ratio ratio-16x9">
+                            <iframe 
+                                src="https://calendar.google.com/calendar/embed?src=your-calendar-id%40gmail.com&ctz=America%2FNew_York&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0"
+                                style="border: 0;"
+                                width="100%" 
+                                height="100%" 
+                                frameborder="0" 
+                                scrolling="no">
+                            </iframe>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <!-- Upcoming Events -->
                     <div class="upcoming-events">
-                        <h5 class="mb-3"><i class="fas fa-clock me-2"></i>Upcoming Events</h5>
+                        <h5 class="section-title"><i class="fas fa-clock"></i>Upcoming Events</h5>
                         <div th:each="event : ${upcomingEvents}">
                             <div class="event-item">
                                 <div class="event-date" th:text="${#temporals.format(event.dateTime, 'MMM dd, yyyy')}">Jan 15, 2024</div>
                                 <div class="event-title" th:text="${event.name}">Event Name</div>
                                 <div class="event-description" th:text="${event.description}">Event description</div>
+                                <span class="status-badge" th:classappend="'status-' + ${event.status?.toLowerCase()}" th:text="${event.status}">Status</span>
                             </div>
                         </div>
-                        <div th:if="${upcomingEvents == null or upcomingEvents.empty}" class="text-center text-muted py-3">
-                            <i class="fas fa-calendar-times fa-2x mb-2"></i>
-                            <p>No upcoming events</p>
+                        <div th:if="${upcomingEvents == null or upcomingEvents.empty}" class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            <p>No upcoming events scheduled</p>
                         </div>
                     </div>
                 </div>
@@ -281,33 +421,45 @@
 
         <!-- Event Highlights by Month -->
         <div class="calendar-container">
-            <h3 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Event Highlights</h3>
+            <h3 class="section-title"><i class="fas fa-chart-bar"></i>Event Overview</h3>
             <div class="row">
                 <div class="col-md-4">
-                    <h5>This Month</h5>
+                    <h5 class="mb-3">This Month</h5>
                     <div th:each="event : ${thisMonthEvents}">
                         <div class="event-highlight" th:classappend="${event.status == 'NEW' ? 'new' : (event.status == 'UPDATED' ? 'updated' : (event.status == 'COMPLETED' ? 'completed' : ''))}">
                             <strong th:text="${event.name}">Event Name</strong> - 
                             <span th:text="${#temporals.format(event.dateTime, 'MMM dd')}">Jan 15</span>
                         </div>
                     </div>
+                    <div th:if="${thisMonthEvents == null or thisMonthEvents.empty}" class="empty-state">
+                        <i class="fas fa-calendar-day"></i>
+                        <p>No events this month</p>
+                    </div>
                 </div>
                 <div class="col-md-4">
-                    <h5>Next Month</h5>
+                    <h5 class="mb-3">Next Month</h5>
                     <div th:each="event : ${nextMonthEvents}">
                         <div class="event-highlight" th:classappend="${event.status == 'NEW' ? 'new' : (event.status == 'UPDATED' ? 'updated' : (event.status == 'COMPLETED' ? 'completed' : ''))}">
                             <strong th:text="${event.name}">Event Name</strong> - 
                             <span th:text="${#temporals.format(event.dateTime, 'MMM dd')}">Feb 15</span>
                         </div>
                     </div>
+                    <div th:if="${nextMonthEvents == null or nextMonthEvents.empty}" class="empty-state">
+                        <i class="fas fa-calendar-plus"></i>
+                        <p>No events next month</p>
+                    </div>
                 </div>
                 <div class="col-md-4">
-                    <h5>This Quarter</h5>
+                    <h5 class="mb-3">This Quarter</h5>
                     <div th:each="event : ${quarterEvents}">
                         <div class="event-highlight" th:classappend="${event.status == 'NEW' ? 'new' : (event.status == 'UPDATED' ? 'updated' : (event.status == 'COMPLETED' ? 'completed' : ''))}">
                             <strong th:text="${event.name}">Event Name</strong> - 
                             <span th:text="${#temporals.format(event.dateTime, 'MMM dd')}">Mar 15</span>
                         </div>
+                    </div>
+                    <div th:if="${quarterEvents == null or quarterEvents.empty}" class="empty-state">
+                        <i class="fas fa-calendar-week"></i>
+                        <p>No events this quarter</p>
                     </div>
                 </div>
             </div>
@@ -315,9 +467,9 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
+    <footer>
         <div class="container text-center">
-            <p class="mb-0">&copy; 2024 Catering System. All rights reserved.</p>
+            <p class="mb-2">&copy; Golden Dish Caterings</p>
         </div>
     </footer>
 

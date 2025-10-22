@@ -1,7 +1,7 @@
 package com.example.catering_system.event.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDateTime;       //import Java Time API
 
 @Entity(name = "EventUser")
 @Table(name = "event_users")
