@@ -16,7 +16,7 @@ Golden Dish aims to simplify catering services by providing an online platform w
 
 ## major functions
 
- • Online Booking
+ • Online Booking 
  • Menu Selection
  • Event Management
  • Kitchen Order Management
@@ -39,13 +39,13 @@ Golden Dish aims to simplify catering services by providing an online platform w
 
 ## Technologies Used
 
- **Frontend**   - HTML5, CSS3, JavaScript, Thymeleaf, Tailwind CSS 
- **Backend**    - Java Spring Boot 
- **Database**   - SQL Server 
- **IDE **       - IntelliJ IDEA, VS Code 
- **Version Control** - Git & GitHub 
- **Build Tool** - Maven 
- **Design patterns** - Observer & singleton pattern
+ **Frontend**   - HTML5, CSS3, JavaScript, Thymeleaf, Tailwind CSS  ,
+ **Backend**    - Java Spring Boot  ,
+ **Database**   - SQL Server  ,
+ **IDE**       - IntelliJ IDEA, VS Code  ,
+ **Version Control** - Git & GitHub  ,
+ **Build Tool** - Maven  ,
+ **Design patterns** - Observer & singleton pattern.
 
 
 
