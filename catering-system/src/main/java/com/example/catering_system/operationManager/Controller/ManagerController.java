@@ -1,7 +1,7 @@
 package com.example.catering_system.operationManager.Controller;
 
 import com.example.catering_system.operationManager.Entity.Manager;
-import com.example.catering_system.operationManager.Service.SimpleDatabaseService;
+import com.example.catering_system.operationManager.Service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 public class ManagerController {
 
     @Autowired
-    private SimpleDatabaseService dbService;
+    private DatabaseService dbService;
 
     // Show login page
     @GetMapping("/login")
@@ -37,8 +37,23 @@ public class ManagerController {
                           @RequestParam String email,
                           @RequestParam String phone,
                           Model model) {
-        // Add registration logic here if needed
-        model.addAttribute("message", "Registration successful! Please login.");
+        try {
+            System.out.println("=== CONTROLLER REGISTRATION DEBUG ===");
+            System.out.println("Registering: " + username);
+            
+            String result = dbService.registerManager(fullName, username, password, email, phone);
+            if ("SUCCESS".equals(result)) {
+                System.out.println("Registration successful for: " + username);
+                model.addAttribute("message", "Registration successful! Please login.");
+            } else {
+                System.out.println("Registration failed for: " + username + " - " + result);
+                model.addAttribute("error", result);
+            }
+        } catch (Exception e) {
+            System.out.println("Registration error: " + e.getMessage());
+            e.printStackTrace();
+            model.addAttribute("error", "Registration failed: " + e.getMessage());
+        }
         return "Operation/login-operation";
     }
 
@@ -183,6 +198,23 @@ public class ManagerController {
         }
         dbService.deleteStaff(id);
         return "redirect:/operation/dashboard";
+    }
+
+    // Show notifications
+    @GetMapping("/notifications")
+    public String notifications(HttpSession session, Model model) {
+        Manager manager = (Manager) session.getAttribute("manager");
+        if (manager == null) {
+            return "redirect:/operation/login";
+        }
+
+        // For now, show a simple notifications page
+        // In a real system, you would fetch actual notifications from the database
+        model.addAttribute("notifications", java.util.Collections.emptyList());
+        model.addAttribute("unreadCount", 0);
+        model.addAttribute("activePage", "notifications");
+        model.addAttribute("pageTitle", "Notifications | Operation Manager");
+        return "Operation/notifications-operation";
     }
 
     // Delete assigned order (with booking cleanup)

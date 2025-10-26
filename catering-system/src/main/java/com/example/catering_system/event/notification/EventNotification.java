@@ -3,10 +3,8 @@ package com.example.catering_system.event.notification;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * Event Notification Entity
- * Stores notifications for event-related communications between admin and staff
- */
+// Stores notifications for event-related communications between admin and staff
+
 @Entity
 @Table(name = "event_notifications")
 public class EventNotification {

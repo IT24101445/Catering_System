@@ -3,249 +3,164 @@
 <head>
     <title>Operation Manager Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts for professional typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary: #2c3e50;
+            --primary-dark: #1a252f;
+            --accent: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --gray-light: #e9ecef;
+            --gray: #6c757d;
+            --gray-dark: #343a40;
+            --border: #dee2e6;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
-            color: #333;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--gray-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
         .header {
-            background: linear-gradient(90deg, #2e7d32, #4caf50);
-            color: white;
-            padding: 15px 20px;
-            text-align: right;
+            background: var(--white);
+            color: var(--primary);
+            padding: 16px 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--border);
         }
+
         .header .logo {
             font-size: 24px;
             font-weight: bold;
             display: flex;
             align-items: center;
         }
+
         .header .logo i {
             margin-right: 10px;
+            color: var(--primary);
         }
+
         .header a {
-            color: white;
+            color: var(--gray);
             text-decoration: none;
             margin-left: 15px;
-            padding: 8px 15px;
-            border-radius: 20px;
-            transition: background-color 0.3s;
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
+
         .header a:hover {
-            background-color: rgba(255,255,255,0.2);
+            background-color: var(--gray-light);
+            color: var(--primary);
         }
+
+        .header .notification-badge {
+            background: var(--accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            font-weight: 600;
+        }
+
+        /* Container */
         .container {
             max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            margin: 24px auto;
+            padding: 24px;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
         }
-        h1, h2 {
-            color: #2e7d32;
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-        }
-        h1 i, h2 i {
-            margin-right: 10px;
-        }
+
+        /* Dashboard Header */
         .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
         }
+
+        h1, h2 {
+            color: var(--primary);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h1 {
+            margin-bottom: 0;
+        }
+
+        h2 {
+            margin-bottom: 16px;
+        }
+
+        /* Notification */
         .notification {
-            background: linear-gradient(90deg, #e8f5e9, #c8e6c9);
-            color: #2e7d32;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border-left: 5px solid #4caf50;
+            background: var(--gray-light);
+            color: var(--primary);
+            padding: 16px;
+            margin-bottom: 24px;
+            border-radius: var(--radius);
+            border-left: 5px solid var(--accent);
             display: flex;
             align-items: center;
+            gap: 10px;
         }
-        .notification i {
-            margin-right: 10px;
-            font-size: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 12px 15px;
-            border: none;
-            text-align: left;
-        }
-        th {
-            background-color: #4caf50;
-            color: white;
-            font-weight: 600;
-        }
-        tr:nth-child(even) {
-            background-color: #f1f8e9;
-        }
-        tr:hover {
-            background-color: #e8f5e9;
-        }
-        .assign-form {
-            display: flex;
-            align-items: center;
-        }
-        .assign-form select {
-            padding: 8px;
-            margin-right: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .assign-form button {
-            padding: 8px 15px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        .assign-form button:hover {
-            background-color: #388e3c;
-        }
-        .view-orders {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #f1f8e9;
-            border-radius: 8px;
-            border-left: 5px solid #4caf50;
-        }
-        .view-orders a {
-            color: #2e7d32;
-            text-decoration: none;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-        }
-        .view-orders a i {
-            margin-right: 8px;
-        }
-        .form-section {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            border: 1px solid #eee;
-        }
-        .form-section h2 {
-            margin-bottom: 15px;
-            color: #2e7d32;
-        }
-        .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        .form-group {
-            flex: 1;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: #555;
-        }
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: #4caf50;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-        }
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-        }
-        .btn i {
-            margin-right: 8px;
-        }
-        .btn-primary {
-            background-color: #4caf50;
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #388e3c;
-        }
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .status-pending {
-            background-color: #fff8e1;
-            color: #ff8f00;
-        }
-        .status-assigned {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-        }
-        .status-available {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-        }
-        .status-unavailable {
-            background-color: #ffebee;
-            color: #c62828;
-        }
-        
-        /* Enhanced Table Styling */
+
+        /* Table Styling */
         .table-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             overflow: hidden;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
         }
-        
+
         .enhanced-table {
             width: 100%;
             border-collapse: collapse;
             margin: 0;
         }
-        
+
         .enhanced-table thead {
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            background: var(--primary);
             color: white;
         }
-        
+
         .enhanced-table th {
             padding: 16px 12px;
             text-align: left;
@@ -254,139 +169,302 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
+
         .enhanced-table th i {
             margin-right: 8px;
             opacity: 0.9;
         }
-        
+
         .order-row {
-            border-bottom: 1px solid #f0f0f0;
-            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
         }
-        
+
         .order-row:hover {
-            background-color: #f8f9fa;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background-color: var(--gray-light);
         }
-        
+
         .order-row td {
             padding: 16px 12px;
             vertical-align: middle;
         }
-        
+
         .order-id {
             font-weight: bold;
-            color: #2e7d32;
+            color: var(--primary);
             font-size: 16px;
         }
-        
+
         .customer-name {
             font-weight: 600;
-            color: #333;
+            color: var(--gray-dark);
         }
-        
+
         .order-details {
-            color: #666;
+            color: var(--gray);
             max-width: 200px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        
+
         .status-cell {
             text-align: center;
         }
-        
+
         .assign-cell {
             min-width: 250px;
         }
-        
+
         .assign-controls {
             display: flex;
             gap: 8px;
             align-items: center;
         }
-        
+
         .staff-select {
             flex: 1;
             padding: 8px 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--white);
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
-        
+
         .staff-select:focus {
-            border-color: #4caf50;
+            border-color: var(--accent);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
-        
-        .assign-btn {
-            background: linear-gradient(135deg, #4caf50, #45a049);
-            color: white;
-            border: none;
+
+        /* Buttons */
+        .btn {
+            border-radius: var(--radius);
             padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
             font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .assign-btn:hover {
-            background: linear-gradient(135deg, #45a049, #3d8b40);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-        }
-        
-        .actions-cell {
-            text-align: center;
-        }
-        
-        .delete-btn {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-        }
-        
-        .delete-btn:hover {
-            background: linear-gradient(135deg, #c82333, #bd2130);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
-            color: white;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
             text-decoration: none;
+            font-size: 14px;
         }
-        
+
+        .assign-btn {
+            background: var(--accent);
+            color: white;
+        }
+
+        .assign-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 8px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-pending {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+
+        .status-assigned {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+        }
+
+        .status-available {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+
+        .status-unavailable {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            color: #666;
+            padding: 48px 20px;
+            color: var(--gray);
         }
-        
+
         .empty-state i {
             font-size: 48px;
-            color: #4caf50;
+            color: var(--gray-light);
             margin-bottom: 16px;
         }
-        
+
         .empty-state h3 {
-            color: #333;
+            color: var(--gray-dark);
             margin-bottom: 8px;
+        }
+
+        /* Section Cards */
+        .section-card {
+            margin-top: 24px;
+            padding: 20px;
+            background-color: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .section-card h2 {
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        /* Form Styling */
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--gray-dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-sizing: border-box;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        /* Message Styling */
+        .success-message {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+            padding: 12px;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            padding: 12px;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* View Orders Section */
+        .view-orders {
+            margin-top: 24px;
+            padding: 16px;
+            background-color: var(--gray-light);
+            border-radius: var(--radius);
+            border-left: 5px solid var(--accent);
+        }
+
+        .view-orders h2 {
+            margin-bottom: 16px;
+        }
+
+        .view-orders a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 16px;
+            }
+
+            .header a {
+                margin-left: 0;
+                margin-right: 8px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .assign-controls {
+                flex-direction: column;
+            }
+
+            .staff-select {
+                width: 100%;
+            }
+
+            .container {
+                margin: 16px;
+                padding: 16px;
+            }
         }
     </style>
 </head>
@@ -394,13 +472,19 @@
 <div class="header">
     <div class="logo">
         <i class="fas fa-utensils"></i>
-        Catering Management
+        Golden Dish Caterings
     </div>
+    <span>Operation Manager Dashboard</span>
     <div>
-        <span>Operation Manager Dashboard</span>
-        <a href="/notifications/dashboard" style="background-color: #28a745; color: white; padding: 8px 16px; border-radius: 5px; font-weight: 600;"><i class="fas fa-bell"></i> Notifications</a>
-        <a href="/operation/assigned-orders"><i class="fas fa-tasks"></i> Assigned Orders</a>
-        <a href="/operation/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a href="/operation/notifications" class="notification-badge">
+            <i class="fas fa-bell"></i> Notifications
+        </a>
+        <a href="/operation/assigned-orders">
+            <i class="fas fa-tasks"></i> Assigned Orders
+        </a>
+        <a href="/operation/logout">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
     </div>
 </div>
 
@@ -410,13 +494,13 @@
     </div>
 
     <!-- Success Message -->
-    <div th:if="${successMessage}" class="success-message" style="background-color: #d4edda; color: #155724; padding: 12px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+    <div th:if="${successMessage}" class="success-message">
         <i class="fas fa-check-circle"></i>
         <span th:text="${successMessage}"></span>
     </div>
 
     <!-- Error Message -->
-    <div th:if="${errorMessage}" class="error-message" style="background-color: #f8d7da; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+    <div th:if="${errorMessage}" class="error-message">
         <i class="fas fa-exclamation-circle"></i>
         <span th:text="${errorMessage}"></span>
     </div>
@@ -427,61 +511,61 @@
     </div>
 
     <h2><i class="fas fa-clipboard-list"></i> Pending Orders</h2>
-    
+
     <!-- Enhanced Pending Orders Table -->
     <div class="table-container">
         <table class="enhanced-table">
             <thead>
-                <tr>
-                    <th><i class="fas fa-hashtag"></i> Order ID</th>
-                    <th><i class="fas fa-user"></i> Customer</th>
-                    <th><i class="fas fa-info-circle"></i> Details</th>
-                    <th><i class="fas fa-clock"></i> Status</th>
-                    <th><i class="fas fa-users"></i> Assign Staff</th>
-                    <th><i class="fas fa-cogs"></i> Actions</th>
-                </tr>
+            <tr>
+                <th><i class="fas fa-hashtag"></i> Order ID</th>
+                <th><i class="fas fa-user"></i> Customer</th>
+                <th><i class="fas fa-info-circle"></i> Details</th>
+                <th><i class="fas fa-clock"></i> Status</th>
+                <th><i class="fas fa-users"></i> Assign Staff</th>
+                <th><i class="fas fa-cogs"></i> Actions</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="order : ${orders}" class="order-row">
-                    <td class="order-id" th:text="${order.id}">1</td>
-                    <td class="customer-name" th:text="${order.customerName}"></td>
-                    <td class="order-details" th:text="${order.details}"></td>
-                    <td class="status-cell">
+            <tr th:each="order : ${orders}" class="order-row">
+                <td class="order-id" th:text="${order.id}">1</td>
+                <td class="customer-name" th:text="${order.customerName}"></td>
+                <td class="order-details" th:text="${order.details}"></td>
+                <td class="status-cell">
                         <span class="status-badge status-pending">
                             <i class="fas fa-clock"></i>
                             <span th:text="${order.status}">PENDING</span>
                         </span>
-                    </td>
-                    <td class="assign-cell">
-                        <form class="assign-form" action="/operation/assign" method="post">
-                            <input type="hidden" name="orderId" th:value="${order.id}">
-                            <div class="assign-controls">
-                                <select name="staffId" required class="staff-select">
-                                    <option value="">👤 Select Staff Member</option>
-                                    <option th:each="staff : ${staffList}"
-                                            th:value="${staff.id}"
-                                            th:text="${staff.name} + ' (' + ${staff.role} + ')'">
-                                    </option>
-                                </select>
-                                <button type="submit" class="assign-btn">
-                                    <i class="fas fa-user-plus"></i>
-                                    <span>Assign</span>
-                                </button>
-                            </div>
-                        </form>
-                    </td>
-                    <td class="actions-cell">
-                        <a th:href="@{'/operation/orders/delete/' + ${order.id}}" 
-                           onclick="return confirm('⚠️ Are you sure you want to delete this order?\n\nThis action cannot be undone!')"
-                           class="delete-btn">
-                            <i class="fas fa-trash"></i>
-                            <span>Delete</span>
-                        </a>
-                    </td>
-                </tr>
+                </td>
+                <td class="assign-cell">
+                    <form class="assign-form" action="/operation/assign" method="post">
+                        <input type="hidden" name="orderId" th:value="${order.id}">
+                        <div class="assign-controls">
+                            <select name="staffId" required class="staff-select">
+                                <option value="">👤 Select Staff Member</option>
+                                <option th:each="staff : ${staffList}"
+                                        th:value="${staff.id}"
+                                        th:text="${staff.name} + ' (' + ${staff.role} + ')'">
+                                </option>
+                            </select>
+                            <button type="submit" class="btn assign-btn">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Assign</span>
+                            </button>
+                        </div>
+                    </form>
+                </td>
+                <td class="actions-cell">
+                    <a th:href="@{'/operation/orders/delete/' + ${order.id}}"
+                       onclick="return confirm('⚠️ Are you sure you want to delete this order?\n\nThis action cannot be undone!')"
+                       class="btn delete-btn">
+                        <i class="fas fa-trash"></i>
+                        <span>Delete</span>
+                    </a>
+                </td>
+            </tr>
             </tbody>
         </table>
-        
+
         <!-- Empty State -->
         <div th:if="${#lists.isEmpty(orders)}" class="empty-state">
             <i class="fas fa-clipboard-check"></i>
@@ -496,34 +580,44 @@
     </div>
 
     <h2><i class="fas fa-users"></i> Available Staff</h2>
-    <table>
-        <tr>
-            <th>Staff ID</th>
-            <th>Name</th>
-            <th>Role</th>
-            <th>Available</th>
-            <th>Actions</th>
-        </tr>
-        <tr th:each="staff : ${staffList}">
-            <td th:text="${staff.id}"></td>
-            <td th:text="${staff.name}"></td>
-            <td th:text="${staff.role}"></td>
-            <td>
-                <span th:if="${staff.available}" class="status-badge status-available">Yes</span>
-                <span th:unless="${staff.available}" class="status-badge status-unavailable">No</span>
-            </td>
-            <td>
-                <a th:href="@{'/operation/staff/delete/' + ${staff.id}}" 
-                   onclick="return confirm('Are you sure you want to delete this staff member?')"
-                   style="color: #dc3545; text-decoration: none; font-weight: bold;">
-                    <i class="fas fa-trash"></i> Delete
-                </a>
-            </td>
-        </tr>
-    </table>
+    <div class="table-container">
+        <table class="enhanced-table">
+            <thead>
+            <tr>
+                <th>Staff ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Available</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="staff : ${staffList}" class="order-row">
+                <td th:text="${staff.id}"></td>
+                <td th:text="${staff.name}"></td>
+                <td th:text="${staff.role}"></td>
+                <td>
+                        <span th:if="${staff.available}" class="status-badge status-available">
+                            <i class="fas fa-check"></i> Yes
+                        </span>
+                    <span th:unless="${staff.available}" class="status-badge status-unavailable">
+                            <i class="fas fa-times"></i> No
+                        </span>
+                </td>
+                <td>
+                    <a th:href="@{'/operation/staff/delete/' + ${staff.id}}"
+                       onclick="return confirm('Are you sure you want to delete this staff member?')"
+                       class="btn delete-btn">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Create New Order Form -->
-    <div class="form-section">
+    <div class="section-card">
         <h2><i class="fas fa-plus-circle"></i> Create New Order</h2>
         <form action="/operation/orders/create" method="post">
             <div class="form-row">
@@ -540,14 +634,16 @@
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Create Order</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Create Order
+                    </button>
                 </div>
             </div>
         </form>
     </div>
 
     <!-- Add New Staff Form -->
-    <div class="form-section">
+    <div class="section-card">
         <h2><i class="fas fa-user-plus"></i> Add New Staff</h2>
         <form action="/operation/staff/add" method="post">
             <div class="form-row">
@@ -571,7 +667,9 @@
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-user-check"></i> Add Staff</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-check"></i> Add Staff
+                    </button>
                 </div>
             </div>
         </form>

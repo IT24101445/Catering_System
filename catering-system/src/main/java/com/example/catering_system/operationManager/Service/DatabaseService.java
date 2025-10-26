@@ -34,15 +34,144 @@ public class DatabaseService {
         return dataSource.getConnection();
     }
 
+    // Register new manager
+    public String registerManager(String fullName, String username, String password, String email, String phone) {
+        System.out.println("=== OPERATION REGISTRATION DEBUG ===");
+        System.out.println("Registering manager: " + username);
+        
+        // First check if username already exists
+        String checkSql = "SELECT COUNT(*) FROM managers WHERE username = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            checkStmt.setString(1, username);
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    System.out.println("=== REGISTRATION FAILED - USERNAME ALREADY EXISTS ===");
+                    return "Username already exists. Please choose a different username.";
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("=== REGISTRATION FAILED - DATABASE ERROR ===");
+            e.printStackTrace();
+            return "Database error occurred. Please try again.";
+        }
+        
+        // If username doesn't exist, proceed with registration
+        String sql = "INSERT INTO managers (fullName, username, password, email, phone) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, fullName);
+            stmt.setString(2, username);
+            stmt.setString(3, password); // In production, hash this password
+            stmt.setString(4, email);
+            stmt.setString(5, phone);
+            
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("=== REGISTRATION SUCCESS ===");
+                return "SUCCESS";
+            } else {
+                return "Registration failed. Please try again.";
+            }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 2627) { // Unique constraint violation
+                System.out.println("=== REGISTRATION FAILED - USERNAME ALREADY EXISTS ===");
+                return "Username already exists. Please choose a different username.";
+            } else {
+                System.out.println("=== REGISTRATION FAILED - DATABASE ERROR ===");
+                e.printStackTrace();
+                return "Database error occurred. Please try again.";
+            }
+        }
+    }
+
     // Validate manager login
     public Manager validateManager(String username, String password) {
         System.out.println("=== OPERATION LOGIN DEBUG ===");
         System.out.println("Attempting to validate manager: " + username);
         System.out.println("Password provided: " + (password != null ? "YES" : "NO"));
         
-        // For now, use hardcoded credentials for testing
+        // Try database first
+        try (Connection conn = getConnection()) {
+            System.out.println("Database connection successful");
+            
+            // Check if managers table exists
+            String checkTableSql = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'managers'";
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkTableSql);
+                 ResultSet tableRs = checkStmt.executeQuery()) {
+                if (tableRs.next() && tableRs.getInt(1) == 0) {
+                    System.out.println("=== MANAGERS TABLE DOES NOT EXIST - USING FALLBACK ===");
+                    return validateManagerFallback(username, password);
+                }
+            }
+            
+            // Check total managers count
+            String countSql = "SELECT COUNT(*) FROM managers";
+            try (PreparedStatement countStmt = conn.prepareStatement(countSql);
+                 ResultSet countRs = countStmt.executeQuery()) {
+                if (countRs.next()) {
+                    int managerCount = countRs.getInt(1);
+                    System.out.println("Total managers in database: " + managerCount);
+                    if (managerCount == 0) {
+                        System.out.println("=== NO MANAGERS IN DATABASE - USING FALLBACK ===");
+                        return validateManagerFallback(username, password);
+                    }
+                }
+            }
+            
+            // Now try the actual login query
+            String sql = "SELECT id, username, password, fullName, email, phone FROM managers WHERE username = ? AND password = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, username);
+                stmt.setString(2, password);
+                System.out.println("Executing query: " + sql);
+                System.out.println("Parameters: username=" + username + ", password=" + password);
+                
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    System.out.println("Manager found: " + rs.getString("username"));
+                    Manager manager = new Manager();
+                    manager.setId(rs.getInt("id"));
+                    manager.setUsername(rs.getString("username"));
+                    manager.setPassword(rs.getString("password"));
+                    System.out.println("=== LOGIN SUCCESS ===");
+                    return manager;
+                } else {
+                    System.out.println("No manager found with username: " + username);
+                    
+                    // Debug: Check if username exists at all
+                    String debugSql = "SELECT username FROM managers WHERE username = ?";
+                    try (PreparedStatement debugStmt = conn.prepareStatement(debugSql)) {
+                        debugStmt.setString(1, username);
+                        ResultSet debugRs = debugStmt.executeQuery();
+                        if (debugRs.next()) {
+                            System.out.println("Username exists but password is wrong");
+                        } else {
+                            System.out.println("Username does not exist");
+                        }
+                    }
+                    
+                    System.out.println("=== LOGIN FAILED - NO USER FOUND ===");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+            System.out.println("Error details: " + e.getSQLState());
+            System.out.println("Error code: " + e.getErrorCode());
+            e.printStackTrace();
+            System.out.println("=== DATABASE ERROR - USING FALLBACK ===");
+            return validateManagerFallback(username, password);
+        }
+        return null;
+    }
+    
+    // Fallback validation with hardcoded credentials
+    private Manager validateManagerFallback(String username, String password) {
+        System.out.println("=== USING FALLBACK LOGIN ===");
+        
+        // Hardcoded credentials for testing
         if ("admin".equals(username) && "admin123".equals(password)) {
-            System.out.println("=== LOGIN SUCCESS (HARDCODED) ===");
+            System.out.println("=== FALLBACK LOGIN SUCCESS (admin) ===");
             Manager manager = new Manager();
             manager.setId(1);
             manager.setUsername("admin");
@@ -51,7 +180,7 @@ public class DatabaseService {
         }
         
         if ("manager".equals(username) && "manager123".equals(password)) {
-            System.out.println("=== LOGIN SUCCESS (HARDCODED) ===");
+            System.out.println("=== FALLBACK LOGIN SUCCESS (manager) ===");
             Manager manager = new Manager();
             manager.setId(2);
             manager.setUsername("manager");
@@ -59,31 +188,7 @@ public class DatabaseService {
             return manager;
         }
         
-        String sql = "SELECT * FROM managers WHERE username = ? AND password = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            System.out.println("Database connection successful");
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                System.out.println("Manager found: " + rs.getString("username"));
-                Manager manager = new Manager();
-                manager.setId(rs.getInt("id"));
-                manager.setUsername(rs.getString("username"));
-                manager.setPassword(rs.getString("password"));
-                System.out.println("=== LOGIN SUCCESS ===");
-                return manager;
-            } else {
-                System.out.println("No manager found with username: " + username);
-                System.out.println("=== LOGIN FAILED - NO USER FOUND ===");
-            }
-        } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
-            System.out.println("Error details: " + e.getSQLState());
-            e.printStackTrace();
-            System.out.println("=== LOGIN FAILED - DATABASE ERROR ===");
-        }
+        System.out.println("=== FALLBACK LOGIN FAILED ===");
         return null;
     }
 

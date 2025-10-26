@@ -5,153 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Catering System</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-    <!-- Navigation -->
-    <nav class="bg-blue-600 p-4">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                    <h1 class="text-white text-2xl font-bold">Catering System</h1>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-white">Welcome, <span th:text="${session.username}">User</span>!</span>
-                    <a href="/admin/logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                        Logout
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-    <!-- Main Content -->
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <!-- Monthly Revenue Card -->
-        <div class="mb-6">
-            <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-2xl font-bold mb-2">Monthly Revenue</h2>
-                        <p class="text-green-100">Current month performance</p>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-4xl font-bold" th:text="'$' + ${#numbers.formatDecimal(monthlyRevenue, 0, 0)}">$0</div>
-                        <p class="text-green-100 text-sm">This Month</p>
-                    </div>
-                </div>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-card {
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<!-- Navigation -->
+<nav class="bg-gray-900 p-4 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="/images/logo.png" alt="Catering System Logo" class="h-8 w-auto mr-3">
+                <h1 class="text-white text-2xl font-bold">Catering System</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-white">Welcome, <span th:text="${session.username}">User</span>!</span>
+                <a href="/admin/logout" class="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded transition-colors">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </a>
             </div>
         </div>
-        
-        <div class="px-4 py-6 sm:px-0">
-            <div class="border-4 border-dashed border-gray-200 rounded-lg h-96 flex items-center justify-center">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Welcome to Catering System</h2>
-                    <p class="text-lg text-gray-600 mb-8">Manage your catering business efficiently</p>
-                    
-                    <!-- Quick Actions -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                        <!-- Finance Dashboard -->
-                        <a href="/admin/finance-dashboard" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-blue-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">📊</div>
-                                <h3 class="font-semibold text-gray-900">Finance Dashboard</h3>
-                                <p class="text-sm text-gray-600">Financial overview & analytics</p>
-                            </div>
-                        </a>
-                        
-                        <!-- Event Budgets -->
-                        <a href="/admin/event-budgets" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">💰</div>
-                                <h3 class="font-semibold text-gray-900">Event Budgets</h3>
-                                <p class="text-sm text-gray-600">Manage event budgets</p>
-                            </div>
-                        </a>
-                        
-                        <!-- Invoices -->
-                        <a href="/admin/invoices" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-yellow-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">📄</div>
-                                <h3 class="font-semibold text-gray-900">Invoices</h3>
-                                <p class="text-sm text-gray-600">Manage invoices</p>
-                            </div>
-                        </a>
-                        
-                        <!-- Payments -->
-                        <a href="/admin/payments" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-purple-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">💳</div>
-                                <h3 class="font-semibold text-gray-900">Payments</h3>
-                                <p class="text-sm text-gray-600">Record payments</p>
-                            </div>
-                        </a>
-                        
-                        <!-- Staff Payments -->
-                        <a href="/admin/staff-payments" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-red-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">👥</div>
-                                <h3 class="font-semibold text-gray-900">Staff Payments</h3>
-                                <p class="text-sm text-gray-600">Manage staff payments</p>
-                            </div>
-                        </a>
-                        
-                        <!-- Add Staff Payment -->
-                        <a href="/admin/staff-payments/add" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-indigo-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">➕</div>
-                                <h3 class="font-semibold text-gray-900">Add Staff Payment</h3>
-                                <p class="text-sm text-gray-600">Add new staff payment</p>
-                            </div>
-                        </a>
-                        
-                        <!-- Add Event Budget -->
-                        <a href="/admin/event-budget/add" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-teal-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">📝</div>
-                                <h3 class="font-semibold text-gray-900">Add Event Budget</h3>
-                                <p class="text-sm text-gray-600">Create new event budget</p>
-                            </div>
-                        </a>
-                        
-                        <!-- Revenue Management -->
-                        <a href="/admin/revenue" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-emerald-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">📈</div>
-                                <h3 class="font-semibold text-gray-900">Revenue</h3>
-                                <p class="text-sm text-gray-600">Track income & revenue</p>
-                            </div>
-                        </a>
-                        
-                        <!-- Expense Management -->
-                        <a href="/admin/expenses" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-orange-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">📉</div>
-                                <h3 class="font-semibold text-gray-900">Expenses</h3>
-                                <p class="text-sm text-gray-600">Track costs & expenses</p>
-                            </div>
-                        </a>
-                        
-                        <!-- Cash Flow Management -->
-                        <a href="/admin/cashflow" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-cyan-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">💸</div>
-                                <h3 class="font-semibold text-gray-900">Cash Flow</h3>
-                                <p class="text-sm text-gray-600">Monitor cash flow</p>
-                            </div>
-                        </a>
-                        
-                        <!-- Event Notifications -->
-                        <a href="/notifications/dashboard" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-pink-500">
-                            <div class="text-center">
-                                <div class="text-2xl mb-2">🔔</div>
-                                <h3 class="font-semibold text-gray-900">Event Notifications</h3>
-                                <p class="text-sm text-gray-600">View event notifications</p>
-                            </div>
-                        </a>
-                    </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
+    <!-- Monthly Revenue Card -->
+    <div class="mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6 stat-card border border-gray-200">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold mb-2 text-gray-800">Monthly Revenue</h2>
+                    <p class="text-gray-600">Current month performance</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-4xl font-bold text-gray-900" th:text="'$' + ${#numbers.formatDecimal(monthlyRevenue, 0, 0)}">$0</div>
+                    <p class="text-gray-600 text-sm">This Month</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="px-4 py-6 sm:px-0">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Welcome to Catering System</h2>
+                <p class="text-lg text-gray-600 mb-8">Manage your catering business efficiently</p>
+
+                <!-- Quick Actions -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Finance Dashboard -->
+                    <a href="/admin/finance-dashboard" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-chart-bar"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Finance Dashboard</h3>
+                            <p class="text-sm text-gray-600">Financial overview & analytics</p>
+                        </div>
+                    </a>
+
+                    <!-- Event Budgets -->
+                    <a href="/admin/event-budgets" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-money-bill-wave"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Event Budgets</h3>
+                            <p class="text-sm text-gray-600">Manage event budgets</p>
+                        </div>
+                    </a>
+
+                    <!-- Invoices -->
+                    <a href="/admin/invoices" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-file-invoice"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Invoices</h3>
+                            <p class="text-sm text-gray-600">Manage invoices</p>
+                        </div>
+                    </a>
+
+                    <!-- Payments -->
+                    <a href="/admin/payments" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-credit-card"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Payments</h3>
+                            <p class="text-sm text-gray-600">Record payments</p>
+                        </div>
+                    </a>
+
+                    <!-- Staff Payments -->
+                    <a href="/admin/staff-payments" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-users"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Staff Payments</h3>
+                            <p class="text-sm text-gray-600">Manage staff payments</p>
+                        </div>
+                    </a>
+
+                    <!-- Add Staff Payment -->
+                    <a href="/admin/staff-payments/add" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-user-plus"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Add Staff Payment</h3>
+                            <p class="text-sm text-gray-600">Add new staff payment</p>
+                        </div>
+                    </a>
+
+                    <!-- Add Event Budget -->
+                    <a href="/admin/event-budget/add" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-edit"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Add Event Budget</h3>
+                            <p class="text-sm text-gray-600">Create new event budget</p>
+                        </div>
+                    </a>
+
+                    <!-- Revenue Management -->
+                    <a href="/admin/revenue" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-chart-line"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Revenue</h3>
+                            <p class="text-sm text-gray-600">Track income & revenue</p>
+                        </div>
+                    </a>
+
+                    <!-- Expense Management -->
+                    <a href="/admin/expenses" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-receipt"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Expenses</h3>
+                            <p class="text-sm text-gray-600">Track costs & expenses</p>
+                        </div>
+                    </a>
+
+                    <!-- Cash Flow Management -->
+                    <a href="/admin/cashflow" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-money-bill-trend-up"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Cash Flow</h3>
+                            <p class="text-sm text-gray-600">Monitor cash flow</p>
+                        </div>
+                    </a>
+
+                    <!-- Event Notifications -->
+                    <a href="/notifications/dashboard" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all action-card border border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3 text-gray-700"><i class="fas fa-bell"></i></div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Event Notifications</h3>
+                            <p class="text-sm text-gray-600">View event notifications</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

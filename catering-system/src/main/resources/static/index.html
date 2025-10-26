@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Golden Dish Catering - Online System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/chatbot.css">
     <style>
         * {
             margin: 0;
@@ -15,24 +14,23 @@
         }
 
         :root {
-            --primary-yellow: #FFD700;
-            --light-yellow: #FFF9E6;
-            --dark-yellow: #E6C200;
-            --dark-text: #333333;
-            --light-text: #666666;
+            --primary-black: #000000;
+            --dark-gray: #333333;
+            --medium-gray: #666666;
+            --light-gray: #f5f5f5;
             --white: #ffffff;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         body {
-            background-color: var(--light-yellow);
-            color: var(--dark-text);
+            background-color: var(--white);
+            color: var(--dark-gray);
             line-height: 1.6;
         }
 
         /* Header Styles */
         header {
-            background: linear-gradient(135deg, var(--primary-yellow), var(--dark-yellow));
+            background: linear-gradient(135deg, var(--dark-gray), var(--primary-black));
             padding: 1rem 2rem;
             box-shadow: var(--shadow);
             position: sticky;
@@ -58,17 +56,18 @@
             width: 50px;
             height: auto;
             border-radius: 8px;
+            filter: grayscale(100%);
         }
 
         .logo i {
             font-size: 2rem;
-            color: var(--dark-text);
+            color: var(--white);
         }
 
         .logo h1 {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--dark-text);
+            color: var(--white);
         }
 
         nav ul {
@@ -79,7 +78,7 @@
 
         nav a {
             text-decoration: none;
-            color: var(--dark-text);
+            color: var(--white);
             font-weight: 600;
             transition: color 0.3s;
             padding: 0.5rem 1rem;
@@ -87,12 +86,12 @@
         }
 
         nav a:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         .admin-btn {
-            background-color: var(--dark-text);
-            color: var(--primary-yellow);
+            background-color: var(--white);
+            color: var(--primary-black);
             padding: 0.7rem 1.5rem;
             border-radius: 30px;
             font-weight: 600;
@@ -105,7 +104,7 @@
         }
 
         .admin-btn:hover {
-            background-color: #222;
+            background-color: var(--light-gray);
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
@@ -128,7 +127,7 @@
         .hero h2 {
             font-size: 3rem;
             margin-bottom: 1.5rem;
-            color: var(--primary-yellow);
+            color: var(--white);
         }
 
         .hero p {
@@ -138,8 +137,8 @@
 
         .cta-button {
             display: inline-block;
-            background-color: var(--primary-yellow);
-            color: var(--dark-text);
+            background-color: var(--white);
+            color: var(--primary-black);
             padding: 1rem 2rem;
             border-radius: 30px;
             text-decoration: none;
@@ -151,7 +150,7 @@
         }
 
         .cta-button:hover {
-            background-color: var(--dark-yellow);
+            background-color: var(--light-gray);
             transform: translateY(-3px);
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
@@ -170,7 +169,7 @@
 
         .section-title h2 {
             font-size: 2.5rem;
-            color: var(--dark-text);
+            color: var(--primary-black);
             margin-bottom: 1rem;
             position: relative;
             display: inline-block;
@@ -181,18 +180,18 @@
             position: absolute;
             width: 80px;
             height: 4px;
-            background-color: var(--primary-yellow);
+            background-color: var(--dark-gray);
             bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
         }
 
         .section-title p {
-            color: var(--light-text);
+            color: var(--medium-gray);
             max-width: 600px;
             margin: 0 auto;
         }
-        
+
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -205,14 +204,16 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: transform 0.3s;
+            border: 1px solid var(--light-gray);
         }
 
         .menu-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         .card-icon {
-            background-color: var(--primary-yellow);
+            background-color: var(--light-gray);
             height: 80px;
             display: flex;
             align-items: center;
@@ -221,7 +222,7 @@
 
         .card-icon i {
             font-size: 2.5rem;
-            color: var(--dark-text);
+            color: var(--dark-gray);
         }
 
         .card-content {
@@ -230,17 +231,17 @@
 
         .card-content h3 {
             margin-bottom: 1rem;
-            color: var(--dark-text);
+            color: var(--primary-black);
         }
 
         .card-content p {
-            color: var(--light-text);
+            color: var(--medium-gray);
             margin-bottom: 1.5rem;
         }
 
         .card-button {
             display: inline-block;
-            background-color: var(--dark-text);
+            background-color: var(--dark-gray);
             color: var(--white);
             padding: 0.7rem 1.5rem;
             border-radius: 30px;
@@ -252,13 +253,12 @@
         }
 
         .card-button:hover {
-            background-color: var(--primary-yellow);
-            color: var(--dark-text);
+            background-color: var(--primary-black);
         }
 
         /* Features Section */
         .features {
-            background-color: var(--white);
+            background-color: var(--light-gray);
             padding: 5rem 2rem;
         }
 
@@ -276,7 +276,7 @@
         }
 
         .feature-icon {
-            background-color: var(--light-yellow);
+            background-color: var(--white);
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -284,25 +284,26 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 1.5rem;
+            box-shadow: var(--shadow);
         }
 
         .feature-icon i {
             font-size: 2rem;
-            color: var(--dark-yellow);
+            color: var(--dark-gray);
         }
 
         .feature-card h3 {
             margin-bottom: 1rem;
-            color: var(--dark-text);
+            color: var(--primary-black);
         }
 
         .feature-card p {
-            color: var(--light-text);
+            color: var(--medium-gray);
         }
 
         /* Footer */
         footer {
-            background-color: var(--dark-text);
+            background-color: var(--primary-black);
             color: var(--white);
             padding: 3rem 2rem;
             text-align: center;
@@ -323,12 +324,12 @@
 
         .footer-logo i {
             font-size: 2rem;
-            color: var(--primary-yellow);
+            color: var(--white);
         }
 
         .footer-logo h2 {
             font-size: 1.8rem;
-            color: var(--primary-yellow);
+            color: var(--white);
         }
 
         .social-links {
@@ -345,7 +346,7 @@
         }
 
         .social-links a:hover {
-            color: var(--primary-yellow);
+            color: var(--light-gray);
         }
 
         .copyright {
@@ -390,159 +391,152 @@
                 font-size: 1.8rem;
             }
         }
-
     </style>
 </head>
 
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <img src="/images/logo.png" alt="Golden Dish Logo">
-                <h1>Golden Dish Caterings</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="menus.html">Menus</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-            <div style="display: flex; gap: 1rem;">
-                <button class="admin-btn" onclick="window.location.href='/login/customer'" style="background-color: var(--primary-yellow); color: var(--dark-text);">
-                    <i class="fas fa-user"></i> Customer Login
-                </button>
-                <button class="admin-btn" onclick="window.location.href='/login-portal.html'">
-                    <i class="fas fa-user-shield"></i> Admin Login
-                </button>
-            </div>
+<!-- Header -->
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img src="/images/logo.png" alt="Golden Dish Logo">
+            <h1>Golden Dish Caterings</h1>
         </div>
-    </header>
+        <nav>
+            <ul>
+                <li><a href="menus.html">Menus</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="profile-management.html">profile management</a></li>
+            </ul>
+        </nav>
+        <div style="display: flex; gap: 1rem;">
+            <button class="admin-btn" onclick="window.location.href='/login/customer'" style="background-color: var(--white); color: var(--primary-black);">
+                <i class="fas fa-user"></i> Customer Login
+            </button>
+            <button class="admin-btn" onclick="window.location.href='/login-portal.html'">
+                <i class="fas fa-user-shield"></i> Admin Login
+            </button>
+        </div>
+    </div>
+</header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h2>Exquisite Catering for Your Special Occasions</h2>
-            <p>From intimate gatherings to grand celebrations, we create memorable culinary experiences with exceptional food quality and service.</p>
-            <a href="/book-event" class="cta-button">Book Your Event Now</a>
-        </div>
-    </section>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h2>Exquisite Catering for Your Special Occasions</h2>
+        <p>From intimate gatherings to grand celebrations, we create memorable culinary experiences with exceptional food quality and service.</p>
+        <a href="/book-event" class="cta-button">Book Your Event Now</a>
+    </div>
+</section>
 
-    <!-- Menu Section -->
-    <section class="menu-section">
-        <div class="section-title">
-            <h2>Our Special Menus</h2>
-            <p>Dedicated to providing a memorable culinary experience with exceptional food quality</p>
-        </div>
-        <div class="menu-grid">
-            <a href="/menus.html" style="text-decoration: none; color: inherit;">
-                <div class="menu-card">
-                    <div class="card-icon">
-                        <i class="fas fa-bread-slice"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Continental Menu</h3>
-                        <p>Experience the finest European cuisine with our carefully crafted continental dishes, featuring premium ingredients and authentic flavors.</p>
-                        <span class="card-button">View Menu</span>
-                    </div>
+<!-- Menu Section -->
+<section class="menu-section">
+    <div class="section-title">
+        <h2>Our Special Menus</h2>
+        <p>Dedicated to providing a memorable culinary experience with exceptional food quality</p>
+    </div>
+    <div class="menu-grid">
+        <a href="/menus.html" style="text-decoration: none; color: inherit;">
+            <div class="menu-card">
+                <div class="card-icon">
+                    <i class="fas fa-bread-slice"></i>
                 </div>
-            </a>
-            <a href="/menus.html" style="text-decoration: none; color: inherit;">
-                <div class="menu-card">
-                    <div class="card-icon">
-                        <i class="fas fa-glass-cheers"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Occasion-Based Menus</h3>
-                        <p>Customized menus tailored for weddings, corporate events, birthdays, and other special occasions to make your event unforgettable.</p>
-                        <span class="card-button">View Options</span>
-                    </div>
+                <div class="card-content">
+                    <h3>Continental Menu</h3>
+                    <p>Experience the finest European cuisine with our carefully crafted continental dishes, featuring premium ingredients and authentic flavors.</p>
+                    <span class="card-button">View Menu</span>
                 </div>
-            </a>
-            <a href="/menus.html" style="text-decoration: none; color: inherit;">
-                <div class="menu-card">
-                    <div class="card-icon">
-                        <i class="fas fa-globe-americas"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Fusion Menu</h3>
-                        <p>An exciting blend of global flavors and culinary traditions, creating unique dishes that surprise and delight the palate.</p>
-                        <span class="card-button">Explore Fusion</span>
-                    </div>
+            </div>
+        </a>
+        <a href="/menus.html" style="text-decoration: none; color: inherit;">
+            <div class="menu-card">
+                <div class="card-icon">
+                    <i class="fas fa-glass-cheers"></i>
                 </div>
-            </a>
-            <a href="/menus.html" style="text-decoration: none; color: inherit;">
-                <div class="menu-card">
-                    <div class="card-icon">
-                        <i class="fas fa-child"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Kids Menu</h3>
-                        <p>Fun, nutritious, and delicious options specially designed for younger guests, ensuring everyone enjoys the celebration.</p>
-                        <span class="card-button">See Kids Options</span>
-                    </div>
+                <div class="card-content">
+                    <h3>Occasion-Based Menus</h3>
+                    <p>Customized menus tailored for weddings, corporate events, birthdays, and other special occasions to make your event unforgettable.</p>
+                    <span class="card-button">View Options</span>
                 </div>
-            </a>
-        </div>
-    </section>
+            </div>
+        </a>
+        <a href="/menus.html" style="text-decoration: none; color: inherit;">
+            <div class="menu-card">
+                <div class="card-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Fusion Menu</h3>
+                    <p>An exciting blend of global flavors and culinary traditions, creating unique dishes that surprise and delight the palate.</p>
+                    <span class="card-button">Explore Fusion</span>
+                </div>
+            </div>
+        </a>
+        <a href="/menus.html" style="text-decoration: none; color: inherit;">
+            <div class="menu-card">
+                <div class="card-icon">
+                    <i class="fas fa-child"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Kids Menu</h3>
+                    <p>Fun, nutritious, and delicious options specially designed for younger guests, ensuring everyone enjoys the celebration.</p>
+                    <span class="card-button">See Kids Options</span>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="section-title">
-            <h2>Why Choose Golden Dish</h2>
-            <p>We go above and beyond to make your event exceptional</p>
+<!-- Features Section -->
+<section class="features">
+    <div class="section-title">
+        <h2>Why Choose Golden Dish</h2>
+        <p>We go above and beyond to make your event exceptional</p>
+    </div>
+    <div class="features-container">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-award"></i>
+            </div>
+            <h3>Premium Quality</h3>
+            <p>We source only the finest ingredients and maintain the highest standards in food preparation and presentation.</p>
         </div>
-        <div class="features-container">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-award"></i>
-                </div>
-                <h3>Premium Quality</h3>
-                <p>We source only the finest ingredients and maintain the highest standards in food preparation and presentation.</p>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-users"></i>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <h3>Experienced Team</h3>
-                <p>Our professional chefs and service staff have years of experience in creating memorable dining experiences.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-leaf"></i>
-                </div>
-                <h3>Sustainable Practices</h3>
-                <p>We're committed to environmentally friendly practices, from sourcing to waste reduction.</p>
-            </div>
+            <h3>Experienced Team</h3>
+            <p>Our professional chefs and service staff have years of experience in creating memorable dining experiences.</p>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <i class="fas fa-utensils"></i>
-                <h2>Golden Dish Catering</h2>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-leaf"></i>
             </div>
-            <p>Creating unforgettable culinary experiences for your special moments</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 Golden Dish Catering. All Rights Reserved.</p>
-            </div>
+            <h3>Sustainable Practices</h3>
+            <p>We're committed to environmentally friendly practices, from sourcing to waste reduction.</p>
         </div>
-    </footer>
+    </div>
+</section>
 
-    <!-- Chatbot Script -->
-    <script src="js/chatbot.js"></script>
-
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-logo">
+            <i class="fas fa-utensils"></i>
+            <h2>Golden Dish Catering</h2>
+        </div>
+        <p>Creating unforgettable culinary experiences for your special moments</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Golden Dish Catering. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
 </body>
-
-
 </html>

@@ -89,9 +89,9 @@
         </ul>
 
         <div class="d-flex gap-2 flex-wrap">
-            <a th:href="@{|/menus/${menu.id}/edit|}" class="btn btn-warning">Edit Menu</a>
-            <a th:href="@{/menus}" class="btn btn-secondary">Back to Menus</a>
-            <form th:action="@{|/menus/${menu.id}/delete|}" method="post" class="d-inline"
+            <a th:href="@{|/kitchen/menus/${menu.id}/edit|}" class="btn btn-warning">Edit Menu</a>
+            <a th:href="@{/kitchen/menus}" class="btn btn-secondary">Back to Menus</a>
+            <form th:action="@{|/kitchen/menus/${menu.id}/delete|}" method="post" class="d-inline"
                   onsubmit="return confirm('Delete this menu?')">
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>

@@ -21,7 +21,7 @@ public class MenuDAO {
     // Create a new menu and return generated id
     public int insertMenu(String name, String status) throws SQLException {
         // Provide a default event_id = 0 to avoid NOT NULL violations if column is required
-        final String sql = "INSERT INTO Menus (menu_name, status, event_id) VALUES (?, ?, ?)";
+        final String sql = "INSERT INTO Menus (name, status, event_id) VALUES (?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, safeText(name));
             ps.setString(2, safeStatus(status));
@@ -41,7 +41,7 @@ public class MenuDAO {
 
     // Overload to allow explicit eventId
     public int insertMenu(String name, String status, Integer eventId) throws SQLException {
-        final String sql = "INSERT INTO Menus (menu_name, status, event_id) VALUES (?, ?, ?)";
+        final String sql = "INSERT INTO Menus (name, status, event_id) VALUES (?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, safeText(name));
             ps.setString(2, safeStatus(status));
@@ -65,7 +65,7 @@ public class MenuDAO {
     public List<Menu> getAllMenusNewestFirst() throws SQLException {
         try {
             final String sql = """
-                    SELECT menu_id AS id, menu_name AS name, status, event_id AS eventId
+                    SELECT menu_id AS id, name AS name, status, event_id AS eventId
                     FROM Menus
                     ORDER BY menu_id DESC
                     """;
@@ -86,7 +86,7 @@ public class MenuDAO {
     public List<Menu> getConfirmedMenus() throws SQLException {
         try {
             final String sql = """
-                    SELECT menu_id AS id, menu_name AS name, status, event_id AS eventId
+                    SELECT menu_id AS id, name AS name, status, event_id AS eventId
                     FROM Menus
                     WHERE LOWER(status) = 'confirmed'
                     ORDER BY menu_id DESC
@@ -107,7 +107,7 @@ public class MenuDAO {
     // Filtered list: optional status, q (name contains), optional eventId via category, sort
     public List<Menu> getMenusFiltered(String category, String status, String query, String sort) throws SQLException {
         StringBuilder sql = new StringBuilder(
-                "SELECT menu_id AS id, menu_name AS name, status, event_id AS eventId FROM Menus WHERE 1=1"
+                "SELECT menu_id AS id, name AS name, status, event_id AS eventId FROM Menus WHERE 1=1"
         );
         List<Object> params = new ArrayList<>();
 
@@ -116,7 +116,7 @@ public class MenuDAO {
             params.add(status.trim());
         }
         if (hasText(query)) {
-            sql.append(" AND LOWER(menu_name) LIKE LOWER(?)");
+            sql.append(" AND LOWER(name) LIKE LOWER(?)");
             params.add("%" + query.trim() + "%");
         }
         if (hasText(category)) {
@@ -128,7 +128,7 @@ public class MenuDAO {
         }
 
         if ("name_asc".equalsIgnoreCase(sort)) {
-            sql.append(" ORDER BY menu_name ASC");
+            sql.append(" ORDER BY name ASC");
         } else {
             sql.append(" ORDER BY menu_id DESC"); // default/newest
         }
@@ -146,7 +146,7 @@ public class MenuDAO {
     // Single by id
     public Menu getMenuById(int id) throws SQLException {
         final String sql = """
-                SELECT menu_id AS id, menu_name AS name, status, event_id AS eventId
+                SELECT menu_id AS id, name AS name, status, event_id AS eventId
                 FROM Menus
                 WHERE menu_id = ?
                 """;
@@ -164,7 +164,7 @@ public class MenuDAO {
         int offset = Math.max(0, page - 1) * limit;
 
         final String sql = """
-                SELECT menu_id AS id, menu_name AS name, status, event_id AS eventId
+                SELECT menu_id AS id, name AS name, status, event_id AS eventId
                 FROM Menus
                 ORDER BY menu_id DESC
                 OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
@@ -193,7 +193,7 @@ public class MenuDAO {
     // ---------------------------
 
     public boolean updateMenu(int id, String name, String status) throws SQLException {
-        final String sql = "UPDATE Menus SET menu_name = ?, status = ? WHERE menu_id = ?";
+        final String sql = "UPDATE Menus SET name = ?, status = ? WHERE menu_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, safeText(name));
             ps.setString(2, safeStatus(status));
